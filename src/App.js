@@ -5,7 +5,7 @@ import './App.css';
 
 function App() {
 
-  const [event, setEvent] = useState([]);
+  const [events, setEvents] = useState([]);
 
   var gapi = window.gapi
   /* 
@@ -37,11 +37,11 @@ function App() {
           'location': '800 Howard St., San Francisco, CA 94103',
           'description': 'Really great refreshments',
           'start': {
-            'dateTime': '2020-06-28T09:00:00-07:00',
+            'dateTime': '2020-06-21T09:00:00-07:00',
             'timeZone': 'America/Los_Angeles'
           },
           'end': {
-            'dateTime': '2020-06-28T17:00:00-07:00',
+            'dateTime': '2020-06-21T17:00:00-07:00',
             'timeZone': 'America/Los_Angeles'
           },
           'recurrence': [
@@ -82,9 +82,9 @@ function App() {
           'maxResults': 10,
           'orderBy': 'startTime'
         }).then(response => {
-          const events = response.result.items
-          setEvent([events[0].summary]);
-          console.log("hello", events[0].summary);
+          const eventsObject = response.result.items
+          setEvents(eventsObject);
+          console.log("hello", eventsObject);
         })
         
     
@@ -92,6 +92,14 @@ function App() {
       })
     })
   }
+
+  const eventsList = events.map( event => {
+    return (
+      <ul>
+        <li>{event.summary}</li>
+      </ul>
+    )
+  })
 
 
   return (
@@ -103,7 +111,7 @@ function App() {
         <p style={{fontSize: 18}}>Don't forget to add your Client Id and Api key</p>
         <button style={{width: 100, height: 50}} onClick={handleClick}>Add Event</button>
       <div>
-        <p>{event}</p>
+        {eventsList}
       </div>
       </header>
     </div>
