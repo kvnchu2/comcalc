@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Date from './components/Date.js';
 
 
 function App() {
@@ -96,7 +97,7 @@ function App() {
   const eventsList = events.map( event => {
     return (
       <ul>
-        <li>{event.summary}</li>
+        <li>{event.summary}   {event.location}</li>
       </ul>
     )
   })
@@ -109,6 +110,7 @@ function App() {
         <p>Click to add event to Google Calendar</p>
         <p style={{fontSize: 18}}>Uncomment the get events code to get events</p>
         <p style={{fontSize: 18}}>Don't forget to add your Client Id and Api key</p>
+        <Date/>
         <button style={{width: 100, height: 50}} onClick={handleClick}>Add Event</button>
       <div>
         {eventsList}
