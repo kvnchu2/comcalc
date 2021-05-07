@@ -11,8 +11,8 @@ function App() {
   /* 
     Update with your own Client Id and Api key 
   */
-  var CLIENT_ID = process.env["CLIENT_ID"]
-  var API_KEY = process.env["API_KEY"]
+  var CLIENT_ID = process.env["REACT_APP_CLIENT_ID"]
+  var API_KEY = process.env["REACT_APP_API_KEY"]
   var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
   var SCOPES = "https://www.googleapis.com/auth/calendar.events"
 
@@ -75,7 +75,8 @@ function App() {
         // get events
         gapi.client.calendar.events.list({
           'calendarId': 'primary',
-          'timeMin': (new Date()).toISOString(),
+          'timeMin': (new Date('28 June 2020 0:00 UTC')).toISOString(),
+          'timeMax': (new Date('29 June 2020 0:00 UTC')).toISOString(),
           'showDeleted': false,
           'singleEvents': true,
           'maxResults': 10,
