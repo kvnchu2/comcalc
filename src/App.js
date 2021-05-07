@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 
 function App() {
 
+  const [event, setEvent] = useState([]);
+
   var gapi = window.gapi
   /* 
     Update with your own Client Id and Api key 
   */
-  var CLIENT_ID = process.env['CLIENT_ID']
-  var API_KEY = process.env['API_KEY']
+  var CLIENT_ID = "146827148952-6gcnk389056g6okbtc0541ioqf96i0vc.apps.googleusercontent.com"
+  var API_KEY = "AIzaSyCQH4BSew-txnblMnH5PzXrCDy0V9AmFzk"
   var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
   var SCOPES = "https://www.googleapis.com/auth/calendar.events"
 
@@ -80,7 +82,8 @@ function App() {
           'orderBy': 'startTime'
         }).then(response => {
           const events = response.result.items
-          console.log('EVENTS: ', events)
+          setEvent([events[0].summary]);
+          console.log("hello", events[0].summary);
         })
         
     
@@ -98,6 +101,9 @@ function App() {
         <p style={{fontSize: 18}}>Uncomment the get events code to get events</p>
         <p style={{fontSize: 18}}>Don't forget to add your Client Id and Api key</p>
         <button style={{width: 100, height: 50}} onClick={handleClick}>Add Event</button>
+      <div>
+        <p>{event}</p>
+      </div>
       </header>
     </div>
   );
