@@ -1,0 +1,55 @@
+// import React from "react";
+// import TextField from "@material-ui/core/TextField";
+// import { makeStyles } from "@material-ui/core/styles";
+// import SearchIcon from "@material-ui/icons/Search";
+// import { useState } from "react";
+// // import useApplicationData from '../useApplicationData';
+// // import SearchBar from "material-ui-search-bar";
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     "& > *": {
+//       margin: theme.spacing(1),
+//       width: "25ch",
+//     },
+//   },
+//   textfield: {
+//     width: "50%",
+//   },
+// }));
+// export default function Date(props) {
+//   // const { setUser, fetchData} = useApplicationData();
+//   const classes = useStyles();
+//   const [userName, setUserName] = useState("");
+//   const handleSearchInput = (e) => {
+//     setUserName(e.target.value);
+//   };
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     console.log("nihao")
+//     props.handleClick(userName);
+//     setUserName("");
+//   };
+//   return (
+//     <form
+//       autoComplete="off"
+//       onSubmit={handleSubmit}
+//       className={classes.root,"searchbar-with-icon"}
+//     >
+//       <TextField
+//         id="outlined-basic"
+//         label="Enter Date"
+//         variant="outlined"
+//         value={userName}
+//         onChange={handleSearchInput}
+//         className={classes.textfield}
+//       />
+//       {/* <SearchBar value={props.value} onChange={props.onChange} onRequestSearch={props.onClick}/> */}
+
+//       <label>
+//         <SearchIcon onClick={handleSubmit} id="search-icon" />
+//       </label>
+//       {/* <button type="button" onClick={props.onClick}>Submit</button> */}
+//     </form>
+//   );
+// }

@@ -1,11 +1,26 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Date from './components/Date.js';
+// import Date from './components/Nihao.js';
+import TextField from "@material-ui/core/TextField";
+import { makeStyles } from "@material-ui/core/styles";
+import SearchIcon from "@material-ui/icons/Search";
 
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+      width: "25ch",
+    },
+  },
+  textfield: {
+    width: "50%",
+  },
+}));
 
 function App() {
-
+  const classes = useStyles();
   const [events, setEvents] = useState([]);
 
   var gapi = window.gapi
@@ -17,7 +32,7 @@ function App() {
   var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
   var SCOPES = "https://www.googleapis.com/auth/calendar.events"
 
-  const handleClick = () => {
+  const handleClick = function(){
     gapi.load('client:auth2', () => {
       console.log('loaded client')
 
@@ -71,13 +86,11 @@ function App() {
           window.open(event.htmlLink)
         })
         
-
-        
         // get events
         gapi.client.calendar.events.list({
           'calendarId': 'primary',
           'timeMin': (new Date('28 June 2020 0:00 UTC')).toISOString(),
-          'timeMax': (new Date('29 June 2020 0:00 UTC')).toISOString(),
+          'timeMax': (new Date('28 June 2020 23:59 UTC')).toISOString(),
           'showDeleted': false,
           'singleEvents': true,
           'maxResults': 10,
@@ -87,8 +100,6 @@ function App() {
           setEvents(eventsObject);
           console.log("hello", eventsObject);
         })
-        
-    
 
       })
     })
@@ -102,6 +113,16 @@ function App() {
     )
   })
 
+  const [userName, setUserName] = useState("");
+  const handleSearchInput = (e) => {
+    setUserName(e.target.value);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("nihao")
+    handleClick(userName);
+    setUserName("");
+  };
 
   return (
     <div className="App">
@@ -110,7 +131,26 @@ function App() {
         <p>Click to add event to Google Calendar</p>
         <p style={{fontSize: 18}}>Uncomment the get events code to get events</p>
         <p style={{fontSize: 18}}>Don't forget to add your Client Id and Api key</p>
-        <Date/>
+        <form
+          autoComplete="off"
+          onSubmit={handleSubmit}
+          className={classes.root,"searchbar-with-icon"}
+        >
+          <TextField
+            id="outlined-basic"
+            label="Enter Date"
+            variant="outlined"
+            value={userName}
+            onChange={handleSearchInput}
+            className={classes.textfield}
+          />
+          {/* <SearchBar value={props.value} onChange={props.onChange} onRequestSearch={props.onClick}/> */}
+
+          <label>
+            <SearchIcon onClick={handleSubmit} id="search-icon" />
+          </label>
+          {/* <button type="button" onClick={props.onClick}>Submit</button> */}
+        </form>
         <button style={{width: 100, height: 50}} onClick={handleClick}>Add Event</button>
       <div>
         {eventsList}
