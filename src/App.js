@@ -32,7 +32,7 @@ function App() {
   var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
   var SCOPES = "https://www.googleapis.com/auth/calendar.events"
 
-  const handleClick = function(){
+  const handleClick = function(eventDate){
     gapi.load('client:auth2', () => {
       console.log('loaded client')
 
@@ -85,14 +85,19 @@ function App() {
           console.log(event)
           window.open(event.htmlLink)
         })
+
+        let splitDate = eventDate.split(" ")
+        const maxDay = Number(eventDate.split(" ")[0]) + 1;
+        splitDate[0] = maxDay;
+       const maxDate = splitDate.join(" ");
         
         // get events
         gapi.client.calendar.events.list({
           'calendarId': 'primary',
-          'timeMin': (new Date('28 June 2020 0:00 UTC')).toISOString(),
-          'timeMax': (new Date('28 June 2020 23:59 UTC')).toISOString(),
+          'timeMin': (new Date(`${eventDate} 07:00 UTC`)).toISOString(),
+          'timeMax': (new Date(`${maxDate} 6:59 UTC`)).toISOString(),
           'showDeleted': false,
-          'singleEvents': true,
+          'singleEvents': true, //shows recurring events
           'maxResults': 10,
           'orderBy': 'startTime'
         }).then(response => {
