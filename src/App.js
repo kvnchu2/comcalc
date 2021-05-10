@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
   const [events, setEvents] = useState([]);
+  const [inputDate, setInputDate] = useState("");
 
   var gapi = window.gapi
   /* 
@@ -118,15 +119,14 @@ function App() {
     )
   })
 
-  const [userName, setUserName] = useState("");
   const handleSearchInput = (e) => {
-    setUserName(e.target.value);
+    setInputDate(e.target.value);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("nihao")
-    handleClick(userName);
-    setUserName("");
+    handleClick(inputDate);
+    setInputDate("");
   };
 
   return (
@@ -145,7 +145,7 @@ function App() {
             id="outlined-basic"
             label="Enter Date"
             variant="outlined"
-            value={userName}
+            value={inputDate}
             onChange={handleSearchInput}
             className={classes.textfield}
           />
