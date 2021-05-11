@@ -5,6 +5,7 @@ import './App.css';
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
+import axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -32,6 +33,22 @@ function App() {
   var API_KEY = process.env["REACT_APP_API_KEY"]
   var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
   var SCOPES = "https://www.googleapis.com/auth/calendar.events"
+
+
+  const convertAddress = function(){
+    for (let x = 0; x < events.length; x++) {
+      const locationArr = events[x].location.split(",");
+      console.log("locationArr", locationArr);
+      // axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&streetNumber=6568&streetName=Brooksst&municipality=vancouver`)
+      axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=${locationArr[3]}&streetNumber=${locationArr[0]}&streetName=${locationArr[1]}&municipality=${locationArr[2]}`)
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((error) => {
+          console.log(error);
+        }) 
+    }
+  }
 
   const handleClick = function(eventDate){
     gapi.load('client:auth2', () => {
@@ -124,7 +141,6 @@ function App() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("nihao")
     handleClick(inputDate);
     setInputDate("");
   };
@@ -157,6 +173,7 @@ function App() {
           {/* <button type="button" onClick={props.onClick}>Submit</button> */}
         </form>
         <button style={{width: 100, height: 50}} onClick={handleClick}>Add Event</button>
+        <button style={{width: 100, height: 50}} onClick={convertAddress}>Add Event</button>
       <div>
         {eventsList}
       </div>
