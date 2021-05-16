@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 // import Date from './components/Nihao.js';
@@ -25,7 +25,6 @@ function App() {
   const [events, setEvents] = useState([]);
   const [inputDate, setInputDate] = useState("");
   const [coordinates, setCoordinates] = useState([]);
-  const geocodes = [];
 
   var gapi = window.gapi
   /* 
@@ -44,8 +43,7 @@ function App() {
       axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=${locationArr[3]}&postalCode=${locationArr[4]}`)
         .then((result) => {
           const coordinate = result.data.results[0];
-          geocodes.push(coordinate);
-          setCoordinates(geocodes);
+          setCoordinates(prevState => ([...prevState, coordinate]));
          
         })
         .catch((error) => {
