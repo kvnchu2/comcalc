@@ -24,6 +24,8 @@ function App() {
   const classes = useStyles();
   const [events, setEvents] = useState([]);
   const [inputDate, setInputDate] = useState("");
+  const [coordinates, setCoordinates] = useState([]);
+  const geocodes = [];
 
   var gapi = window.gapi
   /* 
@@ -39,10 +41,12 @@ function App() {
     for (let x = 0; x < events.length; x++) {
       const locationArr = events[x].location.split(",");
       console.log("locationArr", locationArr);
-      // axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&streetNumber=6568&streetName=Brooksst&municipality=vancouver`)
-      axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=${locationArr[3]}&streetNumber=${locationArr[0]}&streetName=${locationArr[1]}&municipality=${locationArr[2]}`)
+      axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=${locationArr[3]}&postalCode=${locationArr[4]}`)
         .then((result) => {
-          console.log(result);
+          const coordinate = result.data.results[0];
+          geocodes.push(coordinate);
+          setCoordinates(geocodes);
+         
         })
         .catch((error) => {
           console.log(error);
@@ -136,6 +140,15 @@ function App() {
     )
   })
 
+  const coordinatesList = coordinates.map( coordinate => {
+    console.log("coordinate", coordinates);
+    return (
+      <ul>
+        <li>{coordinate.position.lat} {coordinate.position.lon}</li>
+      </ul>
+    )
+  })
+
   const handleSearchInput = (e) => {
     setInputDate(e.target.value);
   };
@@ -176,6 +189,9 @@ function App() {
         <button style={{width: 100, height: 50}} onClick={convertAddress}>Add Event</button>
       <div>
         {eventsList}
+      </div>
+      <div>
+        {coordinatesList}
       </div>
       </header>
     </div>
