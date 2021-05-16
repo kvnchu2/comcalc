@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 // import Date from './components/Nihao.js';
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
-import axios from 'axios';
+import useApplicationData from './useApplicationData.js';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,114 +20,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
+
+  const { convertAddress, events, coordinates, inputDate, handleSearchInput, handleSubmit, fetchTravelAndDistance} = useApplicationData();
   const classes = useStyles();
-  const [events, setEvents] = useState([]);
-  const [inputDate, setInputDate] = useState("");
-  const [coordinates, setCoordinates] = useState([]);
-
-  var gapi = window.gapi
-  /* 
-    Update with your own Client Id and Api key 
-  */
-  var CLIENT_ID = process.env["REACT_APP_CLIENT_ID"]
-  var API_KEY = process.env["REACT_APP_API_KEY"]
-  var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"]
-  var SCOPES = "https://www.googleapis.com/auth/calendar.events"
-
-
-  const convertAddress = function(){
-    for (let x = 0; x < events.length; x++) {
-      const locationArr = events[x].location.split(",");
-      console.log("locationArr", locationArr);
-      axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=${locationArr[3]}&postalCode=${locationArr[4]}`)
-        .then((result) => {
-          const coordinate = result.data.results[0];
-          setCoordinates(prevState => ([...prevState, coordinate]));
-         
-        })
-        .catch((error) => {
-          console.log(error);
-        }) 
-    }
-  }
-
-  const handleClick = function(eventDate){
-    gapi.load('client:auth2', () => {
-      console.log('loaded client')
-
-      gapi.client.init({
-        apiKey: API_KEY,
-        clientId: CLIENT_ID,
-        discoveryDocs: DISCOVERY_DOCS,
-        scope: SCOPES,
-      })
-
-      gapi.client.load('calendar', 'v3', () => console.log('bam!'))
-
-      gapi.auth2.getAuthInstance().signIn()
-      .then(() => {
-        
-        var event = {
-          'summary': 'Awesome Event!',
-          'location': '800 Howard St., San Francisco, CA 94103',
-          'description': 'Really great refreshments',
-          'start': {
-            'dateTime': '2020-06-21T09:00:00-07:00',
-            'timeZone': 'America/Los_Angeles'
-          },
-          'end': {
-            'dateTime': '2020-06-21T17:00:00-07:00',
-            'timeZone': 'America/Los_Angeles'
-          },
-          'recurrence': [
-            'RRULE:FREQ=DAILY;COUNT=2'
-          ],
-          'attendees': [
-            {'email': 'lpage@example.com'},
-            {'email': 'sbrin@example.com'}
-          ],
-          'reminders': {
-            'useDefault': false,
-            'overrides': [
-              {'method': 'email', 'minutes': 24 * 60},
-              {'method': 'popup', 'minutes': 10}
-            ]
-          }
-        }
-
-        var request = gapi.client.calendar.events.insert({
-          'calendarId': 'primary',
-          'resource': event,
-        })
-
-        request.execute(event => {
-          console.log(event)
-          window.open(event.htmlLink)
-        })
-
-        let splitDate = eventDate.split(" ")
-        const maxDay = Number(eventDate.split(" ")[0]) + 1;
-        splitDate[0] = maxDay;
-       const maxDate = splitDate.join(" ");
-        
-        // get events
-        gapi.client.calendar.events.list({
-          'calendarId': 'primary',
-          'timeMin': (new Date(`${eventDate} 07:00 UTC`)).toISOString(),
-          'timeMax': (new Date(`${maxDate} 6:59 UTC`)).toISOString(),
-          'showDeleted': false,
-          'singleEvents': true, //shows recurring events
-          'maxResults': 10,
-          'orderBy': 'startTime'
-        }).then(response => {
-          const eventsObject = response.result.items
-          setEvents(eventsObject);
-          console.log("hello", eventsObject);
-        })
-
-      })
-    })
-  }
 
   const eventsList = events.map( event => {
     return (
@@ -147,22 +41,11 @@ function App() {
     )
   })
 
-  const handleSearchInput = (e) => {
-    setInputDate(e.target.value);
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    handleClick(inputDate);
-    setInputDate("");
-  };
+ 
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Click to add event to Google Calendar</p>
-        <p style={{fontSize: 18}}>Uncomment the get events code to get events</p>
-        <p style={{fontSize: 18}}>Don't forget to add your Client Id and Api key</p>
         <form
           autoComplete="off"
           onSubmit={handleSubmit}
@@ -183,8 +66,8 @@ function App() {
           </label>
           {/* <button type="button" onClick={props.onClick}>Submit</button> */}
         </form>
-        <button style={{width: 100, height: 50}} onClick={handleClick}>Add Event</button>
-        <button style={{width: 100, height: 50}} onClick={convertAddress}>Add Event</button>
+        <button style={{width: 100, height: 50}} onClick={convertAddress}>Fetch Coordinates</button>
+        <button style={{width: 100, height: 50}} onClick={fetchTravelAndDistance}>Fetch Travel Time and Distance</button>
       <div>
         {eventsList}
       </div>
