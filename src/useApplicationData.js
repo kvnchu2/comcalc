@@ -6,6 +6,7 @@ export default function useApplicationData() {
 const [events, setEvents] = useState([]);
 const [inputDate, setInputDate] = useState("");
 const [coordinates, setCoordinates] = useState([]);
+const [routes, setRoutes] = useState([]);
 
 const convertAddress = function(){
   for (let x = 0; x < events.length; x++) {
@@ -28,8 +29,10 @@ const fetchTravelAndDistance = function(){
     if (y !== coordinates.length - 1) {
       axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].position.lat},${coordinates[y].position.lon}:${coordinates[y+1].position.lat},${coordinates[y+1].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
         .then((result) => {
-          console.log("Mileage",result.data.routes[0].summary.lengthInMeters);
-          console.log("Travel Time",result.data.routes[0].summary.travelTimeInSeconds);
+          const travelMileageObj = {};
+          travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
+          travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
+          setRoutes(prevState => ([...prevState, travelMileageObj]));
         })
         .catch((error) => {
           console.log(error);
