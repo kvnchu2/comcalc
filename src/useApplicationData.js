@@ -12,7 +12,7 @@ const convertAddress = function(){
   for (let x = 0; x < events.length; x++) {
     const locationArr = events[x].location.split(",");
     console.log("locationArr", locationArr);
-    axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=${locationArr[3]}&postalCode=${locationArr[4]}`)
+    axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=${locationArr[0]}&postalCode=${locationArr[1]}`)
       .then((result) => {
         const coordinate = result.data.results[0];
         setCoordinates(prevState => ([...prevState, coordinate]));
@@ -131,7 +131,6 @@ const handleClick = function(eventDate){
       }).then(response => {
         const eventsObject = response.result.items
         setEvents(eventsObject);
-        console.log("hello", eventsObject);
       })
 
     })
