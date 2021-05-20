@@ -43,7 +43,7 @@ function App() {
   const travelMileageList = routes.map( route => {
     return (
       <ul>
-        <li>{route.traveltime} seconds {route.mileage} meters</li>
+        <li>{Math.ceil(route.traveltime / 60)} minutes {Math.ceil(route.mileage / 1000)} kilometers</li>
       </ul>
     )
   })
@@ -52,37 +52,42 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <form
-          autoComplete="off"
-          onSubmit={handleSubmit}
-          className={classes.root,"searchbar-with-icon"}
-        >
-          <TextField
-            id="outlined-basic"
-            label="Enter Date"
-            variant="outlined"
-            value={inputDate}
-            onChange={handleSearchInput}
-            className={classes.textfield}
-          />
-          {/* <SearchBar value={props.value} onChange={props.onChange} onRequestSearch={props.onClick}/> */}
+        <section id="search-panel">
+          <form
+            autoComplete="off"
+            onSubmit={handleSubmit}
+            className={classes.root,"searchbar-with-icon"}
+          >
+            <TextField
+              id="outlined-basic"
+              label="Enter Date"
+              variant="outlined"
+              value={inputDate}
+              onChange={handleSearchInput}
+              className={classes.textfield}
+            />
+            {/* <SearchBar value={props.value} onChange={props.onChange} onRequestSearch={props.onClick}/> */}
 
-          <label>
-            <SearchIcon onClick={handleSubmit} id="search-icon" />
-          </label>
-          {/* <button type="button" onClick={props.onClick}>Submit</button> */}
-        </form>
-        <button style={{width: 100, height: 50}} onClick={convertAddress}>Fetch Coordinates</button>
-        <button style={{width: 100, height: 50}} onClick={fetchTravelAndDistance}>Fetch Travel Time and Distance</button>
-      <div>
-        {eventsList}
-      </div>
-      <div>
-        {coordinatesList}
-      </div>
-      <div>
-        {travelMileageList}
-      </div>
+            <label>
+              <SearchIcon onClick={handleSubmit} id="search-icon" />
+            </label>
+            {/* <button type="button" onClick={props.onClick}>Submit</button> */}
+          </form>
+          <button style={{width: 100, height: 50}} onClick={convertAddress}>Fetch Coordinates</button>
+          <button style={{width: 100, height: 50}} onClick={fetchTravelAndDistance}>Fetch Travel Time and Distance</button>
+        </section>
+        <section id="search-results">
+          <div>
+            {eventsList}
+          </div>
+          <div>
+            {coordinatesList}
+          </div>
+          <div>
+            {travelMileageList}
+          </div>
+        </section>
+      
       </header>
     </div>
   );
