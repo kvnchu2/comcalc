@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   textfield: {
-    width: "50%",
+    width: "60%"
   },
 }));
 
@@ -51,12 +51,12 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <header class="App-header">
         <section id="search-panel">
           <form
             autoComplete="off"
             onSubmit={handleSubmit}
-            className={classes.root,"searchbar-with-icon"}
+            className={classes.root}
           >
             <TextField
               id="outlined-basic"

@@ -1,3 +1,19 @@
+.App-header {
+  display:flex;
+  flex-direction: row;
+}
+
 #search-panel {
+  display: flex;
+  flex-direction: column;
+  /* position: fixed;
+  left: 80px;
+  top: 100px; */
+  margin-left: 150px;
+  margin-top: 100px;
+}
+
+#search-panel button{
+  margin-top: 10px;
   
 }
