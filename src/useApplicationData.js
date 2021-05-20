@@ -138,5 +138,5 @@ const handleClick = function(eventDate){
   })
 }
 
-return { convertAddress, events, coordinates, inputDate, handleSearchInput, handleSubmit, fetchTravelAndDistance}
+return { convertAddress, routes, events, coordinates, inputDate, handleSearchInput, handleSubmit, fetchTravelAndDistance}
 };
