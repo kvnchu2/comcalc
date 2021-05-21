@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 // import Date from './components/Nihao.js';
-import TextField from "@material-ui/core/TextField";
+import Input from "@material-ui/core/Input";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import useApplicationData from './useApplicationData.js';
@@ -59,14 +59,7 @@ function App() {
             className={classes.root}
           >
             <div id="search-filter">
-              <TextField
-                id="outlined-basic"
-                label="Enter Date"
-                variant="outlined"
-                value={inputDate}
-                onChange={handleSearchInput}
-                className={classes.textfield}
-              />
+              <Input placeholder="Enter Date" inputProps={{ 'aria-label': 'description' }} value={inputDate} onChange={handleSearchInput} />
               {/* <SearchBar value={props.value} onChange={props.onChange} onRequestSearch={props.onClick}/> */}
 
               <label>
