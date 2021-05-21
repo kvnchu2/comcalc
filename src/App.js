@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   textfield: {
-    width: "60%"
+    width: "100%",
   },
 }));
 
@@ -58,19 +58,21 @@ function App() {
             onSubmit={handleSubmit}
             className={classes.root}
           >
-            <TextField
-              id="outlined-basic"
-              label="Enter Date"
-              variant="outlined"
-              value={inputDate}
-              onChange={handleSearchInput}
-              className={classes.textfield}
-            />
-            {/* <SearchBar value={props.value} onChange={props.onChange} onRequestSearch={props.onClick}/> */}
+            <div id="search-filter">
+              <TextField
+                id="outlined-basic"
+                label="Enter Date"
+                variant="outlined"
+                value={inputDate}
+                onChange={handleSearchInput}
+                className={classes.textfield}
+              />
+              {/* <SearchBar value={props.value} onChange={props.onChange} onRequestSearch={props.onClick}/> */}
 
-            <label>
-              <SearchIcon onClick={handleSubmit} id="search-icon" />
-            </label>
+              <label>
+                <SearchIcon onClick={handleSubmit} id="search-icon" />
+              </label>
+            </div>
             {/* <button type="button" onClick={props.onClick}>Submit</button> */}
           </form>
           <button style={{width: 100, height: 50}} onClick={convertAddress}>Fetch Coordinates</button>
