@@ -21,14 +21,12 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
 
-  const { routes, events, inputDate, handleSearchInput, handleSubmit, fetchTimeDistance} = useApplicationData();
+  const { routes, events, inputDate, handleSearchInput, handleSubmit} = useApplicationData();
   const classes = useStyles();
 
   const eventsList = events.map( event => {
     return (
-      <ul>
-        <li>{event.summary}</li>
-      </ul>
+      <td> {event.summary} </td>
     )
   })
 
@@ -61,12 +59,30 @@ function App() {
           
         </section>
         <section id="search-results">
-          <div>
+          {/* <div>
             {eventsList}
           </div>
           <div>
             {travelMileageList}
-          </div>
+          </div> */}
+
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Client</th>
+                <th scope="col">Travel Time/Duration</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {}
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
         </section>
       
       </header>
