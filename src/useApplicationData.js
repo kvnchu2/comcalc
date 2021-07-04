@@ -5,44 +5,77 @@ import {useState} from 'react';
 export default function useApplicationData() {
 const [events, setEvents] = useState([]);
 const [inputDate, setInputDate] = useState("");
-const [coordinates, setCoordinates] = useState([]);
+// const [coordinates, setCoordinates] = useState([]);
 const [routes, setRoutes] = useState([]);
 
+// const convertAddress = function(){
+//   for (let x = 0; x < events.length; x++) {
+//     const locationArr = events[x].location.split(",");
+//     axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=${locationArr[0]}&postalCode=${locationArr[1]}`)
+//       .then((result) => {
+//         const coordinate = result.data.results[0];
+//         setCoordinates(prevState => ([...prevState, coordinate]));
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       }) 
+//   }
+  
+// }
+
+
 const convertAddress = function(){
-  for (let x = 0; x < events.length; x++) {
-    const locationArr = events[x].location.split(",");
-    axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=${locationArr[0]}&postalCode=${locationArr[1]}`)
-      .then((result) => {
-        const coordinate = result.data.results[0];
-        setCoordinates(prevState => ([...prevState, coordinate]));
-      })
-      .catch((error) => {
-        console.log(error);
-      }) 
-  }
+  let eventsArr = [];
+  events.forEach(event => {
+    const eventSplit = event.location.split(",")
+    eventsArr.push(eventSplit);
+  })
+
+  return Promise.all( eventsArr.map(event => axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=${event[0]}&postalCode=${event[1]}`)
+    .then(({data})=> data))
+  )
+    .then((coordinates) => {
+      for(let y = 0; y < coordinates.length; y++) {
+        console.log("hello")
+        if (y !== coordinates.length - 1) {
+          axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
+            .then((result) => {
+              const travelMileageObj = {};
+              travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
+              travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
+              console.log("travelMileageObj", travelMileageObj)
+              setRoutes(prevState => ([...prevState, travelMileageObj]));
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        }
+      }
+    })
   
 }
 
 
 
-const fetchTravelAndDistance = function(){
-  for(let y = 0; y < coordinates.length; y++) {
-    console.log("hello")
-    if (y !== coordinates.length - 1) {
-      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].position.lat},${coordinates[y].position.lon}:${coordinates[y+1].position.lat},${coordinates[y+1].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
-        .then((result) => {
-          const travelMileageObj = {};
-          travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
-          travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
-          console.log("travelMileageObj", travelMileageObj)
-          setRoutes(prevState => ([...prevState, travelMileageObj]));
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-    }
-  }
-}
+
+// const fetchTravelAndDistance = function(){
+//   for(let y = 0; y < coordinates.length; y++) {
+//     console.log("hello")
+//     if (y !== coordinates.length - 1) {
+//       axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].position.lat},${coordinates[y].position.lon}:${coordinates[y+1].position.lat},${coordinates[y+1].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
+//         .then((result) => {
+//           const travelMileageObj = {};
+//           travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
+//           travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
+//           console.log("travelMileageObj", travelMileageObj)
+//           setRoutes(prevState => ([...prevState, travelMileageObj]));
+//         })
+//         .catch((error) => {
+//           console.log(error);
+//         })
+//     }
+//   }
+// }
 
 
 const handleSearchInput = (e) => {
@@ -142,5 +175,5 @@ const handleClick = function(eventDate){
   })
 }
 
-return { convertAddress, routes, events, coordinates, inputDate, handleSearchInput, handleSubmit, fetchTravelAndDistance}
+return { convertAddress, routes, events, inputDate, handleSearchInput, handleSubmit}
 };

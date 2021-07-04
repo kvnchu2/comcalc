@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
 
-  const { convertAddress, routes, events, coordinates, inputDate, handleSearchInput, handleSubmit, fetchTravelAndDistance} = useApplicationData();
+  const { convertAddress, routes, events, inputDate, handleSearchInput, handleSubmit, fetchTravelAndDistance} = useApplicationData();
   const classes = useStyles();
 
   const eventsList = events.map( event => {
@@ -32,13 +32,13 @@ function App() {
     )
   })
 
-  const coordinatesList = coordinates.map( coordinate => {
-    return (
-      <ul>
-        <li>{coordinate.position.lat} {coordinate.position.lon}</li>
-      </ul>
-    )
-  })
+  // const coordinatesList = coordinates.map( coordinate => {
+  //   return (
+  //     <ul>
+  //       <li>{coordinate.position.lat} {coordinate.position.lon}</li>
+  //     </ul>
+  //   )
+  // })
 
   const travelMileageList = routes.map( route => {
     return (
@@ -76,7 +76,7 @@ function App() {
             {eventsList}
           </div>
           <div>
-            {coordinatesList}
+            {/* {coordinatesList} */}
           </div>
           <div>
             {travelMileageList}
