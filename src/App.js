@@ -21,24 +21,16 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
 
-  const { convertAddress, routes, events, inputDate, handleSearchInput, handleSubmit, fetchTravelAndDistance} = useApplicationData();
+  const { routes, events, inputDate, handleSearchInput, handleSubmit, fetchTimeDistance} = useApplicationData();
   const classes = useStyles();
 
   const eventsList = events.map( event => {
     return (
       <ul>
-        <li>{event.summary}   {event.location}</li>
+        <li>{event.summary}</li>
       </ul>
     )
   })
-
-  // const coordinatesList = coordinates.map( coordinate => {
-  //   return (
-  //     <ul>
-  //       <li>{coordinate.position.lat} {coordinate.position.lon}</li>
-  //     </ul>
-  //   )
-  // })
 
   const travelMileageList = routes.map( route => {
     return (
@@ -62,21 +54,15 @@ function App() {
               <Input placeholder="Enter Date" inputProps={{ 'aria-label': 'description' }} value={inputDate} onChange={handleSearchInput} />
               {/* <SearchBar value={props.value} onChange={props.onChange} onRequestSearch={props.onClick}/> */}
 
-              <label>
-                <SearchIcon onClick={handleSubmit} id="search-icon" />
-              </label>
+              <button style={{width: 100, height: 50}} onClick={handleSubmit} class="submit-button">Calculate</button>
             </div>
             {/* <button type="button" onClick={props.onClick}>Submit</button> */}
           </form>
-          <button style={{width: 100, height: 50}} onClick={convertAddress}>Fetch Coordinates</button>
-          <button style={{width: 100, height: 50}} onClick={fetchTravelAndDistance}>Fetch Travel Time and Distance</button>
+          
         </section>
         <section id="search-results">
           <div>
             {eventsList}
-          </div>
-          <div>
-            {/* {coordinatesList} */}
           </div>
           <div>
             {travelMileageList}
