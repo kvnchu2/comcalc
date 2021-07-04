@@ -20,43 +20,30 @@ const convertAddress = function(){
         console.log(error);
       }) 
   }
+  
 }
+
+
 
 const fetchTravelAndDistance = function(){
-  const coordinateArr = [];
-
-  for (let x = 0; x < events.length; x++) {
-    const locationArr = events[x].location.split(",");
-    console.log("locationArr", locationArr);
-    axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=${locationArr[0]}&postalCode=${locationArr[1]}`)
-      .then((result) => {
-        coordinateArr.push(result.data.results[0]);
-      })
-      .catch((error) => {
-        console.log(error);
-      }) 
-  }
-
-  console.log("coordinateArr", coordinateArr)
-
-  for(let y = 0; y < coordinateArr.length; y++) {
+  for(let y = 0; y < coordinates.length; y++) {
     console.log("hello")
-    // if (y !== coordinateArr.length - 1) {
-    //   axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinateArr[y].position.lat},${coordinateArr[y].position.lon}:${coordinateArr[y+1].position.lat},${coordinateArr[y+1].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
-    //     .then((result) => {
-    //       const travelMileageObj = {};
-    //       travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
-    //       travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
-    //       console.log("travelMileageObj", travelMileageObj)
-    //       setRoutes(prevState => ([...prevState, travelMileageObj]));
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     })
-    // }
+    if (y !== coordinates.length - 1) {
+      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].position.lat},${coordinates[y].position.lon}:${coordinates[y+1].position.lat},${coordinates[y+1].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
+        .then((result) => {
+          const travelMileageObj = {};
+          travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
+          travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
+          console.log("travelMileageObj", travelMileageObj)
+          setRoutes(prevState => ([...prevState, travelMileageObj]));
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
   }
-
 }
+
 
 const handleSearchInput = (e) => {
   setInputDate(e.target.value);
@@ -93,43 +80,43 @@ const handleClick = function(eventDate){
     gapi.auth2.getAuthInstance().signIn()
     .then(() => {
       
-      var event = {
-        'summary': 'Awesome Event!',
-        'location': '800 Howard St., San Francisco, CA 94103',
-        'description': 'Really great refreshments',
-        'start': {
-          'dateTime': '2020-06-21T09:00:00-07:00',
-          'timeZone': 'America/Los_Angeles'
-        },
-        'end': {
-          'dateTime': '2020-06-21T17:00:00-07:00',
-          'timeZone': 'America/Los_Angeles'
-        },
-        'recurrence': [
-          'RRULE:FREQ=DAILY;COUNT=2'
-        ],
-        'attendees': [
-          {'email': 'lpage@example.com'},
-          {'email': 'sbrin@example.com'}
-        ],
-        'reminders': {
-          'useDefault': false,
-          'overrides': [
-            {'method': 'email', 'minutes': 24 * 60},
-            {'method': 'popup', 'minutes': 10}
-          ]
-        }
-      }
+      // var event = {
+      //   'summary': 'Awesome Event!',
+      //   'location': '800 Howard St., San Francisco, CA 94103',
+      //   'description': 'Really great refreshments',
+      //   'start': {
+      //     'dateTime': '2020-06-21T09:00:00-07:00',
+      //     'timeZone': 'America/Los_Angeles'
+      //   },
+      //   'end': {
+      //     'dateTime': '2020-06-21T17:00:00-07:00',
+      //     'timeZone': 'America/Los_Angeles'
+      //   },
+      //   'recurrence': [
+      //     'RRULE:FREQ=DAILY;COUNT=2'
+      //   ],
+      //   'attendees': [
+      //     {'email': 'lpage@example.com'},
+      //     {'email': 'sbrin@example.com'}
+      //   ],
+      //   'reminders': {
+      //     'useDefault': false,
+      //     'overrides': [
+      //       {'method': 'email', 'minutes': 24 * 60},
+      //       {'method': 'popup', 'minutes': 10}
+      //     ]
+      //   }
+      // }
 
-      var request = gapi.client.calendar.events.insert({
-        'calendarId': 'primary',
-        'resource': event,
-      })
+      // var request = gapi.client.calendar.events.insert({
+      //   'calendarId': 'primary',
+      //   'resource': event,
+      // })
 
-      request.execute(event => {
-        console.log(event)
-        window.open(event.htmlLink)
-      })
+      // request.execute(event => {
+      //   console.log(event)
+      //   window.open(event.htmlLink)
+      // })
 
       let splitDate = eventDate.split(" ")
       const maxDay = Number(eventDate.split(" ")[0]) + 1;
