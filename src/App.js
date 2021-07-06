@@ -25,14 +25,15 @@ function App() {
   const classes = useStyles();
 
   const combinedList = routes.slice(0).reverse().map( route => {
-    if (route.traveltime === isNaN) {
+    if (isNaN(route.traveltime)) {
+      console.log("route hitttttt")
       return (
         <tr>
           <td>{route.events.summary}</td>
-          <td>{Math.ceil(route.traveltime / 60)} minutes {Math.ceil(route.mileage / 1000)} kilometers</td>
         </tr>
       )
     } else {
+      console.log("route of course hitttttt")
       return (
         <tr>
           <td>{route.events.summary}</td>
