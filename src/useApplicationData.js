@@ -100,6 +100,7 @@ const handleClick = function(eventDate){
         return eventsObject
       }).then((eventsObject) => {
         let eventsArr = [];
+        console.log("eventsObject", eventsObject)
           eventsObject.forEach(event => {
             const eventSplit = event.location
             console.log(eventSplit)
@@ -110,23 +111,30 @@ const handleClick = function(eventDate){
           )
             .then((coordinates) => {
               for(let y = 0; y < coordinates.length; y++) {
-                console.log("hello")
+                console.log("coordinates", coordinates);
                 if (y !== coordinates.length - 1) {
                   axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
                     .then((result) => {
                       const travelMileageObj = {};
                       travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
                       travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
+                      travelMileageObj["events"] = eventsObject[y];
+                      travelMileageObj["order"] = y;
                       console.log("travelMileageObj", travelMileageObj)
-                      setEvents(eventsObject);
                       setRoutes(prevState => ([...prevState, travelMileageObj]));
                     })
                     .catch((error) => {
                       console.log(error);
                     })
+                } else {
+                  const eventsObj = {};
+                  eventsObj["events"] = eventsObject[y];
+                  setRoutes(prevState => ([...prevState, eventsObj]));
                 }
               }
+
             })
+            
 
 
 

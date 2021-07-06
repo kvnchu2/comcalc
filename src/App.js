@@ -24,20 +24,25 @@ function App() {
   const { routes, events, inputDate, handleSearchInput, handleSubmit} = useApplicationData();
   const classes = useStyles();
 
-  const eventsList = events.map( event => {
-    return (
-      <td> {event.summary} </td>
-    )
+  const combinedList = routes.slice(0).reverse().map( route => {
+    if (route.traveltime === isNaN) {
+      return (
+        <tr>
+          <td>{route.events.summary}</td>
+          <td>{Math.ceil(route.traveltime / 60)} minutes {Math.ceil(route.mileage / 1000)} kilometers</td>
+        </tr>
+      )
+    } else {
+      return (
+        <tr>
+          <td>{route.events.summary}</td>
+          <td>{Math.ceil(route.traveltime / 60)} minutes {Math.ceil(route.mileage / 1000)} kilometers</td>
+        </tr>
+      )
+    }
   })
 
-  const travelMileageList = routes.map( route => {
-    return (
-      <ul>
-        <li>{Math.ceil(route.traveltime / 60)} minutes {Math.ceil(route.mileage / 1000)} kilometers</li>
-      </ul>
-    )
-  })
-
+ 
 
   return (
     <div className="App">
@@ -75,12 +80,7 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                {}
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+              {combinedList}
             </tbody>
           </table>
         </section>
