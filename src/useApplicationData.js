@@ -98,6 +98,7 @@ const handleClick = function(eventDate){
       }).then(response => {
         const eventsObject = response.result.items
         eventsObject.splice(0,0, {summary: "home", location: "V5S 3J5"})
+        eventsObject.push({summary: "home", location: "V5S 3J5"})
         console.log("eventsObject", eventsObject)
         // setEvents(eventsObject);
         return eventsObject
