@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
 
-  const { travelTime, routes, events, inputDate, handleSearchInput, handleSubmit} = useApplicationData();
+  const { travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit} = useApplicationData();
   const classes = useStyles();
 
   const combinedList = routes.sort(function(a,b) { return a.order - b.order}).map( route => {
@@ -49,18 +49,19 @@ function App() {
         <section id="search-panel">
           <form
             autoComplete="off"
-            onSubmit={handleSubmit}
+           
             className={classes.root}
           >
             <div id="search-filter">
               <Input placeholder="Enter Date" inputProps={{ 'aria-label': 'description' }} value={inputDate} onChange={handleSearchInput} />
               {/* <SearchBar value={props.value} onChange={props.onChange} onRequestSearch={props.onClick}/> */}
 
-              <button style={{width: 100, height: 50}} onClick={handleSubmit} class="submit-button">Calculate</button>
+              
             </div>
             {/* <button type="button" onClick={props.onClick}>Submit</button> */}
           </form>
-          
+          <button style={{width: 100, height: 50}} onClick={handleIcbcSubmit} class="submit-button">Calculate ICBC</button>
+          <button style={{width: 100, height: 50}} onClick={handleWsbcSubmit} class="submit-button">Calculate WSBC</button>
         </section>
         <section id="search-results">
           {/* <div>
@@ -83,9 +84,12 @@ function App() {
             </tbody>
           </table>
           <div>
-            {travelTime}
+            {travelTime} seconds
           </div>
         </section>
+          <div>
+            {((travelTime/(routes.length - 2))/60)/60}
+          </div>
       
       </header>
     </div>
