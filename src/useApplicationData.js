@@ -6,6 +6,7 @@ export default function useApplicationData() {
 const [events, setEvents] = useState([]);
 const [inputDate, setInputDate] = useState("");
 const [routes, setRoutes] = useState([]);
+const [travelTime, setTravelTime] = useState(0);
 
 const handleSearchInput = (e) => {
   setInputDate(e.target.value);
@@ -96,6 +97,8 @@ const handleClick = function(eventDate){
         'orderBy': 'startTime'
       }).then(response => {
         const eventsObject = response.result.items
+        eventsObject.unshift({summary: "home", location: "V5S 3J5"})
+        console.log("eventsObject", eventsObject)
         // setEvents(eventsObject);
         return eventsObject
       }).then((eventsObject) => {
@@ -120,8 +123,8 @@ const handleClick = function(eventDate){
                       travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
                       travelMileageObj["events"] = eventsObject[y];
                       travelMileageObj["order"] = y;
-                      console.log("travelMileageObj", travelMileageObj)
                       setRoutes(prevState => ([...prevState, travelMileageObj]));
+                      setTravelTime(prevState => (prevState + result.data.routes[0].summary.travelTimeInSeconds))
                     })
                     .catch((error) => {
                       console.log(error);
@@ -131,7 +134,9 @@ const handleClick = function(eventDate){
                   eventsObj["events"] = eventsObject[y];
                   setRoutes(prevState => ([...prevState, eventsObj]));
                 }
+                
               }
+
 
             })
             
@@ -146,5 +151,5 @@ const handleClick = function(eventDate){
   })
 }
 
-return { routes, events, inputDate, handleSearchInput, handleSubmit}
+return { travelTime, routes, events, inputDate, handleSearchInput, handleSubmit}
 };

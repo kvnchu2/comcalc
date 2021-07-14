@@ -21,19 +21,17 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
 
-  const { routes, events, inputDate, handleSearchInput, handleSubmit} = useApplicationData();
+  const { travelTime, routes, events, inputDate, handleSearchInput, handleSubmit} = useApplicationData();
   const classes = useStyles();
 
   const combinedList = routes.slice(0).reverse().map( route => {
     if (isNaN(route.traveltime)) {
-      console.log("route hitttttt")
       return (
         <tr>
           <td>{route.events.summary}</td>
         </tr>
       )
     } else {
-      console.log("route of course hitttttt")
       return (
         <tr>
           <td>{route.events.summary}</td>
@@ -84,6 +82,9 @@ function App() {
               {combinedList}
             </tbody>
           </table>
+          <div>
+            {travelTime}
+          </div>
         </section>
       
       </header>
