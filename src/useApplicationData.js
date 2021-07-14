@@ -7,6 +7,7 @@ const [events, setEvents] = useState([]);
 const [inputDate, setInputDate] = useState("");
 const [routes, setRoutes] = useState([]);
 const [travelTime, setTravelTime] = useState(0);
+const [mileage, setMileage] = useState(0);
 
 const handleSearchInput = (e) => {
   setInputDate(e.target.value);
@@ -106,6 +107,7 @@ const handleIcbcClick = function(eventDate){
                       
                       setRoutes(prevState => ([...prevState, travelMileageObj]));
                       setTravelTime(prevState => (prevState + result.data.routes[0].summary.travelTimeInSeconds))
+                      setMileage(prevState => (prevState + result.data.routes[0].summary.lengthInMeters))
                     })
                     .catch((error) => {
                       console.log(error);
@@ -203,6 +205,7 @@ const handleWsbcClick = function(eventDate){
                       
                       setRoutes(prevState => ([...prevState, travelMileageObj]));
                       setTravelTime(prevState => (prevState + result.data.routes[0].summary.travelTimeInSeconds))
+                      setMileage(prevState => (prevState + result.data.routes[0].summary.lengthInMeters))
                     })
                     .catch((error) => {
                       console.log(error);
@@ -230,5 +233,5 @@ const handleWsbcClick = function(eventDate){
   })
 }
 
-return { travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit}
+return { travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage}
 };

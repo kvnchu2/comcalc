@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
 
-  const { travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit} = useApplicationData();
+  const { travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage} = useApplicationData();
   const classes = useStyles();
 
   const combinedList = routes.sort(function(a,b) { return a.order - b.order}).map( route => {
@@ -86,9 +86,15 @@ function App() {
           <div>
             {travelTime} seconds
           </div>
+          <div>
+            {mileage} meters
+          </div>
         </section>
           <div>
             {((travelTime/(routes.length - 2))/60)/60}
+          </div>
+          <div>
+            {(mileage/(routes.length - 2)/1000)}
           </div>
       
       </header>
