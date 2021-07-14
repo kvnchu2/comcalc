@@ -97,7 +97,7 @@ const handleClick = function(eventDate){
         'orderBy': 'startTime'
       }).then(response => {
         const eventsObject = response.result.items
-        eventsObject.unshift({summary: "home", location: "V5S 3J5"})
+        eventsObject.splice(0,0, {summary: "home", location: "V5S 3J5"})
         console.log("eventsObject", eventsObject)
         // setEvents(eventsObject);
         return eventsObject
@@ -123,6 +123,7 @@ const handleClick = function(eventDate){
                       travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
                       travelMileageObj["events"] = eventsObject[y];
                       travelMileageObj["order"] = y;
+                      
                       setRoutes(prevState => ([...prevState, travelMileageObj]));
                       setTravelTime(prevState => (prevState + result.data.routes[0].summary.travelTimeInSeconds))
                     })
@@ -132,6 +133,7 @@ const handleClick = function(eventDate){
                 } else {
                   const eventsObj = {};
                   eventsObj["events"] = eventsObject[y];
+                  eventsObj["order"] = y;
                   setRoutes(prevState => ([...prevState, eventsObj]));
                 }
                 

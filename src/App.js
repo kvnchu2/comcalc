@@ -24,7 +24,7 @@ function App() {
   const { travelTime, routes, events, inputDate, handleSearchInput, handleSubmit} = useApplicationData();
   const classes = useStyles();
 
-  const combinedList = routes.slice(0).reverse().map( route => {
+  const combinedList = routes.sort(function(a,b) { return a.order - b.order}).map( route => {
     if (isNaN(route.traveltime)) {
       return (
         <tr>
