@@ -65,8 +65,8 @@ const handleIcbcClick = function(eventDate){
         'orderBy': 'startTime'
       }).then(response => {
         const eventsObject = response.result.items
-        eventsObject.splice(0,0, {summary: "home", location: "V5S 3J5"})
-        eventsObject.push({summary: "home", location: "V5S 3J5"})
+        eventsObject.splice(0,0, {summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada"})
+        eventsObject.push({summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada"})
         console.log("eventsObject", eventsObject)
         // setEvents(eventsObject);
         return eventsObject
@@ -77,7 +77,13 @@ const handleIcbcClick = function(eventDate){
           eventsObject.forEach(event => {
             const eventSplit = event.location
             const eventSummary = event.summary
-            console.log(eventSummary.split(" "));
+            //Currently working on this 
+            //-------------------------------------------------------------------------------------
+            const postalcode1 = event.location.split(" ")[5]
+            const postalcode2 = event.location.split(" ")[6].split("").pop().join("")
+            //--------------------------------------------------------------------------------------
+            console.log("postalcode1", postalcode1);
+            console.log("postalcode2", postalcode2);
             if (eventSummary.split(" ")[0] === "ICBC" || eventSummary === "home") {
               const icbcObj = {}
               icbcObj["location"] = eventSplit;
