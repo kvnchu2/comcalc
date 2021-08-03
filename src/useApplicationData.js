@@ -76,15 +76,9 @@ const handleIcbcClick = function(eventDate){
         console.log("eventsObject", eventsObject)
           eventsObject.forEach(event => {
             const eventSplit = event.location
-            const eventSummary = event.summary
-            //Currently working on this 
-            //-------------------------------------------------------------------------------------
-            const postalcode1 = event.location.split(" ")[5]
-            const postalcode2 = event.location.split(" ")[6].split("").pop().join("")
-            //--------------------------------------------------------------------------------------
-            console.log("postalcode1", postalcode1);
-            console.log("postalcode2", postalcode2);
-            if (eventSummary.split(" ")[0] === "ICBC" || eventSummary === "home") {
+            const eventSummary = event.summary 
+            
+            if (eventSummary.split(" ")[0] === "Icbc" || eventSummary === "home") {
               const icbcObj = {}
               icbcObj["location"] = eventSplit;
               icbcObj["summary"] = eventSummary;
@@ -184,8 +178,8 @@ const handleWsbcClick = function(eventDate){
           eventsObject.forEach(event => {
             const eventSplit = event.location
             const eventSummary = event.summary
-            console.log(eventSummary.split(" "));
-            if (eventSummary.split(" ")[0] === "WSBC" || eventSummary === "home") {
+            console.log("eventSplit", eventSplit);
+            if (eventSummary.split(" ")[0] === "Wsbc" || eventSummary === "home") {
               const icbcObj = {}
               icbcObj["location"] = eventSplit;
               icbcObj["summary"] = eventSummary;
