@@ -78,7 +78,7 @@ const handleIcbcClick = function(eventDate){
             const eventSplit = event.location
             const eventSummary = event.summary 
             
-            if (eventSummary.split(" ")[0] === "Icbc" || eventSummary === "home") {
+            if (eventSummary.split(" ")[0] === "ICBC" || eventSummary.split(" ")[0] === "Icbc" || eventSummary === "home") {
               const icbcObj = {}
               icbcObj["location"] = eventSplit;
               icbcObj["summary"] = eventSummary;
