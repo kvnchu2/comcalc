@@ -8,6 +8,7 @@ const [inputDate, setInputDate] = useState("");
 const [routes, setRoutes] = useState([]);
 const [travelTime, setTravelTime] = useState(0);
 const [mileage, setMileage] = useState(0);
+const [coordinates, setCoordinates] = useState([]);
 
 const handleSearchInput = (e) => {
   setInputDate(e.target.value);
@@ -90,11 +91,11 @@ const handleIcbcClick = function(eventDate){
 
           console.log("icbcArr", icbcArr)
           return Promise.all( icbcArr.map(event => axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.location}`)
-            .then(({data})=> data))
-        )
+            .then(({data})=> data)
+        ))
             .then((coordinates) => {
-              console.log("coordinates", coordinates);
-
+              
+              //breakup looping of coordinates into two
               for(let y = 0; y < coordinates.length; y++) {
                 if (y !== coordinates.length - 1) {
                   axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
@@ -121,6 +122,7 @@ const handleIcbcClick = function(eventDate){
                 
               }
 
+              
 
             })
             
@@ -129,7 +131,7 @@ const handleIcbcClick = function(eventDate){
 
       })
 
-
+      console.log("coordinates", coordinates);
 
     })
   })
