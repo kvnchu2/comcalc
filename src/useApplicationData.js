@@ -122,14 +122,13 @@ const handleIcbcClick = function(eventDate){
         ))
             .then((coordinates) => {
               
-              
-              //if coordinates.length <= 5, then just loop through all 
+              //proceed with helper function that loops from beginning element of coordinates array to the last element
               calculateICBCRoute(coordinates, icbcArr)
 
-              //if coordinates.length > 5, then break looping of coordinates into two
-
-              
-
+            })
+            .then(() => {
+              //if coordinates.length > 5, proceed with helper function that loops through coordinates from 5 onwards
+              //else return 
             })
             
 
