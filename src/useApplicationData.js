@@ -25,6 +25,33 @@ const handleWsbcSubmit = (e) => {
   setInputDate("");
 };
 
+const calculateICBCRoute = (coordinates, icbcArr) => {
+  for(let y = 0; y < coordinates.length; y++) {
+    if (y !== coordinates.length - 1) {
+      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
+        .then((result) => {
+          const travelMileageObj = {};
+          travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
+          travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
+          travelMileageObj["events"] = icbcArr[y];
+          travelMileageObj["order"] = y;
+          
+          setRoutes(prevState => ([...prevState, travelMileageObj]));
+          setTravelTime(prevState => (prevState + result.data.routes[0].summary.travelTimeInSeconds))
+          setMileage(prevState => (prevState + result.data.routes[0].summary.lengthInMeters))
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    } else {
+      const eventsObj = {};
+      eventsObj["events"] = icbcArr[y];
+      eventsObj["order"] = y;
+      setRoutes(prevState => ([...prevState, eventsObj]));
+    }
+  }
+}
+
 var gapi = window.gapi
 /* 
   Update with your own Client Id and Api key 
@@ -95,32 +122,11 @@ const handleIcbcClick = function(eventDate){
         ))
             .then((coordinates) => {
               
-              //breakup looping of coordinates into two
-              for(let y = 0; y < coordinates.length; y++) {
-                if (y !== coordinates.length - 1) {
-                  axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
-                    .then((result) => {
-                      const travelMileageObj = {};
-                      travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
-                      travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
-                      travelMileageObj["events"] = icbcArr[y];
-                      travelMileageObj["order"] = y;
-                      
-                      setRoutes(prevState => ([...prevState, travelMileageObj]));
-                      setTravelTime(prevState => (prevState + result.data.routes[0].summary.travelTimeInSeconds))
-                      setMileage(prevState => (prevState + result.data.routes[0].summary.lengthInMeters))
-                    })
-                    .catch((error) => {
-                      console.log(error);
-                    })
-                } else {
-                  const eventsObj = {};
-                  eventsObj["events"] = icbcArr[y];
-                  eventsObj["order"] = y;
-                  setRoutes(prevState => ([...prevState, eventsObj]));
-                }
-                
-              }
+              
+              //if coordinates.length <= 5, then just loop through all 
+              calculateICBCRoute(coordinates, icbcArr)
+
+              //if coordinates.length > 5, then break looping of coordinates into two
 
               
 
@@ -130,8 +136,6 @@ const handleIcbcClick = function(eventDate){
 
 
       })
-
-      console.log("coordinates", coordinates);
 
     })
   })
