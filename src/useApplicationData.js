@@ -52,6 +52,61 @@ const calculateICBCRoute = (coordinates, icbcArr) => {
   }
 }
 
+const calculateICBCRouteOne = (coordinates, icbcArr) => {
+  for(let y = 0; y < 4; y++) {
+    if (y !== coordinates.length - 1) {
+      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
+        .then((result) => {
+          const travelMileageObj = {};
+          travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
+          travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
+          travelMileageObj["events"] = icbcArr[y];
+          travelMileageObj["order"] = y;
+          
+          setRoutes(prevState => ([...prevState, travelMileageObj]));
+          setTravelTime(prevState => (prevState + result.data.routes[0].summary.travelTimeInSeconds))
+          setMileage(prevState => (prevState + result.data.routes[0].summary.lengthInMeters))
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    } else {
+      const eventsObj = {};
+      eventsObj["events"] = icbcArr[y];
+      eventsObj["order"] = y;
+      setRoutes(prevState => ([...prevState, eventsObj]));
+    }
+  }
+}
+
+const calculateICBCRouteTwo = (coordinates, icbcArr) => {
+  for(let y = 4; y < coordinates.length; y++) {
+    if (y !== coordinates.length - 1) {
+      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
+        .then((result) => {
+          const travelMileageObj = {};
+          travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
+          travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
+          travelMileageObj["events"] = icbcArr[y];
+          travelMileageObj["order"] = y;
+          
+          setRoutes(prevState => ([...prevState, travelMileageObj]));
+          setTravelTime(prevState => (prevState + result.data.routes[0].summary.travelTimeInSeconds))
+          setMileage(prevState => (prevState + result.data.routes[0].summary.lengthInMeters))
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    } else {
+      const eventsObj = {};
+      eventsObj["events"] = icbcArr[y];
+      eventsObj["order"] = y;
+      setRoutes(prevState => ([...prevState, eventsObj]));
+    }
+  }
+}
+
+
 var gapi = window.gapi
 /* 
   Update with your own Client Id and Api key 
@@ -116,14 +171,23 @@ const handleIcbcClick = function(eventDate){
             }
           })
 
-          console.log("icbcArr", icbcArr)
+          //if icbcArr.length is > 5, then divide icbcArr into two 
+          //then do return Promise.all(icbcArrOne.map) let it resolve then Promise.all(icbcArrTwo.map)
+          //within each Promise.all, set the coordinates State 
+
+
+          console.log("icbcArr length", icbcArr.length)
           return Promise.all( icbcArr.map(event => axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.location}`)
             .then(({data})=> data)
         ))
             .then((coordinates) => {
               
+              if (coordinates.length < 5) {
+                console.log("exceeded limit")
+                calculateICBCRouteOne(coordinates, icbcArr);
+              }
               //proceed with helper function that loops from beginning element of coordinates array to the last element
-              calculateICBCRoute(coordinates, icbcArr)
+              //calculateICBCRoute(coordinates, icbcArr)
 
             })
             .then(() => {
