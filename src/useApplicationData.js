@@ -172,27 +172,69 @@ const handleIcbcClick = function(eventDate){
           })
 
           //if icbcArr.length is > 5, then divide icbcArr into two 
+          let icbcArrOne;
+          let icbcArrTwo;
+          if (icbcArr.length > 5) {
+            icbcArrOne = icbcArr.slice(0,5)
+            icbcArrTwo = icbcArr.slice(5)
+            console.log("icbcArrOne", icbcArrOne)
+            console.log("icbcArrTwo", icbcArrTwo)
+          } else {
+            icbcArrOne = icbcArr
+          }
           //then do return Promise.all(icbcArrOne.map) let it resolve then Promise.all(icbcArrTwo.map)
           //within each Promise.all, set the coordinates State 
 
+          const firstMap = async () => {
+            const routePromise = await Promise.all( icbcArrOne.map(event => (axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.location}`)
+            .then(({data})=> data))
+            
+          ))
+          
+          return routePromise
+        }
 
-          console.log("icbcArr length", icbcArr.length)
-          return Promise.all( icbcArr.map(event => axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.location}`)
-            .then(({data})=> data)
-        ))
-            .then((coordinates) => {
+
+          const secondMap = async() => {
+            
+            const routePromiseTwo = await Promise.all( icbcArrTwo.map(event => axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.location}`)
+            .then(({data})=> data)))
+
+            return routePromiseTwo;
+          }
+
+        const wait = (ms) => new Promise((res) => setTimeout(res, ms));
+        
+        return firstMap()
+        .then((coordinates) => {
               
-              if (coordinates.length < 5) {
-                console.log("exceeded limit")
-                calculateICBCRouteOne(coordinates, icbcArr);
-              }
-              //proceed with helper function that loops from beginning element of coordinates array to the last element
-              //calculateICBCRoute(coordinates, icbcArr)
-
-            })
+          
+          calculateICBCRoute(coordinates, icbcArrOne);
+        
+        //proceed with helper function that loops from beginning element of coordinates array to the last element
+        //calculateICBCRoute(coordinates, icbcArr)
+      })    
+            .then(async() => await wait(5000))
             .then(() => {
+              console.log("got through one")
+
+              
               //if coordinates.length > 5, proceed with helper function that loops through coordinates from 5 onwards
-              //else return 
+              //else return
+              
+              return secondMap();
+            })
+            .then((coordinates) => {
+              console.log("secondmap coordinates", coordinates)
+          
+              calculateICBCRoute(coordinates, icbcArrOne);
+            
+            //proceed with helper function that loops from beginning element of coordinates array to the last element
+            //calculateICBCRoute(coordinates, icbcArr)
+          })    
+            .catch(() => {
+              
+              return secondMap();
             })
             
 
