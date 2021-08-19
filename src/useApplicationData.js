@@ -8,6 +8,7 @@ const [inputDate, setInputDate] = useState("");
 const [routes, setRoutes] = useState([]);
 const [travelTime, setTravelTime] = useState(0);
 const [mileage, setMileage] = useState(0);
+const [routesTwo, setRoutesTwo] = useState([]);
 const [coordinates, setCoordinates] = useState([]);
 
 const handleSearchInput = (e) => {
@@ -24,6 +25,34 @@ const handleWsbcSubmit = (e) => {
   handleWsbcClick(inputDate)
   setInputDate("");
 };
+
+const calculateICBCRouteTwo = (coordinates, icbcArr) => {
+  for(let y = 0; y < coordinates.length; y++) {
+    if (y !== coordinates.length - 1) {
+      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
+        .then((result) => {
+          const travelMileageObj = {};
+          travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
+          travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
+          travelMileageObj["events"] = icbcArr[y];
+          travelMileageObj["order"] = y;
+          
+          setRoutesTwo(prevState => ([...prevState, travelMileageObj]));
+          setTravelTime(prevState => (prevState + result.data.routes[0].summary.travelTimeInSeconds))
+          setMileage(prevState => (prevState + result.data.routes[0].summary.lengthInMeters))
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    } else {
+      const eventsObj = {};
+      eventsObj["events"] = icbcArr[y];
+      eventsObj["order"] = y;
+      setRoutesTwo(prevState => ([...prevState, eventsObj]));
+    }
+  }
+}
+
 
 const calculateICBCRoute = (coordinates, icbcArr) => {
   for(let y = 0; y < coordinates.length; y++) {
@@ -51,61 +80,6 @@ const calculateICBCRoute = (coordinates, icbcArr) => {
     }
   }
 }
-
-const calculateICBCRouteOne = (coordinates, icbcArr) => {
-  for(let y = 0; y < 4; y++) {
-    if (y !== coordinates.length - 1) {
-      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
-        .then((result) => {
-          const travelMileageObj = {};
-          travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
-          travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
-          travelMileageObj["events"] = icbcArr[y];
-          travelMileageObj["order"] = y;
-          
-          setRoutes(prevState => ([...prevState, travelMileageObj]));
-          setTravelTime(prevState => (prevState + result.data.routes[0].summary.travelTimeInSeconds))
-          setMileage(prevState => (prevState + result.data.routes[0].summary.lengthInMeters))
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-    } else {
-      const eventsObj = {};
-      eventsObj["events"] = icbcArr[y];
-      eventsObj["order"] = y;
-      setRoutes(prevState => ([...prevState, eventsObj]));
-    }
-  }
-}
-
-const calculateICBCRouteTwo = (coordinates, icbcArr) => {
-  for(let y = 4; y < coordinates.length; y++) {
-    if (y !== coordinates.length - 1) {
-      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
-        .then((result) => {
-          const travelMileageObj = {};
-          travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
-          travelMileageObj["traveltime"] = result.data.routes[0].summary.travelTimeInSeconds;
-          travelMileageObj["events"] = icbcArr[y];
-          travelMileageObj["order"] = y;
-          
-          setRoutes(prevState => ([...prevState, travelMileageObj]));
-          setTravelTime(prevState => (prevState + result.data.routes[0].summary.travelTimeInSeconds))
-          setMileage(prevState => (prevState + result.data.routes[0].summary.lengthInMeters))
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-    } else {
-      const eventsObj = {};
-      eventsObj["events"] = icbcArr[y];
-      eventsObj["order"] = y;
-      setRoutes(prevState => ([...prevState, eventsObj]));
-    }
-  }
-}
-
 
 var gapi = window.gapi
 /* 
@@ -176,9 +150,7 @@ const handleIcbcClick = function(eventDate){
           let icbcArrTwo;
           if (icbcArr.length > 5) {
             icbcArrOne = icbcArr.slice(0,5)
-            icbcArrTwo = icbcArr.slice(5)
-            console.log("icbcArrOne", icbcArrOne)
-            console.log("icbcArrTwo", icbcArrTwo)
+            icbcArrTwo = icbcArr.slice(4)
           } else {
             icbcArrOne = icbcArr
           }
@@ -227,11 +199,11 @@ const handleIcbcClick = function(eventDate){
             .then((coordinates) => {
               console.log("secondmap coordinates", coordinates)
           
-              calculateICBCRoute(coordinates, icbcArrOne);
+              calculateICBCRouteTwo(coordinates, icbcArrTwo);
             
             //proceed with helper function that loops from beginning element of coordinates array to the last element
             //calculateICBCRoute(coordinates, icbcArr)
-          })    
+          })  
             .catch(() => {
               
               return secondMap();
@@ -344,5 +316,5 @@ const handleWsbcClick = function(eventDate){
   })
 }
 
-return { travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage}
+return { routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage}
 };

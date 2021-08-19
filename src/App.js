@@ -21,10 +21,27 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
 
-  const { travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage } = useApplicationData();
+  const { routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage } = useApplicationData();
   const classes = useStyles();
 
   const combinedList = routes.sort(function(a,b) { return a.order - b.order}).map( route => {
+    if (isNaN(route.traveltime)) {
+      return (
+        <tr>
+          <td>{route.events.summary}</td>
+        </tr>
+      )
+    } else {
+      return (
+        <tr>
+          <td>{route.events.summary}</td>
+          <td>{Math.ceil(route.traveltime / 60)} minutes {Math.ceil(route.mileage / 1000)} kilometers</td>
+        </tr>
+      )
+    }
+  })
+
+  const combinedListTwo = routesTwo.sort(function(a,b) { return a.order - b.order}).map( route => {
     if (isNaN(route.traveltime)) {
       return (
         <tr>
@@ -81,6 +98,7 @@ function App() {
             </thead>
             <tbody>
               {combinedList}
+              {combinedListTwo}
             </tbody>
           </table>
           <div>
@@ -96,6 +114,7 @@ function App() {
           <div>
             {(mileage/(routes.length - 2)/1000)}
           </div>
+         
       
       </header>
     </div>
