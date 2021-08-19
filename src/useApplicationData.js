@@ -72,12 +72,7 @@ const calculateICBCRoute = (coordinates, icbcArr) => {
         .catch((error) => {
           console.log(error);
         })
-    } else {
-      const eventsObj = {};
-      eventsObj["events"] = icbcArr[y];
-      eventsObj["order"] = y;
-      setRoutes(prevState => ([...prevState, eventsObj]));
-    }
+    } 
   }
 }
 
@@ -148,11 +143,12 @@ const handleIcbcClick = function(eventDate){
           //if icbcArr.length is > 5, then divide icbcArr into two 
           let icbcArrOne;
           let icbcArrTwo;
-          if (icbcArr.length > 5) {
-            icbcArrOne = icbcArr.slice(0,5)
-            icbcArrTwo = icbcArr.slice(4)
+          if (icbcArr.length % 2 === 0) {
+            icbcArrOne = icbcArr.slice(0,icbcArr.length/2);
+            icbcArrTwo = icbcArr.slice(icbcArr.length/2);
           } else {
-            icbcArrOne = icbcArr
+            icbcArrOne = icbcArr.slice(0,Math.floor(icbcArr.length/2));
+            icbcArrTwo = icbcArr.slice(Math.floor(icbcArr.length/2));
           }
           //then do return Promise.all(icbcArrOne.map) let it resolve then Promise.all(icbcArrTwo.map)
           //within each Promise.all, set the coordinates State 
@@ -185,7 +181,7 @@ const handleIcbcClick = function(eventDate){
         
         //proceed with helper function that loops from beginning element of coordinates array to the last element
         //calculateICBCRoute(coordinates, icbcArr)
-      })    
+        })    
             .then(async() => await wait(5000))
             .then(() => {
               console.log("got through one")

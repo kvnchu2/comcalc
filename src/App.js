@@ -109,10 +109,10 @@ function App() {
           </div>
         </section>
           <div>
-            {((travelTime/(routes.length - 2))/60)/60}
+            {((travelTime/((routes.length + routesTwo.length) - 2))/60)/60}
           </div>
           <div>
-            {(mileage/(routes.length - 2)/1000)}
+            {((mileage/((routes.length + routesTwo.length) - 2))/1000)}
           </div>
          
       
