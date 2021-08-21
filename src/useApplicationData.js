@@ -147,9 +147,12 @@ const handleIcbcClick = function(eventDate){
             icbcArrOne = icbcArr.slice(0,icbcArr.length/2);
             icbcArrTwo = icbcArr.slice(icbcArr.length/2);
           } else {
-            icbcArrOne = icbcArr.slice(0,Math.floor(icbcArr.length/2));
+            icbcArrOne = icbcArr.slice(0,Math.ceil(icbcArr.length/2));
             icbcArrTwo = icbcArr.slice(Math.floor(icbcArr.length/2));
           }
+
+          console.log("icbcArrOne", icbcArrOne)
+          console.log("icbcArrTwo", icbcArrTwo)
           //then do return Promise.all(icbcArrOne.map) let it resolve then Promise.all(icbcArrTwo.map)
           //within each Promise.all, set the coordinates State 
 
