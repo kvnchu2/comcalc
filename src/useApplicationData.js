@@ -1,7 +1,6 @@
 import axios from 'axios';
-import {useState} from 'react';
-import { calculateTimeMax } from './helpers'
-
+import { useState } from 'react';
+import { calculateTimeMax, firstMap, secondMap, wait, icbcEvents } from './helpers.js'
 
 export default function useApplicationData() {
 const [events, setEvents] = useState([]);
@@ -117,94 +116,40 @@ const handleIcbcClick = function(eventDate){
         const eventsObject = response.result.items
         eventsObject.splice(0,0, {summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada"})
         eventsObject.push({summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada"})
-        console.log("eventsObject", eventsObject)
-        // setEvents(eventsObject);
         return eventsObject
       }).then((eventsObject) => {
-        let icbcArr = [];
-        let wsbcArr = [];
-        console.log("eventsObject", eventsObject)
-          eventsObject.forEach(event => {
-            const eventSplit = event.location
-            const eventSummary = event.summary 
-            
-            if (eventSummary.split(" ")[0] === "ICBC" || eventSummary.split(" ")[0] === "Icbc" || eventSummary === "home") {
-              const icbcObj = {}
-              icbcObj["location"] = eventSplit;
-              icbcObj["summary"] = eventSummary;
-              icbcArr.push(icbcObj)
-            } else {
-              wsbcArr.push(eventSplit)
-            }
-          })
-
-          //if icbcArr.length is > 5, then divide icbcArr into two 
-          let icbcArrOne;
-          let icbcArrTwo;
-          if (icbcArr.length % 2 === 0) {
-            icbcArrOne = icbcArr.slice(0,icbcArr.length/2);
-            icbcArrTwo = icbcArr.slice(icbcArr.length/2);
-          } else {
-            icbcArrOne = icbcArr.slice(0,Math.ceil(icbcArr.length/2));
-            icbcArrTwo = icbcArr.slice(Math.floor(icbcArr.length/2));
-          }
-
-          console.log("icbcArrOne", icbcArrOne)
-          console.log("icbcArrTwo", icbcArrTwo)
-          //then do return Promise.all(icbcArrOne.map) let it resolve then Promise.all(icbcArrTwo.map)
-          //within each Promise.all, set the coordinates State 
-
-          const firstMap = async () => {
-            const routePromise = await Promise.all( icbcArrOne.map(event => (axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.location}`)
-            .then(({data})=> data))
-            
-          ))
-          
-          return routePromise
+        let icbcArr = icbcEvents(eventsObject);
+      
+        //if icbcArr.length is > 5, then divide icbcArr into two 
+        let icbcArrOne;
+        let icbcArrTwo;
+        if (icbcArr.length % 2 === 0) {
+          icbcArrOne = icbcArr.slice(0,icbcArr.length/2);
+          icbcArrTwo = icbcArr.slice(icbcArr.length/2);
+        } else {
+          icbcArrOne = icbcArr.slice(0,Math.ceil(icbcArr.length/2));
+          icbcArrTwo = icbcArr.slice(Math.floor(icbcArr.length/2));
         }
 
-
-          const secondMap = async() => {
-            
-            const routePromiseTwo = await Promise.all( icbcArrTwo.map(event => axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.location}`)
-            .then(({data})=> data)))
-
-            return routePromiseTwo;
-          }
-
-        const wait = (ms) => new Promise((res) => setTimeout(res, ms));
-        
-        return firstMap()
-        .then((coordinates) => {
-              
-          
-          calculateICBCRoute(coordinates, icbcArrOne);
-        
-        //proceed with helper function that loops from beginning element of coordinates array to the last element
-        //calculateICBCRoute(coordinates, icbcArr)
-        })    
-            .then(async() => await wait(5000))
-            .then(() => {
-              console.log("got through one")
-
-              
-              //if coordinates.length > 5, proceed with helper function that loops through coordinates from 5 onwards
-              //else return
-              
-              return secondMap();
-            })
-            .then((coordinates) => {
-              console.log("secondmap coordinates", coordinates)
-          
-              calculateICBCRouteTwo(coordinates, icbcArrTwo);
-            
-            //proceed with helper function that loops from beginning element of coordinates array to the last element
-            //calculateICBCRoute(coordinates, icbcArr)
+        //then do return Promise.all(icbcArrOne.map) let it resolve then Promise.all(icbcArrTwo.map)
+        //within each Promise.all, set the coordinates State 
+ 
+        return firstMap(icbcArrOne)
+          .then((coordinates) => {
+            calculateICBCRoute(coordinates, icbcArrOne);
+          //proceed with helper function that loops from beginning element of coordinates array to the last element
+          //calculateICBCRoute(coordinates, icbcArr)
+          })    
+          .then(async() => await wait(5000))
+          .then(() => {
+            return secondMap(icbcArrTwo);
+          })
+          .then((coordinates) => {
+            calculateICBCRouteTwo(coordinates, icbcArrTwo);
           })  
-            .catch(() => {
-              
-              return secondMap();
-            })
+          .catch(() => {
+            return secondMap();
+          })
       })
 
     })
