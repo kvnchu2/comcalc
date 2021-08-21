@@ -3,7 +3,6 @@ import './App.css';
 // import Date from './components/Nihao.js';
 import Input from "@material-ui/core/Input";
 import { makeStyles } from "@material-ui/core/styles";
-import SearchIcon from "@material-ui/icons/Search";
 import useApplicationData from './useApplicationData.js';
 
 

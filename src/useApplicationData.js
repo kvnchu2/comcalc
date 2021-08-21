@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {useState} from 'react';
+import { calculateTimeMax } from './helpers'
 
 
 export default function useApplicationData() {
@@ -9,7 +10,6 @@ const [routes, setRoutes] = useState([]);
 const [travelTime, setTravelTime] = useState(0);
 const [mileage, setMileage] = useState(0);
 const [routesTwo, setRoutesTwo] = useState([]);
-const [coordinates, setCoordinates] = useState([]);
 
 const handleSearchInput = (e) => {
   setInputDate(e.target.value);
@@ -101,10 +101,8 @@ const handleIcbcClick = function(eventDate){
 
     gapi.auth2.getAuthInstance().signIn()
     .then(() => {
-      let splitDate = eventDate.split(" ")
-      const maxDay = Number(eventDate.split(" ")[0]) + 1;
-      splitDate[0] = maxDay;
-     const maxDate = splitDate.join(" ");
+      
+      const maxDate = calculateTimeMax(eventDate);
       
       // get events
       gapi.client.calendar.events.list({
@@ -207,10 +205,6 @@ const handleIcbcClick = function(eventDate){
               
               return secondMap();
             })
-            
-
-
-
       })
 
     })
