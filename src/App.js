@@ -1,26 +1,26 @@
 import React from 'react';
 import './App.css';
 // import Input from "@material-ui/core/Input";
-// import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles";
 import useApplicationData from './useApplicationData.js';
 
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     "& > *": {
-//       // margin: theme.spacing(1),
-//       width: "25ch",
-//     },
-//   },
-//   textfield: {
-//     width: "100%",
-//   },
-// }));
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      // margin: theme.spacing(1),
+      width: "25ch",
+    },
+  },
+  textfield: {
+    width: "100%",
+  },
+}));
 
 function App() {
 
   const { routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage } = useApplicationData();
-  // const classes = useStyles();
+  const classes = useStyles();
 
   const combinedList = routes.sort(function(a,b) { return a.order - b.order}).map( route => {
     if (isNaN(route.traveltime)) {
@@ -65,10 +65,10 @@ function App() {
           <form
             autoComplete="off"
            
-            // className={classes.root}
+            className={classes.root}
           >
             <div id="search-filter">
-              <input placeholder="Enter Date" value={inputDate} onChange={handleSearchInput}></input>
+              <input placeholder="Enter Date" inputProps={{ 'aria-label': 'description' }} value={inputDate} onChange={handleSearchInput}></input>
               {/* <SearchBar value={props.value} onChange={props.onChange} onRequestSearch={props.onClick}/> */}
 
               
