@@ -200,7 +200,7 @@ const handleWsbcClick = function(eventDate){
             const eventSplit = event.location
             const eventSummary = event.summary
             console.log("eventSplit", eventSplit);
-            if (eventSummary.split(" ")[0] === "Wsbc" || eventSummary === "home") {
+            if (eventSummary.split(" ")[0] === "WSBC" || eventSummary.split(" ")[0] === "Wsbc" || eventSummary === "home") {
               const icbcObj = {}
               icbcObj["location"] = eventSplit;
               icbcObj["summary"] = eventSummary;
