@@ -20,8 +20,12 @@
 
 #search-filter {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+}
+
+#search-filter label{
+  padding-right: 10px;
 }
 
 #search-panel button{
@@ -36,3 +40,16 @@
   flex-direction: row;
   width: 100%
 }
+
+#button-section {
+  justify-content: space-around;
+  display: flex;
+  align-items: center;
+  width: 30%;
+  padding-top: 15px;
+}
+
+.results-table {
+  padding-top: 20px;
+}
+

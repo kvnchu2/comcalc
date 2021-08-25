@@ -65,9 +65,10 @@ function App() {
           <form
             autoComplete="off"
            
-            className={classes.root}
+            // className={classes.root}
           >
             <div id="search-filter">
+              <label>Enter Date</label>
               <input placeholder="Enter Date" inputProps={{ 'aria-label': 'description' }} value={inputDate} onChange={handleSearchInput}></input>
               {/* <SearchBar value={props.value} onChange={props.onChange} onRequestSearch={props.onClick}/> */}
 
@@ -75,8 +76,10 @@ function App() {
             </div>
             {/* <button type="button" onClick={props.onClick}>Submit</button> */}
           </form>
+          <div id="button-section">
           <button style={{width: 100, height: 50}} onClick={handleIcbcSubmit} class="submit-button">Calculate ICBC</button>
           <button style={{width: 100, height: 50}} onClick={handleWsbcSubmit} class="submit-button">Calculate WSBC</button>
+          </div>
         </section>
         <section id="search-results">
           {/* <div>
@@ -87,7 +90,7 @@ function App() {
           </div> */}
 
 
-          <table class="table">
+          <table class="results-table">
             <thead>
               <tr>
                 <th scope="col">Client</th>
