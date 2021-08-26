@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 // import Input from "@material-ui/core/Input";
+import Button from '@material-ui/core/Button';
 import { makeStyles } from "@material-ui/styles";
 import useApplicationData from './useApplicationData.js';
 
@@ -79,6 +80,9 @@ function App() {
           <div id="button-section">
           <button style={{width: 100, height: 50}} onClick={handleIcbcSubmit} class="submit-button">Calculate ICBC</button>
           <button style={{width: 100, height: 50}} onClick={handleWsbcSubmit} class="submit-button">Calculate WSBC</button>
+          <Button variant="contained" color="primary">
+            Primary
+          </Button>
           </div>
         </section>
         <section id="search-results">
