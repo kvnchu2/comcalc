@@ -78,10 +78,12 @@ function App() {
             {/* <button type="button" onClick={props.onClick}>Submit</button> */}
           </form>
           <div id="button-section">
-          <button style={{width: 100, height: 50}} onClick={handleIcbcSubmit} class="submit-button">Calculate ICBC</button>
-          <button style={{width: 100, height: 50}} onClick={handleWsbcSubmit} class="submit-button">Calculate WSBC</button>
-          <Button variant="contained" color="primary">
-            Primary
+          
+          <Button variant="contained" color="primary" style={{width: 100, height: 50}} onClick={handleIcbcSubmit}>
+            Calculate ICBC
+          </Button>
+          <Button variant="contained" color="secondary" style={{width: 100, height: 50}} onClick={handleWsbcSubmit} >
+            Calculate WSBC
           </Button>
           </div>
         </section>
