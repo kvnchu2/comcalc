@@ -53,3 +53,18 @@
   padding-top: 20px;
 }
 
+#travel-calculation {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  width: 70%;
+  justify-content: space-between;
+}
+
+#total-travel-calculation {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  width: 70%;
+  justify-content: space-between;
+}

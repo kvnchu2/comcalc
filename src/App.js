@@ -102,20 +102,27 @@ function App() {
               {combinedListTwo}
             </tbody>
           </table>
+        </section>
+        <section id="total-travel-calculation">
+          <label>Total Travel Time</label>
           <div>
             {travelTime} seconds
           </div>
+          <label>Total Mileage</label>
           <div>
             {mileage} meters
           </div>
         </section>
+        <section id="travel-calculation">
+          <label>Travel Time per Client</label>
           <div>
             {((travelTime/((routes.length + routesTwo.length) - 2))/60)/60}
           </div>
+          <label>Mileage per Client</label>
           <div>
             {((mileage/((routes.length + routesTwo.length) - 2))/1000)}
           </div>
-         
+        </section>
       
       </header>
     </div>
