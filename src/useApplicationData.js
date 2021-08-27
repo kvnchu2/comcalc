@@ -124,7 +124,7 @@ const handleIcbcClick = function(eventDate){
         let icbcArrOne;
         let icbcArrTwo;
         if (icbcArr.length % 2 === 0) {
-          icbcArrOne = icbcArr.slice(0,icbcArr.length/2);
+          icbcArrOne = icbcArr.slice(0,((icbcArr.length/2) + 1));
           icbcArrTwo = icbcArr.slice(icbcArr.length/2);
         } else {
           icbcArrOne = icbcArr.slice(0,Math.ceil(icbcArr.length/2));
@@ -133,7 +133,7 @@ const handleIcbcClick = function(eventDate){
 
         //then do return Promise.all(icbcArrOne.map) let it resolve then Promise.all(icbcArrTwo.map)
         //within each Promise.all, set the coordinates State 
- 
+        
         return firstMap(icbcArrOne)
           .then((coordinates) => {
             calculateICBCRoute(coordinates, icbcArrOne);
