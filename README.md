@@ -1,6 +1,7 @@
 # About
 
 Comcalc was created to automate billing for Community Kinesiologists working with ICBC and WSBC patients.  
+
 Feel free to checkout the app here: comcalc.netlify.app
 
 # Tech Stack
