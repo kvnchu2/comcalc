@@ -102,6 +102,7 @@ const handleIcbcClick = function(eventDate){
     .then(() => {
       
       const maxDate = calculateTimeMax(eventDate);
+      console.log("maxDate", maxDate);
       
       // get events
       gapi.client.calendar.events.list({
