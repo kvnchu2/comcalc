@@ -14,6 +14,7 @@ const calculateTimeMax = (eventDate) => {
     maxMonth = months[months.indexOf(eventDate.split(" ")[1]) === 11 ? months[0] : (months.indexOf(eventDate.split(" ")[1]) + 1)]
   } else {
     maxDay = Number(eventDate.split(" ")[0]) + 1;
+    maxMonth = splitDate[1];
   }
   splitDate[0] = maxDay;
   splitDate[1] = maxMonth;
