@@ -15,12 +15,20 @@ const handleSearchInput = (e) => {
 };
 const handleIcbcSubmit = (e) => {
   e.preventDefault();
-  handleIcbcClick(inputDate)
+  setRoutes([]);
+  setRoutesTwo([]);
+  setTravelTime(0);
+  setMileage(0);
+  handleIcbcClick(inputDate);
   setInputDate("");
 };
 
 const handleWsbcSubmit = (e) => {
   e.preventDefault();
+  setRoutes([]);
+  setRoutesTwo([]);
+  setTravelTime(0);
+  setMileage(0);
   handleWsbcClick(inputDate)
   setInputDate("");
 };
