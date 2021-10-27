@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import DateInput from "./components/DateInput.js"
+import Results from "./components/results/index.js"
 import Button from '@material-ui/core/Button';
 import { makeStyles } from "@material-ui/styles";
 import useApplicationData from './useApplicationData.js';
@@ -73,41 +74,7 @@ function App() {
           </Button>
           </div>
         </section>
-        <section id="search-results">
-          <table class="results-table">
-            <thead>
-              <tr>
-                <th scope="col">Client</th>
-                <th scope="col">Travel Time/Duration</th>
-              </tr>
-            </thead>
-            <tbody>
-              {combinedList}
-              {combinedListTwo}
-            </tbody>
-          </table>
-        </section>
-        <section id="total-travel-calculation">
-          <label>Total Travel Time</label>
-          <div>
-            {travelTime} seconds
-          </div>
-          <label>Total Mileage</label>
-          <div>
-            {mileage} meters
-          </div>
-        </section>
-        <section id="travel-calculation">
-          <label>Travel Time per Client</label>
-          <div>
-            {((travelTime/((routes.length + routesTwo.length) - 2))/60)/60}
-          </div>
-          <label>Mileage per Client</label>
-          <div>
-            {((mileage/((routes.length + routesTwo.length) - 2))/1000)}
-          </div>
-        </section>
-      
+        <Results combinedList={combinedList} combinedListTwo={combinedListTwo} travelTime={travelTime} mileage={mileage} routes={routes} routesTwo={routesTwo}/>
       </header>
     </div>
   );
