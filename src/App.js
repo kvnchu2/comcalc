@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-// import Input from "@material-ui/core/Input";
+import DateInput from "./components/DateInput.js"
 import Button from '@material-ui/core/Button';
 import { makeStyles } from "@material-ui/styles";
 import useApplicationData from './useApplicationData.js';
@@ -63,22 +63,8 @@ function App() {
     <div className="App">
       <header class="App-header">
         <section id="search-panel">
-          <form
-            autoComplete="off"
-           
-            // className={classes.root}
-          >
-            <div id="search-filter">
-              <label>Enter Date</label>
-              <input placeholder="Enter Date" inputProps={{ 'aria-label': 'description' }} value={inputDate} onChange={handleSearchInput}></input>
-              {/* <SearchBar value={props.value} onChange={props.onChange} onRequestSearch={props.onClick}/> */}
-
-              
-            </div>
-            {/* <button type="button" onClick={props.onClick}>Submit</button> */}
-          </form>
+          <DateInput inputDate={inputDate} handleSearchInput={handleSearchInput}></DateInput>
           <div id="button-section">
-          
           <Button variant="contained" color="primary" style={{width: 100, height: 50}} onClick={handleIcbcSubmit}>
             Calculate ICBC
           </Button>
@@ -88,14 +74,6 @@ function App() {
           </div>
         </section>
         <section id="search-results">
-          {/* <div>
-            {eventsList}
-          </div>
-          <div>
-            {travelMileageList}
-          </div> */}
-
-
           <table class="results-table">
             <thead>
               <tr>
