@@ -36,7 +36,7 @@ const handleWsbcSubmit = (e) => {
 const calculateICBCRouteTwo = (coordinates, icbcArr) => {
   for(let y = 0; y < coordinates.length; y++) {
     if (y !== coordinates.length - 1) {
-      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=${process.env["REACT_APP_TOM_KEY"]}`)
+      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
         .then((result) => {
           const travelMileageObj = {};
           travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
@@ -64,7 +64,7 @@ const calculateICBCRouteTwo = (coordinates, icbcArr) => {
 const calculateICBCRoute = (coordinates, icbcArr) => {
   for(let y = 0; y < coordinates.length; y++) {
     if (y !== coordinates.length - 1) {
-      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=${process.env["REACT_APP_TOM_KEY"]}`)
+      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
         .then((result) => {
           const travelMileageObj = {};
           travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
