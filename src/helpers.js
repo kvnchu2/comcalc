@@ -48,13 +48,15 @@ const icbcEvents = (eventsObject) => {
   let icbcArr = [];
   
   eventsObject.forEach(event => {
-    const eventSplit = event.location
-    const eventSummary = event.summary 
+    const eventSplit = event.location;
+    const eventSummary = event.summary;
+    const startTime = event.start.dateTime;
     
     if (eventSummary.split(" ")[0] === "ICBC" || eventSummary.split(" ")[0] === "Icbc" || eventSummary === "home") {
       const icbcObj = {}
       icbcObj["location"] = eventSplit;
       icbcObj["summary"] = eventSummary;
+      icbcObj["startTime"] = startTime;
       icbcArr.push(icbcObj)
     }
   })

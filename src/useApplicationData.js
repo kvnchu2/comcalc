@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { calculateTimeMax, firstMap, secondMap, wait, icbcEvents } from './helpers.js'
+import { calculateTimeMax, firstMap, secondMap, wait, icbcEvents } from './helpers.js';
+import * as moment from 'moment';
 
 export default function useApplicationData() {
 const [events, setEvents] = useState([]);
@@ -37,9 +38,10 @@ const handleWsbcSubmit = (e) => {
 };
 
 const calculateICBCRouteTwo = (coordinates, icbcArr) => {
+  console.log("icbcArrTwo", icbcArr)
   for(let y = 0; y < coordinates.length; y++) {
     if (y !== coordinates.length - 1) {
-      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
+      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&departAt=${icbcArr[y].startTime}`)
         .then((result) => {
           const travelMileageObj = {};
           travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
@@ -65,9 +67,11 @@ const calculateICBCRouteTwo = (coordinates, icbcArr) => {
 
 
 const calculateICBCRoute = (coordinates, icbcArr) => {
+
+  console.log("icbcArr", icbcArr);
   for(let y = 0; y < coordinates.length; y++) {
     if (y !== coordinates.length - 1) {
-      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&departAt=2021-10-29T16:30:00-07:00`)
+      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&departAt=${icbcArr[y].startTime}`)
         .then((result) => {
           const travelMileageObj = {};
           travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
@@ -126,8 +130,11 @@ const handleIcbcClick = function(eventDate){
         'orderBy': 'startTime'
       }).then(response => {
         const eventsObject = response.result.items
-        eventsObject.splice(0,0, {summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada"})
-        eventsObject.push({summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada"})
+        const startTime = new Date(eventsObject[0].start.dateTime);
+        startTime.setMinutes(new Date(eventsObject[0].start.dateTime).getMinutes() - 30);
+        console.log("startTime", startTime);
+        eventsObject.splice(0,0, {summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada", start: {dateTime: startTime.toISOString()}})
+        eventsObject.push({summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada", start: {dateTime: eventsObject[eventsObject.length - 1].start.dateTime}})
         return eventsObject
       }).then((eventsObject) => {
         console.log("eventsObject", eventsObject);
@@ -200,9 +207,11 @@ const handleWsbcClick = function(eventDate){
         'maxResults': 10,
         'orderBy': 'startTime'
       }).then(response => {
-        const eventsObject = response.result.items
-        eventsObject.splice(0,0, {summary: "home", location: "V5S 3J5"})
-        eventsObject.push({summary: "home", location: "V5S 3J5"})
+        const eventsObject = response.result.items;
+        const startTime = new Date(eventsObject[0].start.dateTime);
+        startTime.setMinutes(new Date(eventsObject[0].start.dateTime).getMinutes() - 30);
+        eventsObject.splice(0,0, {summary: "home", location: "V5S 3J5", start: {dateTime: startTime.toISOString()}})
+        eventsObject.push({summary: "home", location: "V5S 3J5", start: {dateTime: eventsObject[eventsObject.length - 1].start.dateTime}})
         console.log("eventsObject", eventsObject)
         // setEvents(eventsObject);
         return eventsObject
