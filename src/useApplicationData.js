@@ -67,7 +67,7 @@ const calculateICBCRouteTwo = (coordinates, icbcArr) => {
 const calculateICBCRoute = (coordinates, icbcArr) => {
   for(let y = 0; y < coordinates.length; y++) {
     if (y !== coordinates.length - 1) {
-      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv`)
+      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&departAt=2021-10-29T16:30:00-07:00`)
         .then((result) => {
           const travelMileageObj = {};
           travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
@@ -130,6 +130,7 @@ const handleIcbcClick = function(eventDate){
         eventsObject.push({summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada"})
         return eventsObject
       }).then((eventsObject) => {
+        console.log("eventsObject", eventsObject);
         let icbcArr = icbcEvents(eventsObject);
       
         //if icbcArr.length is > 5, then divide icbcArr into two 
