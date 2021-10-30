@@ -9,6 +9,7 @@ const [routes, setRoutes] = useState([]);
 const [travelTime, setTravelTime] = useState(0);
 const [mileage, setMileage] = useState(0);
 const [routesTwo, setRoutesTwo] = useState([]);
+const [results, setResults] = useState("");
 
 const handleSearchInput = (e) => {
   setInputDate(e.target.value);
@@ -19,6 +20,7 @@ const handleIcbcSubmit = (e) => {
   setRoutesTwo([]);
   setTravelTime(0);
   setMileage(0);
+  setResults("loading");
   handleIcbcClick(inputDate);
   setInputDate("");
 };
@@ -155,6 +157,7 @@ const handleIcbcClick = function(eventDate){
           })
           .then((coordinates) => {
             calculateICBCRouteTwo(coordinates, icbcArrTwo);
+            
           })  
           .catch(() => {
             return secondMap();
@@ -263,5 +266,5 @@ const handleWsbcClick = function(eventDate){
   })
 }
 
-return { routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage}
+return { routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results}
 };
