@@ -31,6 +31,7 @@ const handleWsbcSubmit = (e) => {
   setRoutesTwo([]);
   setTravelTime(0);
   setMileage(0);
+  setResults("loading");
   handleWsbcClick(inputDate)
   setInputDate("");
 };
@@ -157,7 +158,7 @@ const handleIcbcClick = function(eventDate){
           })
           .then((coordinates) => {
             calculateICBCRouteTwo(coordinates, icbcArrTwo);
-            
+            setResults("show");
           })  
           .catch(() => {
             return secondMap();
@@ -252,6 +253,7 @@ const handleWsbcClick = function(eventDate){
                 
               }
 
+              setResults("show");
 
             })
             
