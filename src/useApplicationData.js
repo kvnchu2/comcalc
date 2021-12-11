@@ -40,7 +40,7 @@ const calculateICBCRouteTwo = (coordinates, icbcArr) => {
   console.log("icbcArrTwo", icbcArr)
   for(let y = 0; y < coordinates.length; y++) {
     if (y !== coordinates.length - 1) {
-      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&departAt=${icbcArr[y].startTime}&traffic=true`)
+      axios.get(`https://travel-calculator-server.herokuapp.com/travel/calculateRoute/${coordinates[y].results[0].position.lat}/${coordinates[y].results[0].position.lon}/${coordinates[y+1].results[0].position.lat}/${coordinates[y+1].results[0].position.lon}/${icbcArr[y].startTime}`)
         .then((result) => {
           const travelMileageObj = {};
           travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
@@ -72,7 +72,7 @@ const calculateICBCRoute = (coordinates, icbcArr) => {
   console.log("sample coordinates", coordinates)
   for(let y = 0; y < coordinates.length; y++) {
     if (y !== coordinates.length - 1) {
-      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${coordinates[y].results[0].position.lat},${coordinates[y].results[0].position.lon}:${coordinates[y+1].results[0].position.lat},${coordinates[y+1].results[0].position.lon}/json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&departAt=${icbcArr[y].startTime}&traffic=true`)
+      axios.get(`https://travel-calculator-server.herokuapp.com/travel/calculateRoute/${coordinates[y].results[0].position.lat}/${coordinates[y].results[0].position.lon}/${coordinates[y+1].results[0].position.lat}/${coordinates[y+1].results[0].position.lon}/${icbcArr[y].startTime}`)
         .then((result) => {
           const travelMileageObj = {};
           travelMileageObj["mileage"] = result.data.routes[0].summary.lengthInMeters;
