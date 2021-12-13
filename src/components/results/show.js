@@ -1,4 +1,5 @@
 import React from "react";
+import TravelMileageTable from "./travelMileageTable";
 
 export default function Show(props) {
   return (
@@ -16,6 +17,7 @@ export default function Show(props) {
           {props.combinedListTwo}
         </tbody>
       </table>
+      <TravelMileageTable routes={props.routes} routesTwo={props.routesTwo}></TravelMileageTable>
     </section>
     <section id="total-travel-calculation">
       <label>Total Travel Time</label>
