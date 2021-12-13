@@ -5,19 +5,9 @@ export default function Show(props) {
   return (
     <>
     <section id="search-results">
-      <table class="results-table">
-        <thead>
-          <tr>
-            <th scope="col">Client</th>
-            <th scope="col">Travel Time/Duration</th>
-          </tr>
-        </thead>
-        <tbody>
-          {props.combinedList}
-          {props.combinedListTwo}
-        </tbody>
-      </table>
-      <TravelMileageTable routes={props.routes} routesTwo={props.routesTwo}></TravelMileageTable>
+      <div class="results-table">
+        <TravelMileageTable routes={props.routes} routesTwo={props.routesTwo}></TravelMileageTable>
+      </div>
     </section>
     <section id="total-travel-calculation">
       <label>Total Travel Time</label>
