@@ -1,22 +1,42 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Clients() {
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
+  const [searchName, setSearchName] = useState("");
+  const [searchAddress, setSearchAddress] = useState("");
+  const [clients, setClients] = useState([]);
 
   const onSubmitHandler = () => {
-    axios.post("https://travel-calculator-server.herokuapp.com/client/new", {"name": name, "address": address})
+    axios.post("https://travel-calculator-server.herokuapp.com/client/new", {"name": searchName, "address": searchAddress})
       .then((result) => {
         console.log(result);
-        setName("");
-        setAddress("");
+        setSearchName("");
+        setSearchAddress("");
       })
       .catch((error) => {
         console.log(error);
       })
   }
+
+  useEffect(() => {
+    axios.get("https://travel-calculator-server.herokuapp.com/client/all")
+      .then((result) => {
+        setClients(result.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  },[searchName]);
+
+  const allClients = clients.map((client) => {
+    return (
+      <>
+        <p>{client.name}</p>
+        <p>{client.address}</p>
+      </>
+    )
+  })
 
   return (
     <>
@@ -25,22 +45,23 @@ export default function Clients() {
           name="name"
           type="text"
           placeholder="Name"
-          value={name}
+          value={searchName}
           onChange={event => {
-            setName(event.target.value);
+            setSearchName(event.target.value);
           }}
         />
         <input
           name="name"
           type="text"
           placeholder="Address"
-          value={address}
+          value={searchAddress}
           onChange={event => {
-            setAddress(event.target.value);
+            setSearchAddress(event.target.value);
           }}
         />
       </form>
       <button onClick={onSubmitHandler}>Add Client</button>
+      {allClients}
     </>
   );
 }
