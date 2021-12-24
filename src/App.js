@@ -1,6 +1,6 @@
 import React from 'react';
 import Home from './components/home/home';
-import Clients from './components/clients';
+import Clients from './components/clients/clients';
 import { Route, Routes } from 'react-router-dom';
 
 function App() {

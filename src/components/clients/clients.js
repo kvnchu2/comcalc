@@ -19,9 +19,20 @@ export default function Clients() {
       })
   }
 
+  const onDeleteHandler = (clients) => {
+    axios.post("https://travel-calculator-server.herokuapp.com/client/delete", {"id": clients["id"]})
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
   useEffect(() => {
     axios.get("https://travel-calculator-server.herokuapp.com/client/all")
       .then((result) => {
+        console.log("clients-data", result.data);
         setClients(result.data);
       })
       .catch((error) => {
@@ -34,6 +45,7 @@ export default function Clients() {
       <>
         <p>{client.name}</p>
         <p>{client.address}</p>
+        <button onSubmit={(client) => onDeleteHandler(client)}>Delete</button>
       </>
     )
   })
