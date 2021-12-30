@@ -22,9 +22,22 @@ const calculateTimeMax = (eventDate) => {
   return splitDate.join(" ");
 }
 
+const obtainAddress = async (icbcArrOne) => {
+  console.log("firstMap icbcArrOne", icbcArrOne);
+  const eventLocation = await Promise.all(icbcArrOne.map(event => (axios.get(`https://travel-calculator-server.herokuapp.com/client/find/${event.summary}`)
+    .then(({data})=> data))
+  ))
+  // console.log("eventLocation-from-first-map",eventLocation[0].data.rows[0].address);
+  return eventLocation;
+}
+
 //fetches coordinates for first batch
-const firstMap = async (icbcArrOne) => {
-  const routePromise = await Promise.all( icbcArrOne.map(event => (axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.location}`)
+const firstMap = async (eventLocations) => {  
+  
+  // const routePromise = await Promise.all( icbcArrOne.map(event => (axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.location}`)
+  // .then(({data})=> data))
+
+  const routePromise = await Promise.all( eventLocations.map(event => (axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.rows[0].address}`)
   .then(({data})=> data))
   
 ))
@@ -33,9 +46,11 @@ return routePromise
 }
 
 //fetches coordinates for second batch 
-const secondMap = async(icbcArrTwo) => {
-  
-  const routePromiseTwo = await Promise.all( icbcArrTwo.map(event => axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.location}`)
+const secondMap = async(eventLocations) => {
+  // const routePromiseTwo = await Promise.all( icbcArrTwo.map(event => axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event[0].data.rows[0].address}`)
+  // .then(({data})=> data)))
+
+  const routePromiseTwo = await Promise.all( eventLocations.map(event => axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.rows[0].address}`)
   .then(({data})=> data)))
 
   return routePromiseTwo;
@@ -52,17 +67,17 @@ const icbcEvents = (eventsObject) => {
     const eventSummary = event.summary;
     const startTime = event.start.dateTime;
     
-    if (eventSummary.split(" ")[0] === "ICBC" || eventSummary.split(" ")[0] === "Icbc" || eventSummary === "home") {
+    // if (eventSummary.split(" ")[0] === "ICBC" || eventSummary.split(" ")[0] === "Icbc" || eventSummary === "home") {
       const icbcObj = {}
       icbcObj["location"] = eventSplit;
       icbcObj["summary"] = eventSummary;
       icbcObj["startTime"] = startTime;
       icbcArr.push(icbcObj)
-    }
+    // }
   })
 
   return icbcArr;
 }
 
 
-export { calculateTimeMax, firstMap, secondMap, wait, icbcEvents };
+export { calculateTimeMax, firstMap, secondMap, wait, icbcEvents, obtainAddress };

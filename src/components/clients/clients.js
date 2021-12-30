@@ -5,14 +5,16 @@ import axios from 'axios';
 export default function Clients() {
   const [searchName, setSearchName] = useState("");
   const [searchAddress, setSearchAddress] = useState("");
+  const [searchProvider, setSearchProvider] = useState("");
   const [clients, setClients] = useState([]);
 
   const onSubmitHandler = () => {
-    axios.post("https://travel-calculator-server.herokuapp.com/client/new", {"name": searchName, "address": searchAddress})
+    axios.post("https://travel-calculator-server.herokuapp.com/client/new", {"name": searchName, "address": searchAddress, "provider": searchProvider})
       .then((result) => {
         console.log(result);
         setSearchName("");
         setSearchAddress("");
+        setSearchProvider("");
       })
       .catch((error) => {
         console.log(error);
@@ -20,7 +22,6 @@ export default function Clients() {
   }
 
   const onDeleteHandler = (client) => {
-    console.log("client id", client["id"]);
     axios.post("https://travel-calculator-server.herokuapp.com/client/delete", {"id": client.id})
       .then((result) => {
         console.log(result);
@@ -46,6 +47,7 @@ export default function Clients() {
       <>
         <p>{client.name}</p>
         <p>{client.address}</p>
+        <p>{client.provider}</p>
         <button onClick={() => onDeleteHandler(client)}>Delete</button>
       </>
     )
@@ -70,6 +72,15 @@ export default function Clients() {
           value={searchAddress}
           onChange={event => {
             setSearchAddress(event.target.value);
+          }}
+        />
+        <input
+          name="name"
+          type="text"
+          placeholder="Provider"
+          value={searchProvider}
+          onChange={event => {
+            setSearchProvider(event.target.value);
           }}
         />
       </form>

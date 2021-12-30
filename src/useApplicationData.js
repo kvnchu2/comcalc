@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { calculateTimeMax, firstMap, secondMap, wait, icbcEvents } from './helpers.js';
+import { calculateTimeMax, firstMap, secondMap, wait, icbcEvents, obtainAddress } from './helpers.js';
 
 export default function useApplicationData() {
 const [events, setEvents] = useState([]);
@@ -140,7 +140,7 @@ const handleIcbcClick = function(eventDate){
       }).then((eventsObject) => {
         console.log("eventsObject", eventsObject);
         let icbcArr = icbcEvents(eventsObject);
-      
+        console.log("this icbcArr", icbcArr);
         //if icbcArr.length is > 5, then divide icbcArr into two 
         let icbcArrOne;
         let icbcArrTwo;
@@ -154,16 +154,27 @@ const handleIcbcClick = function(eventDate){
 
         //then do return Promise.all(icbcArrOne.map) let it resolve then Promise.all(icbcArrTwo.map)
         //within each Promise.all, set the coordinates State 
+
+        console.log("icbcArrOne", icbcArrOne);
+        console.log("icbcArrTwo", icbcArrTwo);
         
-        return firstMap(icbcArrOne)
+        return obtainAddress(icbcArrOne)
+          .then((eventLocations) => {
+            // console.log("eventLocations", eventLocations[0].rows[0].address)
+            return firstMap(eventLocations);
+          })
           .then((coordinates) => {
+            console.log("afterFirstMap coordinates", coordinates);
             calculateICBCRoute(coordinates, icbcArrOne);
           //proceed with helper function that loops from beginning element of coordinates array to the last element
           //calculateICBCRoute(coordinates, icbcArr)
           })    
           .then(async() => await wait(5000))
           .then(() => {
-            return secondMap(icbcArrTwo);
+            return obtainAddress(icbcArrTwo);
+          })
+          .then((eventLocations) => {
+            return secondMap(eventLocations);
           })
           .then((coordinates) => {
             calculateICBCRouteTwo(coordinates, icbcArrTwo);
