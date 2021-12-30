@@ -33,7 +33,7 @@ const obtainAddress = async (icbcArrOne) => {
 
 //fetches coordinates for first batch
 const firstMap = async (eventLocations) => {  
-  
+  console.log("firstMap eventLocations", eventLocations);
   // const routePromise = await Promise.all( icbcArrOne.map(event => (axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.location}`)
   // .then(({data})=> data))
 
@@ -42,14 +42,14 @@ const firstMap = async (eventLocations) => {
   
 ))
 
-return routePromise
+  return routePromise
 }
 
 //fetches coordinates for second batch 
 const secondMap = async(eventLocations) => {
   // const routePromiseTwo = await Promise.all( icbcArrTwo.map(event => axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event[0].data.rows[0].address}`)
   // .then(({data})=> data)))
-
+  console.log("second map eventlocations", eventLocations);
   const routePromiseTwo = await Promise.all( eventLocations.map(event => axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.rows[0].address}`)
   .then(({data})=> data)))
 
@@ -59,13 +59,19 @@ const secondMap = async(eventLocations) => {
 //sets delay between first fetch and second fetch 
 const wait = (ms) => new Promise((res) => setTimeout(res, ms));
 
-const icbcEvents = (eventsObject) => {
+const icbcEvents = (clientsObject) => {
   let icbcArr = [];
+
+  const filterIcbcClients = clientsObject.eventLocation.filter(x => x !== undefined).map(x => x.name);
+
+  console.log("filterIcbcClients", filterIcbcClients);
   
-  eventsObject.forEach(event => {
+  clientsObject.eventsObject.forEach(event => {
     const eventSplit = event.location;
     const eventSummary = event.summary;
     const startTime = event.start.dateTime;
+
+    if (filterIcbcClients.indexOf(event.summary) >= 0) {
     
     // if (eventSummary.split(" ")[0] === "ICBC" || eventSummary.split(" ")[0] === "Icbc" || eventSummary === "home") {
       const icbcObj = {}
@@ -74,10 +80,22 @@ const icbcEvents = (eventsObject) => {
       icbcObj["startTime"] = startTime;
       icbcArr.push(icbcObj)
     // }
+    }
   })
 
   return icbcArr;
 }
 
+const filterICBC = async(eventsObject) => {
+  const eventLocation = await Promise.all(eventsObject.map(event => (axios.get(`https://travel-calculator-server.herokuapp.com/client/find/${event.summary}`)
+    .then((data)=> data.data.rows[0]))
+  ))
+  const emptyObj = {};
+  emptyObj["eventsObject"] = eventsObject;
+  emptyObj["eventLocation"] = eventLocation;
+  // console.log("eventLocation-from-first-map",eventLocation[0].data.rows[0].address);
+  return emptyObj;
+}
 
-export { calculateTimeMax, firstMap, secondMap, wait, icbcEvents, obtainAddress };
+
+export { calculateTimeMax, firstMap, secondMap, wait, icbcEvents, obtainAddress, filterICBC };

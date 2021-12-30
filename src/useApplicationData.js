@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { calculateTimeMax, firstMap, secondMap, wait, icbcEvents, obtainAddress } from './helpers.js';
+import { calculateTimeMax, firstMap, secondMap, wait, icbcEvents, obtainAddress, filterICBC } from './helpers.js';
 
 export default function useApplicationData() {
 const [events, setEvents] = useState([]);
@@ -137,10 +137,16 @@ const handleIcbcClick = function(eventDate){
         eventsObject.splice(0,0, {summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada", start: {dateTime: startTime.toISOString()}})
         eventsObject.push({summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada", start: {dateTime: eventsObject[eventsObject.length - 1].start.dateTime}})
         return eventsObject
-      }).then((eventsObject) => {
-        console.log("eventsObject", eventsObject);
-        let icbcArr = icbcEvents(eventsObject);
-        console.log("this icbcArr", icbcArr);
+      })
+      .then((eventsObject) => {
+        let icbcClients = filterICBC(eventsObject);
+        console.log("icbcClients", icbcClients);
+        return icbcClients;
+      })
+      .then((clientsObject) => {
+
+        let icbcArr = icbcEvents(clientsObject);
+        console.log("this icbcArr length", icbcArr.length);
         //if icbcArr.length is > 5, then divide icbcArr into two 
         let icbcArrOne;
         let icbcArrTwo;
@@ -180,8 +186,8 @@ const handleIcbcClick = function(eventDate){
             calculateICBCRouteTwo(coordinates, icbcArrTwo);
             setResults("show");
           })  
-          .catch(() => {
-            return secondMap();
+          .catch((error) => {
+            console.log(error);
           })
       })
 
