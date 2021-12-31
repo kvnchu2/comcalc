@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { calculateTimeMax, firstMap, secondMap, wait, icbcEvents, obtainAddress, filterICBC } from './helpers.js';
+import { calculateTimeMax, firstMap, secondMap, wait, createEvents, obtainIcbcAddress, obtainWsbcAddress, fetchAppointmentsIcbc, fetchAppointmentsWsbc } from './helpers.js';
 
 export default function useApplicationData() {
 const [events, setEvents] = useState([]);
@@ -139,13 +139,14 @@ const handleIcbcClick = function(eventDate){
         return eventsObject
       })
       .then((eventsObject) => {
-        let icbcClients = filterICBC(eventsObject);
+        console.log("eventsObject", eventsObject);
+        let icbcClients = fetchAppointmentsIcbc(eventsObject);
         console.log("icbcClients", icbcClients);
         return icbcClients;
       })
       .then((clientsObject) => {
 
-        let icbcArr = icbcEvents(clientsObject);
+        let icbcArr = createEvents(clientsObject);
         console.log("this icbcArr length", icbcArr.length);
         //if icbcArr.length is > 5, then divide icbcArr into two 
         let icbcArrOne;
@@ -164,7 +165,7 @@ const handleIcbcClick = function(eventDate){
         console.log("icbcArrOne", icbcArrOne);
         console.log("icbcArrTwo", icbcArrTwo);
         
-        return obtainAddress(icbcArrOne)
+        return obtainIcbcAddress(icbcArrOne)
           .then((eventLocations) => {
             // console.log("eventLocations", eventLocations[0].rows[0].address)
             return firstMap(eventLocations);
@@ -177,7 +178,7 @@ const handleIcbcClick = function(eventDate){
           })    
           .then(async() => await wait(5000))
           .then(() => {
-            return obtainAddress(icbcArrTwo);
+            return obtainIcbcAddress(icbcArrTwo);
           })
           .then((eventLocations) => {
             return secondMap(eventLocations);
@@ -233,25 +234,22 @@ const handleWsbcClick = function(eventDate){
         console.log("eventsObject", eventsObject)
         // setEvents(eventsObject);
         return eventsObject
-      }).then((eventsObject) => {
-        
-        let wsbcArr = [];
-        console.log("eventsObject", eventsObject)
-          eventsObject.forEach(event => {
-            const eventSplit = event.location
-            const eventSummary = event.summary
-            console.log("eventSplit", eventSplit);
-            if (eventSummary.split(" ")[0] === "WSBC" || eventSummary.split(" ")[0] === "Wsbc" || eventSummary === "home") {
-              const icbcObj = {}
-              icbcObj["location"] = eventSplit;
-              icbcObj["summary"] = eventSummary;
-              wsbcArr.push(icbcObj)
-            } 
-          })
+      })
+      .then((eventsObject) => {
+        let WsbcClients = fetchAppointmentsWsbc(eventsObject);
+        return WsbcClients;
+      })
+      .then((clientsObject) => {
+        console.log("clientsObject", clientsObject);
+        let wsbcArr = createEvents(clientsObject);
 
-          return Promise.all( wsbcArr.map(event => axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.location}`)
-            .then(({data})=> data))
-        )
+          return obtainWsbcAddress(wsbcArr)
+            .then((wsbcAddress)=> {
+              console.log("wsbcAddress", wsbcAddress);
+              return Promise.all( wsbcAddress.map(event => axios.get(`https://api.tomtom.com/search/2/structuredGeocode.json?key=atFqCv6vs5HzL0u9qS9G5HXnhdYAA6kv&countryCode=CA&postalCode=${event.rows[0].address}`)
+                .then(({data})=> data))
+              )
+            })
             .then((coordinates) => {
               console.log("coordinates", coordinates);
 

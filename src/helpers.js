@@ -22,9 +22,20 @@ const calculateTimeMax = (eventDate) => {
   return splitDate.join(" ");
 }
 
-const obtainAddress = async (icbcArrOne) => {
+//obtain addresses for all icbc clients
+const obtainIcbcAddress = async (icbcArrOne) => {
   console.log("firstMap icbcArrOne", icbcArrOne);
-  const eventLocation = await Promise.all(icbcArrOne.map(event => (axios.get(`https://travel-calculator-server.herokuapp.com/client/find/${event.summary}`)
+  const eventLocation = await Promise.all(icbcArrOne.map(event => (axios.get(`https://travel-calculator-server.herokuapp.com/client/find/icbc/${event.summary}`)
+    .then(({data})=> data))
+  ))
+  // console.log("eventLocation-from-first-map",eventLocation[0].data.rows[0].address);
+  return eventLocation;
+}
+
+//obtain addresses for all wsbc clients
+const obtainWsbcAddress = async (icbcArrOne) => {
+  console.log("firstMap icbcArrOne", icbcArrOne);
+  const eventLocation = await Promise.all(icbcArrOne.map(event => (axios.get(`https://travel-calculator-server.herokuapp.com/client/find/wsbc/${event.summary}`)
     .then(({data})=> data))
   ))
   // console.log("eventLocation-from-first-map",eventLocation[0].data.rows[0].address);
@@ -59,35 +70,47 @@ const secondMap = async(eventLocations) => {
 //sets delay between first fetch and second fetch 
 const wait = (ms) => new Promise((res) => setTimeout(res, ms));
 
-const icbcEvents = (clientsObject) => {
+//filters out icbc appointments only and sets event information for them
+const createEvents = (clientsObject) => {
   let icbcArr = [];
+  //filters out undefined clients and parses out their name
+  const filterClients = clientsObject.eventLocation.filter(x => x !== undefined).map(x => x.name);
 
-  const filterIcbcClients = clientsObject.eventLocation.filter(x => x !== undefined).map(x => x.name);
-
-  console.log("filterIcbcClients", filterIcbcClients);
+  console.log("filterIcbcClients", filterClients);
   
   clientsObject.eventsObject.forEach(event => {
     const eventSplit = event.location;
     const eventSummary = event.summary;
     const startTime = event.start.dateTime;
 
-    if (filterIcbcClients.indexOf(event.summary) >= 0) {
-    
-    // if (eventSummary.split(" ")[0] === "ICBC" || eventSummary.split(" ")[0] === "Icbc" || eventSummary === "home") {
+    if (filterClients.indexOf(event.summary) >= 0) {
       const icbcObj = {}
       icbcObj["location"] = eventSplit;
       icbcObj["summary"] = eventSummary;
       icbcObj["startTime"] = startTime;
       icbcArr.push(icbcObj)
-    // }
     }
   })
 
   return icbcArr;
 }
 
-const filterICBC = async(eventsObject) => {
-  const eventLocation = await Promise.all(eventsObject.map(event => (axios.get(`https://travel-calculator-server.herokuapp.com/client/find/${event.summary}`)
+
+//fetches all appointments - if ICBC, it will return data, if WSBC it will return undefined
+const fetchAppointmentsIcbc = async(eventsObject) => {
+  const eventLocation = await Promise.all(eventsObject.map(event => (axios.get(`https://travel-calculator-server.herokuapp.com/client/find/icbc/${event.summary}`)
+    .then((data)=> data.data.rows[0]))
+  ))
+  const emptyObj = {};
+  emptyObj["eventsObject"] = eventsObject;
+  emptyObj["eventLocation"] = eventLocation;
+  // console.log("eventLocation-from-first-map",eventLocation[0].data.rows[0].address);
+  return emptyObj;
+}
+
+//fetches all appointments - if WSBC, it will return data, if ICBC it will return undefined
+const fetchAppointmentsWsbc = async(eventsObject) => {
+  const eventLocation = await Promise.all(eventsObject.map(event => (axios.get(`https://travel-calculator-server.herokuapp.com/client/find/wsbc/${event.summary}`)
     .then((data)=> data.data.rows[0]))
   ))
   const emptyObj = {};
@@ -98,4 +121,6 @@ const filterICBC = async(eventsObject) => {
 }
 
 
-export { calculateTimeMax, firstMap, secondMap, wait, icbcEvents, obtainAddress, filterICBC };
+
+
+export { calculateTimeMax, firstMap, secondMap, wait, createEvents, obtainIcbcAddress, fetchAppointmentsIcbc, fetchAppointmentsWsbc, obtainWsbcAddress };
