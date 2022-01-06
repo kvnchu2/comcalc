@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import Navbar from "../nav/navbar.js";
 import axios from 'axios';
 
 export default function Clients() {
@@ -55,6 +56,7 @@ export default function Clients() {
 
   return (
     <>
+      <Navbar></Navbar>
       <form autoComplete="off" onSubmit={event => event.preventDefault()}>
         <input
           name="name"

@@ -1,7 +1,8 @@
 import React from 'react';
 import './home.css';
-import DateInput from "./DateInput.js"
-import Results from "./results/index.js"
+import DateInput from "./DateInput.js";
+import Results from "./results/index.js";
+import Navbar from "../nav/navbar.js";
 import Button from '@material-ui/core/Button';
 import { makeStyles } from "@material-ui/styles";
 import useApplicationData from '../../useApplicationData.js';
@@ -62,6 +63,7 @@ export default function Home() {
 
   return (
     <div className="App">
+      <Navbar></Navbar>
       <header class="App-header">
         <section id="search-panel">
           <DateInput inputDate={inputDate} handleSearchInput={handleSearchInput}></DateInput>
