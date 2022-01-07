@@ -68,6 +68,7 @@ export default function Clients() {
           onChange={event => {
             setSearchName(event.target.value);
           }}
+          class="form-elements"
         />
         <input
           name="name"
@@ -77,6 +78,7 @@ export default function Clients() {
           onChange={event => {
             setSearchAddress(event.target.value);
           }}
+          class="form-elements"
         />
         <input
           name="name"
@@ -86,8 +88,9 @@ export default function Clients() {
           onChange={event => {
             setSearchProvider(event.target.value);
           }}
+          class="form-elements"
         />
-        <button onClick={onSubmitHandler}>Add Client</button>
+        <button onClick={onSubmitHandler} class="form-elements">Add Client</button>
       </form>
       {allClients}
       </div>
