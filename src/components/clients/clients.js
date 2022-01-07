@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import "./clients.css"
 import Navbar from "../nav/navbar.js";
 import axios from 'axios';
 
@@ -57,7 +58,8 @@ export default function Clients() {
   return (
     <>
       <Navbar></Navbar>
-      <form autoComplete="off" onSubmit={event => event.preventDefault()}>
+      <div id="clients-container">
+      <form id="client-search-form" autoComplete="off" onSubmit={event => event.preventDefault()}>
         <input
           name="name"
           type="text"
@@ -85,9 +87,10 @@ export default function Clients() {
             setSearchProvider(event.target.value);
           }}
         />
+        <button onClick={onSubmitHandler}>Add Client</button>
       </form>
-      <button onClick={onSubmitHandler}>Add Client</button>
       {allClients}
+      </div>
     </>
   );
 }
