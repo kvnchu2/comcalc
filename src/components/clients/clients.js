@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import "./clients.css"
 import Navbar from "../nav/navbar.js";
 import axios from 'axios';
+import ClientsTable from "./clientsTable";
 
 export default function Clients() {
   const [searchName, setSearchName] = useState("");
@@ -92,7 +93,7 @@ export default function Clients() {
         />
         <button onClick={onSubmitHandler} class="form-elements">Add Client</button>
       </form>
-      {allClients}
+      <ClientsTable clients={clients} onDeleteHandler={onDeleteHandler}></ClientsTable>
       </div>
     </>
   );
