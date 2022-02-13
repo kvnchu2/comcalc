@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import BasicModal from './basicModal';
 
 export default function ClientsTable(props) {
   
@@ -19,7 +20,7 @@ export default function ClientsTable(props) {
           <TableCell component="th" scope="row">{client.name}</TableCell>
           <TableCell align="right">{client.address}</TableCell>
           <TableCell align="right">{client.provider}</TableCell>
-          <TableCell align="right"><button >Edit</button></TableCell>
+          <TableCell align="right"><BasicModal></BasicModal></TableCell>
           <TableCell align="right"><button onClick={() => props.onDeleteHandler(client)}>Delete</button></TableCell>
       </TableRow>
     )

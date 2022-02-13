@@ -215,7 +215,7 @@ const handleWsbcClick = function(eventDate){
     //   const maxDay = Number(eventDate.split(" ")[0]) + 1;
     //   splitDate[0] = maxDay;
     //  const maxDate = splitDate.join(" ");
-     const maxDate = calculateTimeMax(eventDate);
+      const maxDate = calculateTimeMax(eventDate);
       // get events
       gapi.client.calendar.events.list({
         'calendarId': 'primary',
