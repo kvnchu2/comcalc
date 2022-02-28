@@ -30,6 +30,7 @@ export default function BasicModal(props) {
       .then((result) => {
         console.log(result);
         setAddress("");
+        setOpen(false);
       })
       .catch((error) => {
         console.log(error);

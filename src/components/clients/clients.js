@@ -43,7 +43,7 @@ export default function Clients() {
       .catch((error) => {
         console.log(error);
       })
-  },[searchName]);
+  });
 
   const allClients = clients.map((client) => {
     return (
