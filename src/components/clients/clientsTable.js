@@ -20,6 +20,7 @@ export default function ClientsTable(props) {
           <TableCell component="th" scope="row">{client.name}</TableCell>
           <TableCell align="right">{client.address}</TableCell>
           <TableCell align="right">{client.provider}</TableCell>
+          <TableCell align="right">{client.end_date}</TableCell>
           <TableCell align="right"><BasicModal client={client}></BasicModal></TableCell>
           <TableCell align="right"><button onClick={() => props.onDeleteHandler(client)}>Delete</button></TableCell>
       </TableRow>
@@ -37,6 +38,7 @@ export default function ClientsTable(props) {
             <TableCell>Client</TableCell>
             <TableCell align="right">Address</TableCell>
             <TableCell align="right">Provider</TableCell>
+            <TableCell align="right">End Date</TableCell>
             <TableCell align="right">Edit</TableCell>
             <TableCell align="right">Delete</TableCell>
           </TableRow>
