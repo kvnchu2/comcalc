@@ -22,9 +22,11 @@ const style = {
 export default function BasicModal(props) {
   const [open, setOpen] = React.useState(false);
   const [address, setAddress] = useState("");
+  const [endDate, setEndDate] = useState("");
   const handleOpen = () => {
     setOpen(true);
     setAddress(props.client.address);
+    setEndDate(props.client.end_date);
   }
   const handleClose = () => setOpen(false);
 
@@ -33,6 +35,7 @@ export default function BasicModal(props) {
       .then((result) => {
         console.log(result);
         setAddress("");
+        setEndDate("");
         setOpen(false);
       })
       .catch((error) => {
@@ -51,7 +54,7 @@ export default function BasicModal(props) {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Enter New Address
+            Edit Details
           </Typography>
           <form autoComplete="off" onSubmit={event => event.preventDefault()}>
             <input
@@ -61,6 +64,16 @@ export default function BasicModal(props) {
             value={address}
             onChange={event => {
               setAddress(event.target.value);
+            }}
+            class="form-elements"
+            />
+            <input
+            name="end-date"
+            type="text"
+            placeholder="End Date"
+            value={endDate}
+            onChange={event => {
+              setEndDate(event.target.value);
             }}
             class="form-elements"
             />
