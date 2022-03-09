@@ -22,7 +22,10 @@ const style = {
 export default function BasicModal(props) {
   const [open, setOpen] = React.useState(false);
   const [address, setAddress] = useState("");
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setOpen(true);
+    setAddress(props.client.address);
+  }
   const handleClose = () => setOpen(false);
 
   const onSubmitHandler = () => {
