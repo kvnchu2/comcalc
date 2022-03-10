@@ -39,13 +39,13 @@ export default function Clients() {
   useEffect(() => {
     axios.get("https://travel-calculator-server.herokuapp.com/client/all")
       .then((result) => {
-        console.log("clients-data", result.data);
         setClients(result.data);
+        console.log(result);
       })
       .catch((error) => {
         console.log(error);
       })
-  });
+  }, []);
 
   const allClients = clients.map((client) => {
     return (
