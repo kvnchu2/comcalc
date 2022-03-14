@@ -40,12 +40,12 @@ export default function Clients() {
     axios.get("https://travel-calculator-server.herokuapp.com/client/all")
       .then((result) => {
         setClients(result.data);
-        console.log(result);
+        // console.log(result);
       })
       .catch((error) => {
         console.log(error);
       })
-  }, []);
+  });
 
   const allClients = clients.map((client) => {
     return (
