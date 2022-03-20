@@ -23,13 +23,10 @@ export default function ClientsTable(props) {
           <TableCell align="right">{client.provider}</TableCell>
           <TableCell align="right">{client.end_date}</TableCell>
           <TableCell align="right"><BasicModal client={client}></BasicModal></TableCell>
-          <TableCell align="right"><button onClick={() => props.onDeleteHandler(client)}>Delete</button></TableCell>
+          <TableCell align="right"><Delete onClick={() => props.onDeleteHandler(client)}>Delete</Delete></TableCell>
       </TableRow>
     )
-  })
-
-
-        
+  })        
 
   return (
     <TableContainer component={Paper}>
