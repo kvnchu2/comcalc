@@ -63,7 +63,7 @@ export default function Home() {
   useEffect(() => {
     axios.get("https://travel-calculator-server.herokuapp.com/client/find/enddate")
       .then((result) => {
-        console.log(result.data.rows);
+        console.log(result.data.rows[0]);
       })
       .catch((error) => {
         console.log(error);
