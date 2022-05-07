@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './home.css';
 import DateInput from "../../components/home/DateInput.js";
@@ -22,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Home() {
+
+  const [clientEndDate, setClientEndDate] = useState([]);
 
   const { routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results } = useApplicationData();
   const classes = useStyles();
@@ -64,6 +66,7 @@ export default function Home() {
     axios.get("https://travel-calculator-server.herokuapp.com/client/find/enddate")
       .then((result) => {
         console.log(result.data.rows[0]);
+        setClientEndDate(result.data.rows[0]);
       })
       .catch((error) => {
         console.log(error);
@@ -74,6 +77,7 @@ export default function Home() {
     <div className="App">
       <Navbar></Navbar>
       <header class="App-header">
+      {clientEndDate}
         <section id="search-panel">
           <DateInput inputDate={inputDate} handleSearchInput={handleSearchInput}></DateInput>
           <div id="button-section">
