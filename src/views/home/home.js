@@ -3,6 +3,7 @@ import axios from 'axios';
 import './home.css';
 import DateInput from "../../components/home/DateInput.js";
 import Results from "../../components/home/results/index.js";
+import EndDateTable from "../../components/home/results/endDateTable.js";
 import Navbar from "../../components/nav/navbar.js";
 import Button from '@material-ui/core/Button';
 import { makeStyles } from "@material-ui/styles";
@@ -65,8 +66,8 @@ export default function Home() {
   const clientEndDates = clientEndDate.map(endDate => {
     return(
       <>
-        <div>{endDate.name}</div>
-        <div>{endDate["end_date"]}</div>
+        <div id="end-date-name">{endDate.name}</div>
+        <div id="end-date-date">{endDate["end_date"]}</div>
       </>
     )
   })
@@ -86,7 +87,7 @@ export default function Home() {
     <div className="App">
       <Navbar></Navbar>
       <header class="App-header">
-      {clientEndDates}
+      <EndDateTable clientEndDate={clientEndDate}></EndDateTable>
         <section id="search-panel">
           <DateInput inputDate={inputDate} handleSearchInput={handleSearchInput}></DateInput>
           <div id="button-section">

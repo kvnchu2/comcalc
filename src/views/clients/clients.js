@@ -97,7 +97,7 @@ export default function Clients() {
         <input
           name="name"
           type="text"
-          placeholder="End Date"
+          placeholder="End Date -'YYYY-MM-DD'"
           value={searchEndDate}
           onChange={event => {
             setSearchEndDate(event.target.value);
