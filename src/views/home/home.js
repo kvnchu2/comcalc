@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
 
   const [clientEndDate, setClientEndDate] = useState([]);
-  const [clientName, setClientName] = useState([]);
 
   const { routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results } = useApplicationData();
   const classes = useStyles();
@@ -63,12 +62,20 @@ export default function Home() {
     }
   })
 
+  const clientEndDates = clientEndDate.map(endDate => {
+    return(
+      <>
+        <div>{endDate.name}</div>
+        <div>{endDate["end_date"]}</div>
+      </>
+    )
+  })
+
   useEffect(() => {
     axios.get("https://travel-calculator-server.herokuapp.com/client/find/enddate")
       .then((result) => {
-        console.log(result.data.rows[0]);
-        setClientEndDate([result.data.rows[0]["end_date"]]);
-        setClientName([result.data.rows[0].name])
+        console.log(result.data.rows);
+        setClientEndDate(result.data.rows);
       })
       .catch((error) => {
         console.log(error);
@@ -78,9 +85,8 @@ export default function Home() {
   return (
     <div className="App">
       <Navbar></Navbar>
-      {clientName}
-      {clientEndDate}
       <header class="App-header">
+      {clientEndDates}
         <section id="search-panel">
           <DateInput inputDate={inputDate} handleSearchInput={handleSearchInput}></DateInput>
           <div id="button-section">
