@@ -23,6 +23,7 @@ export default function EndDateTable(props) {
  
   return (
     <TableContainer component={Paper}>
+      <label>Client End Dates Approaching</label>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>

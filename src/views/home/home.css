@@ -14,7 +14,7 @@
   top: 100px; */
   /* margin-left: 150px;
   margin-top: 100px; */
-  margin-top: 200px;
+  margin-top: 100px;
   align-items: center;
 }
 
@@ -67,4 +67,8 @@
   flex-direction: row;
   width: 70%;
   justify-content: space-between;
+}
+
+#end-date-table {
+  padding-top: 50px;
 }

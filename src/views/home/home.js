@@ -63,15 +63,6 @@ export default function Home() {
     }
   })
 
-  const clientEndDates = clientEndDate.map(endDate => {
-    return(
-      <>
-        <div id="end-date-name">{endDate.name}</div>
-        <div id="end-date-date">{endDate["end_date"]}</div>
-      </>
-    )
-  })
-
   useEffect(() => {
     axios.get("https://travel-calculator-server.herokuapp.com/client/find/enddate")
       .then((result) => {
@@ -87,7 +78,9 @@ export default function Home() {
     <div className="App">
       <Navbar></Navbar>
       <header class="App-header">
-      <EndDateTable clientEndDate={clientEndDate}></EndDateTable>
+        <div id="end-date-table">
+          <EndDateTable clientEndDate={clientEndDate}></EndDateTable>
+        </div>
         <section id="search-panel">
           <DateInput inputDate={inputDate} handleSearchInput={handleSearchInput}></DateInput>
           <div id="button-section">
