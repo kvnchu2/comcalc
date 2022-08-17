@@ -6,20 +6,39 @@ export default function Show(props) {
     <>
     <section id="search-results">
       <div class="results-table">
-        <TravelMileageTable routes={props.routes} routesTwo={props.routesTwo}></TravelMileageTable>
+        <TravelMileageTable wsbcRoutes={props.wsbcRoutes} routes={props.routes}  routesTwo={props.routesTwo}></TravelMileageTable>
       </div>
     </section>
     <section id="total-travel-calculation">
-      <label>Total Travel Time</label>
+      <label>Total Wsbc Travel Time</label>
       <div>
-        {props.travelTime} seconds
+        {props.wsbcTravelTime} seconds
       </div>
-      <label>Total Mileage</label>
+      <label>Total Wsbc Mileage</label>
       <div>
-        {props.mileage} meters
+        {props.wsbcMileage} meters
+      </div>
+
+
+      <label> Total Icbc Travel Time</label>
+      <div>
+        {props.TravelTime} seconds
+      </div>
+      <label> Total Icbc Mileage </label>
+      <div>
+        {props.Mileage} meters
       </div>
     </section>
     <section id="travel-calculation">
+      <label>Travel Time per Wsbc Client</label>
+      <div>
+        {((props.wsbcTravelTime/((props.wsbcRoutes.length)))/60)/60}
+      </div>
+      <label>Mileage per Wsbc Client</label>
+      <div>
+        {((props.wsbcMileage/((props.wsbcRoutes.length)))/1000)}
+      </div>
+
       <label>Travel Time per Client</label>
       <div>
         {((props.travelTime/((props.routes.length + props.routesTwo.length) - 2))/60)/60}

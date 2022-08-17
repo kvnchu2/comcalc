@@ -8,6 +8,29 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 export default function TravelMileageTable(props) {
+  const combinedWsbcList = props.wsbcRoutes.sort(function(a,b) { return a.order - b.order}).map( route => {
+    if (isNaN(route.traveltime)) {
+      return (
+        <TableRow
+        key={route.events.summary}
+        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        >
+          <TableCell component="th" scope="row">{route.events.summary}</TableCell>
+        </TableRow>
+      )
+    } else {
+      return (
+        <TableRow
+        key={route.events.summary}
+        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        >
+          <TableCell component="th" scope="row">{route.events.summary}</TableCell>
+          <TableCell align="right">{Math.ceil(route.traveltime / 60)} minutes {Math.ceil(route.mileage / 1000)} kilometers</TableCell>
+        </TableRow>
+      )
+    }
+  })
+
   const combinedList = props.routes.sort(function(a,b) { return a.order - b.order}).map( route => {
     if (isNaN(route.traveltime)) {
       return (
@@ -62,6 +85,7 @@ export default function TravelMileageTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
+          {combinedWsbcList}
           {combinedList}
           {combinedListTwo}
         </TableBody>

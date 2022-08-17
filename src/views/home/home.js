@@ -26,7 +26,7 @@ export default function Home() {
 
   const [clientEndDate, setClientEndDate] = useState([]);
 
-  const { routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results } = useApplicationData();
+  const { wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results } = useApplicationData();
   const classes = useStyles();
 
   const combinedList = routes.sort(function(a,b) { return a.order - b.order}).map( route => {
@@ -92,7 +92,7 @@ export default function Home() {
           </Button>
           </div>
         </section>
-        <Results results={results} combinedList={combinedList} combinedListTwo={combinedListTwo} travelTime={travelTime} mileage={mileage} routes={routes} routesTwo={routesTwo}/>
+        <Results results={results} wsbcTravelTime={wsbcTravelTime} wsbcMileage={wsbcMileage} wsbcRoutes={wsbcRoutes} combinedList={combinedList} combinedListTwo={combinedListTwo} travelTime={travelTime} mileage={mileage} routes={routes} routesTwo={routesTwo}/>
       </header>
     </div>
   );

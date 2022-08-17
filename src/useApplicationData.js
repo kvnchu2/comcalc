@@ -11,6 +11,11 @@ const [mileage, setMileage] = useState(0);
 const [routesTwo, setRoutesTwo] = useState([]);
 const [results, setResults] = useState("");
 
+
+const [wsbcRoutes, setWsbcRoutes] = useState([]);
+const [wsbcTravelTime, setWsbcTravelTime] = useState(0);
+const [wsbcMileage, setWsbcMileage] = useState(0);
+
 const handleSearchInput = (e) => {
   setInputDate(e.target.value);
 };
@@ -20,6 +25,9 @@ const handleIcbcSubmit = (e) => {
   setRoutesTwo([]);
   setTravelTime(0);
   setMileage(0);
+  setWsbcRoutes([]);
+  setWsbcTravelTime(0);
+  setWsbcMileage(0);
   setResults("loading");
   handleIcbcClick(inputDate);
   setInputDate("");
@@ -185,7 +193,8 @@ const handleIcbcClick = function(eventDate){
           })
           .then((coordinates) => {
             calculateICBCRouteTwo(coordinates, icbcArrTwo);
-            setResults("show");
+            handleWsbcClick(eventDate);
+            // setResults("show");
           })  
           .catch((error) => {
             console.log(error);
@@ -263,9 +272,9 @@ const handleWsbcClick = function(eventDate){
                       travelMileageObj["events"] = wsbcArr[y];
                       travelMileageObj["order"] = y;
                       
-                      setRoutes(prevState => ([...prevState, travelMileageObj]));
-                      setTravelTime(prevState => (prevState + result.data.routes[0].summary.travelTimeInSeconds))
-                      setMileage(prevState => (prevState + result.data.routes[0].summary.lengthInMeters))
+                      setWsbcRoutes(prevState => ([...prevState, travelMileageObj]));
+                      setWsbcTravelTime(prevState => (prevState + result.data.routes[0].summary.travelTimeInSeconds))
+                      setWsbcMileage(prevState => (prevState + result.data.routes[0].summary.lengthInMeters))
                     })
                     .catch((error) => {
                       console.log(error);
@@ -274,7 +283,7 @@ const handleWsbcClick = function(eventDate){
                   const eventsObj = {};
                   eventsObj["events"] = wsbcArr[y];
                   eventsObj["order"] = y;
-                  setRoutes(prevState => ([...prevState, eventsObj]));
+                  setWsbcRoutes(prevState => ([...prevState, eventsObj]));
                 }
                 
               }
@@ -294,5 +303,5 @@ const handleWsbcClick = function(eventDate){
   })
 }
 
-return { routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results}
+return { wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results}
 };

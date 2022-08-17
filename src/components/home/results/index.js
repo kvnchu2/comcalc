@@ -9,7 +9,7 @@ export default function Results(props) {
   return (
     <>
     {props.results === LOADING && <Loading/>}
-    {props.results === SHOW && <Show combinedList={props.combinedList} combinedListTwo={props.combinedListTwo} travelTime={props.travelTime} mileage={props.mileage} routes={props.routes} routesTwo={props.routesTwo}/> }
+    {props.results === SHOW && <Show combinedList={props.combinedList} combinedListTwo={props.combinedListTwo} travelTime={props.travelTime} mileage={props.mileage} routes={props.routes} routesTwo={props.routesTwo} wsbcTravelTime={props.wsbcTravelTime} wsbcMileage={props.wsbcMileage} wsbcRoutes={props.wsbcRoutes}/> }
     </>
   )
 };
