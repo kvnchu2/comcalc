@@ -367,8 +367,8 @@ const sessionsCompleted = function(name, startDate, endDate) {
           'singleEvents': true, //shows recurring events
           'orderBy': 'startTime'
         }).then((results) => {
-          console.log(results.result.items.filter(item => item.summary === name).length);
-          // console.log(results.result.item.filter(item => item.summary === name))
+          const sessionsCompleted = results.result.items.filter(item => item.summary === name).length;
+          return axios.post(`https://travel-calculator-server.herokuapp.com/session/completed/${name}/${sessionsCompleted}`);
         });
       });
   });

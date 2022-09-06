@@ -12,7 +12,7 @@ export default function Clients() {
   return (
     <>
       <Navbar></Navbar>
-      <button onClick={() => sessionsCompleted("WP", "2022-08-08", "2022-09-30")}>Sessions Completed</button>
+      <button onClick={() => sessionsCompleted("GL", "2022-02-08", "2022-05-30")}>Sessions Completed</button>
     </>
   );
 }
