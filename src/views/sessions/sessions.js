@@ -7,12 +7,12 @@ import useApplicationData from '../../useApplicationData.js';
 
 export default function Clients() {
 
-  const { sessionsCompleted } = useApplicationData();
+  const { updateSessionsCompleted } = useApplicationData();
 
   return (
     <>
       <Navbar></Navbar>
-      <button onClick={() => sessionsCompleted("GL", "2022-02-08", "2022-05-30")}>Sessions Completed</button>
+      <button onClick={() => updateSessionsCompleted()}>Sessions Completed</button>
     </>
   );
 }

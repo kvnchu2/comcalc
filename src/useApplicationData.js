@@ -374,5 +374,21 @@ const sessionsCompleted = function(name, startDate, endDate) {
   });
 };
 
-return { sessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results}
+
+const updateSessionsCompleted = async() => {
+  //query array of names, start_date, end_date 
+  const clientDates = await axios.get(`https://travel-calculator-server.herokuapp.com/session/clients`);
+
+
+
+  //loop through array, and pass in names, start_date, end_date into sessionsCompleted function
+
+  clientDates.data.rows.forEach((client)=> {
+    sessionsCompleted(client.name, client["start_date"], client["end_date"])
+  })
+
+  
+}
+
+return { updateSessionsCompleted, sessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results}
 };
