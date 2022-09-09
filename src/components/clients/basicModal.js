@@ -28,6 +28,7 @@ export default function BasicModal(props) {
     setOpen(true);
     setAddress(props.client.address);
     setEndDate(props.client.end_date);
+    setStartDate(props.client.start_date);
   }
   const handleClose = () => setOpen(false);
 
