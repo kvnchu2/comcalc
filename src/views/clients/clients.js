@@ -10,16 +10,18 @@ export default function Clients() {
   const [searchAddress, setSearchAddress] = useState("");
   const [searchProvider, setSearchProvider] = useState("");
   const [searchEndDate, setSearchEndDate] = useState("");
+  const [searchStartDate, setSearchStartDate] = useState("");
   const [clients, setClients] = useState([]);
 
   const onSubmitHandler = () => {
-    axios.post("https://travel-calculator-server.herokuapp.com/client/new", {"name": searchName, "address": searchAddress, "provider": searchProvider, "end_date": searchEndDate})
+    axios.post("https://travel-calculator-server.herokuapp.com/client/new", {"name": searchName, "address": searchAddress, "provider": searchProvider, "end_date": searchEndDate, "start_date": searchStartDate})
       .then((result) => {
         console.log(result);
         setSearchName("");
         setSearchAddress("");
         setSearchProvider("");
         setSearchEndDate("");
+        setSearchStartDate("");
       })
       .catch((error) => {
         console.log(error);
@@ -46,18 +48,6 @@ export default function Clients() {
         console.log(error);
       })
   });
-
-  const allClients = clients.map((client) => {
-    return (
-      <>
-        <p>{client.name}</p>
-        <p>{client.address}</p>
-        <p>{client.provider}</p>
-        <p>{client.end_date}</p>
-        <button onClick={() => onDeleteHandler(client)}>Delete</button>
-      </>
-    )
-  })
 
   return (
     <>
@@ -91,6 +81,16 @@ export default function Clients() {
           value={searchProvider}
           onChange={event => {
             setSearchProvider(event.target.value);
+          }}
+          class="form-elements"
+        />
+        <input
+          name="name"
+          type="text"
+          placeholder="Start Date -'YYYY-MM-DD'"
+          value={searchStartDate}
+          onChange={event => {
+            setSearchStartDate(event.target.value);
           }}
           class="form-elements"
         />

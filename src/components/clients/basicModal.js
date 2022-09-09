@@ -23,6 +23,7 @@ export default function BasicModal(props) {
   const [open, setOpen] = React.useState(false);
   const [address, setAddress] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState("");
   const handleOpen = () => {
     setOpen(true);
     setAddress(props.client.address);
@@ -31,11 +32,12 @@ export default function BasicModal(props) {
   const handleClose = () => setOpen(false);
 
   const onSubmitHandler = () => {
-    axios.post("https://travel-calculator-server.herokuapp.com/client/edit/client", {"address": address, "id": props.client.id, "end_date": endDate})
+    axios.post("https://travel-calculator-server.herokuapp.com/client/edit/client", {"address": address, "id": props.client.id, "end_date": endDate, "start_date": startDate})
       .then((result) => {
         console.log(result);
         setAddress("");
         setEndDate("");
+        setStartDate("");
         setOpen(false);
       })
       .catch((error) => {
@@ -64,6 +66,16 @@ export default function BasicModal(props) {
             value={address}
             onChange={event => {
               setAddress(event.target.value);
+            }}
+            class="form-elements"
+            />
+            <input
+            name="start-date"
+            type="text"
+            placeholder="Start Date"
+            value={startDate}
+            onChange={event => {
+              setStartDate(event.target.value);
             }}
             class="form-elements"
             />
