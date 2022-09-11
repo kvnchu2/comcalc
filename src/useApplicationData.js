@@ -305,7 +305,7 @@ const handleWsbcClick = function(eventDate){
 
 
 const sessionsCompleted = function(name, startDate, endDate) {
-
+  console.log(name, startDate, endDate);
   const formatDate = (date) => {
     let convertToArray = date.split("-");
 
@@ -353,25 +353,25 @@ const sessionsCompleted = function(name, startDate, endDate) {
       scope: SCOPES,
     });
 
-    gapi.client.load('calendar', 'v3', () => console.log('bam!'));
+    gapi.client.load('calendar', 'v3', () => console.log('bam!'))
 
-    gapi.auth2.getAuthInstance().signIn()
-      .then(() => {
-        
-        // get events
-        gapi.client.calendar.events.list({
-          'calendarId': 'primary',
-          'timeMin': (new Date(`${formatDate(startDate)} 07:00 UTC`)).toISOString(),
-          'timeMax': (new Date(`${formatDate(endDate)} 6:59 UTC`)).toISOString(),
-          'showDeleted': false,
-          'singleEvents': true, //shows recurring events
-          'orderBy': 'startTime'
-        }).then((results) => {
-          const sessionsCompleted = results.result.items.filter(item => item.summary === name).length;
-          return axios.post(`https://travel-calculator-server.herokuapp.com/session/completed/${name}/${sessionsCompleted}`);
-        });
-      });
-  });
+    gapi.client.calendar.events.list({
+            'calendarId': 'primary',
+            'timeMin': (new Date(`${formatDate(startDate)} 07:00 UTC`)).toISOString(),
+            'timeMax': (new Date(`${formatDate(endDate)} 6:59 UTC`)).toISOString(),
+            'showDeleted': false,
+            'singleEvents': true, //shows recurring events
+            'orderBy': 'startTime',
+            'q': name
+          }).then((results) => {
+            const sessionsCompleted = results.result.items.filter(item => item.summary === name).length;
+            
+            console.log(results);
+            console.log("hit")
+            console.log("sessions completed", sessionsCompleted);
+            return axios.post(`https://travel-calculator-server.herokuapp.com/session/completed/${name}/${sessionsCompleted}`);
+          });
+  })
 };
 
 
@@ -379,15 +379,38 @@ const updateSessionsCompleted = async() => {
   //query array of names, start_date, end_date 
   const clientDates = await axios.get(`https://travel-calculator-server.herokuapp.com/session/clients`);
 
+  console.log("hello");
+  console.log(clientDates);
 
+  gapi.load('client:auth2', () => {
+    console.log('loaded client');
+
+    gapi.client.init({
+      apiKey: API_KEY,
+      clientId: CLIENT_ID,
+      discoveryDocs: DISCOVERY_DOCS,
+      scope: SCOPES,
+    });
+
+    gapi.client.load('calendar', 'v3', () => console.log('bam!'))
+    
+    gapi.auth2.getAuthInstance().signIn()
+      .then(()=> {
+
+        for (let x = 0; x < clientDates.data.rows.length; x++) {
+          if (clientDates.data.rows[x]["start_date"] && clientDates.data.rows[x]["end_date"]) {
+            console.log("made it");
+            sessionsCompleted(clientDates.data.rows[x].name, clientDates.data.rows[x]["start_date"], clientDates.data.rows[x]["end_date"])
+          }
+        }
+
+      })
+  })
 
   //loop through array, and pass in names, start_date, end_date into sessionsCompleted function
 
-  clientDates.data.rows.forEach((client)=> {
-    sessionsCompleted(client.name, client["start_date"], client["end_date"])
-  })
-
   
+
 }
 
 return { updateSessionsCompleted, sessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results}
