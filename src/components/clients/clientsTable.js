@@ -23,6 +23,8 @@ export default function ClientsTable(props) {
           <TableCell align="right">{client.provider}</TableCell>
           <TableCell align="right">{client.start_date}</TableCell>
           <TableCell align="right">{client.end_date}</TableCell>
+          <TableCell align="right">{client.sessions_remaining}</TableCell>
+          <TableCell align="right">{client.sessions_completed}</TableCell>
           <TableCell align="right"><BasicModal client={client}></BasicModal></TableCell>
           <TableCell align="right"><Delete onClick={() => props.onDeleteHandler(client)}>Delete</Delete></TableCell>
       </TableRow>
@@ -39,6 +41,8 @@ export default function ClientsTable(props) {
             <TableCell align="right">Provider</TableCell>
             <TableCell align="right">Start Date</TableCell>
             <TableCell align="right">End Date</TableCell>
+            <TableCell align="right">Sessions Remaining</TableCell>
+            <TableCell align="right">Sessions Completed</TableCell>
             <TableCell align="right">Edit</TableCell>
             <TableCell align="right">Delete</TableCell>
           </TableRow>
