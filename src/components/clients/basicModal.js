@@ -24,21 +24,24 @@ export default function BasicModal(props) {
   const [address, setAddress] = useState("");
   const [endDate, setEndDate] = useState("");
   const [startDate, setStartDate] = useState("");
+  const [sessionsRemaining, setSessionsRemaining] = useState("");
   const handleOpen = () => {
     setOpen(true);
     setAddress(props.client.address);
     setEndDate(props.client.end_date);
     setStartDate(props.client.start_date);
+    setSessionsRemaining(props.client.sessions_remaining);
   }
   const handleClose = () => setOpen(false);
 
   const onSubmitHandler = () => {
-    axios.post("https://travel-calculator-server.herokuapp.com/client/edit/client", {"address": address, "id": props.client.id, "end_date": endDate, "start_date": startDate})
+    axios.post("https://travel-calculator-server.herokuapp.com/client/edit/client", {"address": address, "id": props.client.id, "end_date": endDate, "start_date": startDate, "sessions_remaining": sessionsRemaining})
       .then((result) => {
         console.log(result);
         setAddress("");
         setEndDate("");
         setStartDate("");
+        setSessionsRemaining("");
         setOpen(false);
       })
       .catch((error) => {
@@ -87,6 +90,16 @@ export default function BasicModal(props) {
             value={endDate}
             onChange={event => {
               setEndDate(event.target.value);
+            }}
+            class="form-elements"
+            />
+            <input
+            name="sessions-remaining"
+            type="text"
+            placeholder="Sessions Remaining"
+            value={sessionsRemaining}
+            onChange={event => {
+              setSessionsRemaining(event.target.value);
             }}
             class="form-elements"
             />
