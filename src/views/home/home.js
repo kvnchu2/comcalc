@@ -4,6 +4,7 @@ import './home.css';
 import DateInput from "../../components/home/DateInput.js";
 import Results from "../../components/home/results/index.js";
 import EndDateTable from "../../components/home/results/endDateTable.js";
+import SessionsWarningTable from "../../components/home/results/sessionsWarningTable.js"
 import Navbar from "../../components/nav/navbar.js";
 import Button from '@material-ui/core/Button';
 import { makeStyles } from "@material-ui/styles";
@@ -25,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
 
   const [clientEndDate, setClientEndDate] = useState([]);
+
+  const [sessionsWarning, setSessionsWarning] = useState([]);
 
   const { wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results } = useApplicationData();
   const classes = useStyles();
@@ -66,10 +69,16 @@ export default function Home() {
   useEffect(() => {
 
     Promise.all([
-      axios.get("https://travel-calculator-server.herokuapp.com/client/find/enddate")
+      axios.get("https://travel-calculator-server.herokuapp.com/client/find/enddate"), 
+      axios.get("https://travel-calculator-server.herokuapp.com/client/find/sessionswarning")
     ]).then((all) => {
       
       setClientEndDate(all[0].data.rows);
+      setSessionsWarning(all[1].data.rows);
+
+      console.log("clientEndDate", all[0].data.rows);
+      console.log("sessionsWarning", all[1].data.rows);
+      
      
     });
   }, []);
@@ -92,6 +101,9 @@ export default function Home() {
       <header class="App-header">
         <div id="end-date-table">
           <EndDateTable clientEndDate={clientEndDate}></EndDateTable>
+        </div>
+        <div>
+          <SessionsWarningTable sessionsWarning={sessionsWarning}></SessionsWarningTable>
         </div>
         <section id="search-panel">
           <DateInput inputDate={inputDate} handleSearchInput={handleSearchInput}></DateInput>
