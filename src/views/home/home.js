@@ -29,7 +29,7 @@ export default function Home() {
 
   const [sessionsWarning, setSessionsWarning] = useState([]);
 
-  const { wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results } = useApplicationData();
+  const { updateSessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results } = useApplicationData();
   const classes = useStyles();
 
   const combinedList = routes.sort(function(a,b) { return a.order - b.order}).map( route => {
@@ -72,28 +72,11 @@ export default function Home() {
       axios.get("https://travel-calculator-server.herokuapp.com/client/find/enddate"), 
       axios.get("https://travel-calculator-server.herokuapp.com/client/find/sessionswarning")
     ]).then((all) => {
-      
+      updateSessionsCompleted();
       setClientEndDate(all[0].data.rows);
       setSessionsWarning(all[1].data.rows);
-
-      console.log("clientEndDate", all[0].data.rows);
-      console.log("sessionsWarning", all[1].data.rows);
-      
-     
     });
   }, []);
-
-  // useEffect(() => {
-
-  //   Promise.all([
-  //     axios.get("https://travel-calculator-server.herokuapp.com/client/find/enddate"),
-  //     axios.get('http://localhost:8001/api/appointments'),
-  //     axios.get('http://localhost:8001/api/interviewers'),
-  //   ]).then((all) => {
-      
-  //     setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data}));
-  //   });
-  // }, [])
 
   return (
     <div className="App">

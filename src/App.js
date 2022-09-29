@@ -2,7 +2,6 @@ import React from 'react';
 import Home from './views/home/home';
 import Clients from './views/clients/clients';
 import Signin from './views/authentication/signin';
-import Sessions from './views/sessions/sessions';
 import { Route, Routes } from 'react-router-dom';
 import ProtectedRoutes from "./components/protectedRoutes/protectedRoutes";
 
@@ -14,7 +13,6 @@ function App() {
         <Route element={<ProtectedRoutes />} >
           <Route exact path="/" element={<Home/>} />
           <Route path="/clients" element={<Clients/>} />
-          <Route path="/sessions" element={<Sessions/>} />
         </Route>
       </Routes>
     </div>
