@@ -84,8 +84,6 @@ export default function Home() {
       <header class="App-header">
         <div id="end-date-table">
           <EndDateTable clientEndDate={clientEndDate}></EndDateTable>
-        </div>
-        <div>
           <SessionsWarningTable sessionsWarning={sessionsWarning}></SessionsWarningTable>
         </div>
         <section id="search-panel">
@@ -98,8 +96,8 @@ export default function Home() {
             Calculate WSBC
           </Button> */}
           </div>
-        </section>
         <Results results={results} wsbcTravelTime={wsbcTravelTime} wsbcMileage={wsbcMileage} wsbcRoutes={wsbcRoutes} combinedList={combinedList} combinedListTwo={combinedListTwo} travelTime={travelTime} mileage={mileage} routes={routes} routesTwo={routesTwo}/>
+        </section>
       </header>
     </div>
   );
