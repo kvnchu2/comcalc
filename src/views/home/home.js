@@ -92,9 +92,6 @@ export default function Home() {
           <Button variant="contained" color="primary" style={{width: 100, height: 50}} onClick={handleIcbcSubmit}>
             Calculate
           </Button>
-          {/* <Button variant="contained" color="secondary" style={{width: 100, height: 50}} onClick={handleWsbcSubmit} >
-            Calculate WSBC
-          </Button> */}
           </div>
         <Results results={results} wsbcTravelTime={wsbcTravelTime} wsbcMileage={wsbcMileage} wsbcRoutes={wsbcRoutes} combinedList={combinedList} combinedListTwo={combinedListTwo} travelTime={travelTime} mileage={mileage} routes={routes} routesTwo={routesTwo}/>
         </section>

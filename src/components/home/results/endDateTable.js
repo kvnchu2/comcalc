@@ -9,11 +9,13 @@ import Paper from '@mui/material/Paper';
 
 const style = {
   tableRow: {
-    width: '70%'
+    width: '100%'
   },
   table: {
-    width: '70%',
-    borderWidth: '70%'
+    width: '100%',
+    borderWidth: '70%',
+    paddingLeft: '60px',
+    height: '70%'
   }
 };
 
