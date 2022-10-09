@@ -7,6 +7,7 @@ export default function Navbar(props) {
     <div id="navbar">
       <Link class="navbar-link" to="/">Home</Link>
       <Link class="navbar-link" to="/clients">Clients</Link>
+      <Link class="navbar-link" to="/billing">Billing</Link>
     </div>
   )
 };
