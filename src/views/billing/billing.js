@@ -2,14 +2,36 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Navbar from "../../components/nav/navbar.js";
 import axios from 'axios';
-import { Link } from '@material-ui/core';
+// import { Link } from '@material-ui/core';
 
 export default function Clients() {
 
-  const [link, setLink] = useState("");
+  const [arukahLink, setArukahLink] = useState("");
+  const [lifeskillsLink, setLifeskillsLink] = useState("");
+  const [kevinLink, setKevinLink] = useState("");
   
-  const onArukahSubmitHandler = (link) => {
-    axios.post(`https://travel-calculator-server.herokuapp.com/billing/add/arukah/${link}`)
+  const onArukahSubmitHandler = () => {
+    axios.post(`https://travel-calculator-server.herokuapp.com/billing/add/arukah/${arukahLink}`)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  const onLifeskillsSubmitHandler = () => {
+    axios.post(`https://travel-calculator-server.herokuapp.com/billing/add/lifeskills/${lifeskillsLink}`)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  const onKevinSubmitHandler = () => {
+    axios.post(`https://travel-calculator-server.herokuapp.com/billing/add/kevin/${kevinLink}`)
       .then((result) => {
         console.log(result);
       })
@@ -22,16 +44,38 @@ export default function Clients() {
     <>
       <Navbar></Navbar>
       <input
-          name="link"
+          name="arukah link"
           type="text"
-          placeholder="Link"
-          value={link}
+          placeholder="Arukah Link"
+          value={arukahLink}
           onChange={event => {
-            setLink(event.target.value);
+            setArukahLink(event.target.value);
           }}
           class="form-elements"
       />
-      <button onClick={onArukahSubmitHandler(link)}>Submit</button>
+      <button onClick={onArukahSubmitHandler()}>Submit</button>
+      <input
+          name="lifeskills link"
+          type="text"
+          placeholder="Lifeskills Link"
+          value={lifeskillsLink}
+          onChange={event => {
+            setLifeskillsLink(event.target.value);
+          }}
+          class="form-elements"
+      />
+      <button onClick={onLifeskillsSubmitHandler()}>Submit</button>
+      <input
+          name="kevin link"
+          type="text"
+          placeholder="Kevin Link"
+          value={kevinLink}
+          onChange={event => {
+            setKevinLink(event.target.value);
+          }}
+          class="form-elements"
+      />
+      <button onClick={onKevinSubmitHandler()}>Submit</button>
     </>
   );
 }
