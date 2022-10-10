@@ -19,7 +19,7 @@ const [wsbcMileage, setWsbcMileage] = useState(0);
 const handleSearchInput = (e) => {
   setInputDate(e.target.value);
 };
-const handleIcbcSubmit = (e) => {
+const handleIcbcSubmit = (e, billingLinks) => {
   e.preventDefault();
   setRoutes([]);
   setRoutesTwo([]);
@@ -31,12 +31,10 @@ const handleIcbcSubmit = (e) => {
   setResults("loading");
   handleIcbcClick(inputDate);
   setInputDate("");
-  const ArukahUrl = "https://docs.google.com/spreadsheets/d/1sWWcU4FpJtjjRoQsbVv-W3UPW8KYZZvqvhR6Lr5Jrfw/edit#gid=1732447868";
-  const LifeSkillsUrl = "https://docs.google.com/spreadsheets/d/10BYEwj08osPbLGiUN4MDKbxu6dzqAoccDuv-XHZJJSI/edit#gid=1737001061";
-  const SoleProprietorUrl = "https://docs.google.com/spreadsheets/d/124h_RjpavbO5upobc5Nj5GusNRdwNs6_B3C5GHWZhao/edit#gid=0";
-  window.open(ArukahUrl, '_blank');
-  window.open(LifeSkillsUrl,'_blank');
-  window.open(SoleProprietorUrl,'_blank');
+
+  window.open(billingLinks[0].link, '_blank');
+  window.open(billingLinks[1].link,'_blank');
+  window.open(billingLinks[2].link,'_blank');
 };
 
 const handleWsbcSubmit = (e) => {

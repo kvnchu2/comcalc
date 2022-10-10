@@ -11,9 +11,10 @@ export default function Clients() {
   const [kevinLink, setKevinLink] = useState("");
   
   const onArukahSubmitHandler = () => {
-    axios.post(`https://travel-calculator-server.herokuapp.com/billing/add/arukah/${arukahLink}`)
+    axios.post(`https://travel-calculator-server.herokuapp.com/billing/add/arukah`, {"link": arukahLink})
       .then((result) => {
         console.log(result);
+        setArukahLink("");
       })
       .catch((error) => {
         console.log(error);
@@ -21,9 +22,10 @@ export default function Clients() {
   }
 
   const onLifeskillsSubmitHandler = () => {
-    axios.post(`https://travel-calculator-server.herokuapp.com/billing/add/lifeskills/${lifeskillsLink}`)
+    axios.post(`https://travel-calculator-server.herokuapp.com/billing/add/lifeskills/`, {"link": lifeskillsLink})
       .then((result) => {
         console.log(result);
+        setLifeskillsLink("");
       })
       .catch((error) => {
         console.log(error);
@@ -31,9 +33,10 @@ export default function Clients() {
   }
 
   const onKevinSubmitHandler = () => {
-    axios.post(`https://travel-calculator-server.herokuapp.com/billing/add/kevin/${kevinLink}`)
+    axios.post(`https://travel-calculator-server.herokuapp.com/billing/add/kevin/`, {"link": kevinLink})
       .then((result) => {
         console.log(result);
+        setKevinLink("");
       })
       .catch((error) => {
         console.log(error);
@@ -53,7 +56,7 @@ export default function Clients() {
           }}
           class="form-elements"
       />
-      <button onClick={onArukahSubmitHandler()}>Submit</button>
+      <button onClick={() => onArukahSubmitHandler()}>Submit</button>
       <input
           name="lifeskills link"
           type="text"
@@ -64,7 +67,7 @@ export default function Clients() {
           }}
           class="form-elements"
       />
-      <button onClick={onLifeskillsSubmitHandler()}>Submit</button>
+      <button onClick={() => onLifeskillsSubmitHandler()}>Submit</button>
       <input
           name="kevin link"
           type="text"
@@ -75,7 +78,7 @@ export default function Clients() {
           }}
           class="form-elements"
       />
-      <button onClick={onKevinSubmitHandler()}>Submit</button>
+      <button onClick={() => onKevinSubmitHandler()}>Submit</button>
     </>
   );
 }

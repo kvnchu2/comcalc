@@ -29,6 +29,8 @@ export default function Home() {
 
   const [sessionsWarning, setSessionsWarning] = useState([]);
 
+  const [billingLinks, setBillingLinks] = useState([]);
+
   const { updateSessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results } = useApplicationData();
   const classes = useStyles();
 
@@ -70,11 +72,13 @@ export default function Home() {
 
     Promise.all([
       axios.get("https://travel-calculator-server.herokuapp.com/client/find/enddate"), 
-      axios.get("https://travel-calculator-server.herokuapp.com/client/find/sessionswarning")
+      axios.get("https://travel-calculator-server.herokuapp.com/client/find/sessionswarning"),
+      axios.get("https://travel-calculator-server.herokuapp.com/billing/all")
     ]).then((all) => {
       updateSessionsCompleted();
       setClientEndDate(all[0].data.rows);
       setSessionsWarning(all[1].data.rows);
+      setBillingLinks(all[2].data.rows);
     });
   }, []);
 
@@ -89,7 +93,7 @@ export default function Home() {
         <section id="search-panel">
           <DateInput inputDate={inputDate} handleSearchInput={handleSearchInput}></DateInput>
           <div id="button-section">
-          <Button variant="contained" color="primary" style={{width: 100, height: 50}} onClick={handleIcbcSubmit}>
+          <Button variant="contained" color="primary" style={{width: 100, height: 50}} onClick={(event) => handleIcbcSubmit(event, billingLinks)}>
             Calculate
           </Button>
           </div>
