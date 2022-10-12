@@ -1,0 +1,20 @@
+#arukah-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 200px;
+}
+
+#lifeskills-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 100px;
+}
+
+#kevin-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 100px;
+}

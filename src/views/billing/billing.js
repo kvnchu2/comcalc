@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Navbar from "../../components/nav/navbar.js";
+import "./billing.css";
 import axios from 'axios';
 // import { Link } from '@material-ui/core';
 
@@ -46,6 +47,7 @@ export default function Clients() {
   return (
     <>
       <Navbar></Navbar>
+      <div id="arukah-form">
       <input
           name="arukah link"
           type="text"
@@ -57,6 +59,8 @@ export default function Clients() {
           class="form-elements"
       />
       <button onClick={() => onArukahSubmitHandler()}>Submit</button>
+      </div>
+      <div id="lifeskills-form">
       <input
           name="lifeskills link"
           type="text"
@@ -68,6 +72,8 @@ export default function Clients() {
           class="form-elements"
       />
       <button onClick={() => onLifeskillsSubmitHandler()}>Submit</button>
+      </div>
+      <div id="kevin-form">
       <input
           name="kevin link"
           type="text"
@@ -79,6 +85,7 @@ export default function Clients() {
           class="form-elements"
       />
       <button onClick={() => onKevinSubmitHandler()}>Submit</button>
+      </div>
     </>
   );
 }
