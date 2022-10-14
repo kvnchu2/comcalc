@@ -21,33 +21,38 @@ function Signin() {
   };
 
 
-  const authenticateUser = () => {
-    return axios.post(`https://travel-calculator-server.herokuapp.com/login/login`, {"username": userData.username, "password": userData.password})
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  }
-
-  const authenticatedUser = authenticateUser()
+  // const authenticateUser = () => {
+    
+  //   return axios.post(`https://travel-calculator-server.herokuapp.com/login/login`, {"username": userData.username, "password": userData.password})
+  //     .then((result) => {
+  //       console.log("authenticateUser result",result);
+  //     })
+  // }
+  
+  // const authenticatedUser = authenticateUser()
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //if username or password field is empty, return error message
-    if (userData.username === "" || userData.password === "") {
-      setErrorMessage((prevState) => ({
-        value: "Empty username/password field",
-      }));
-    } else if (authenticatedUser) {
-      //Signin Success
-      localStorage.setItem("isAuthenticated", "true");
-      window.location.pathname = "/";
-    } else {
-      //If credentials entered is invalid
-      setErrorMessage((prevState) => ({ value: "Invalid username/password" }));
-    }
+
+    return axios.post(`https://travel-calculator-server.herokuapp.com/login/login`, {"username": userData.username, "password": userData.password})
+      .then((result) => {
+        console.log("authenticateUser result",result.data.rows.length);
+        // if username or password field is empty, return error message
+        if (userData.username === "" || userData.password === "") {
+          setErrorMessage((prevState) => ({
+            value: "Empty username/password field",
+          }));
+        } else if (result.data.rows.length >= 1) {
+          //Signin Success
+          localStorage.setItem("isAuthenticated", "true");
+          window.location.pathname = "/";
+        } else {
+          //If credentials entered is invalid
+          setErrorMessage((prevState) => ({ value: "Invalid username/password" }));
+        }
+
+      })
+    
   };
 
   return (
@@ -83,7 +88,7 @@ function Signin() {
         <button
           type="submit"
           className="btn btn-primary"
-          onClick={handleSubmit}
+          onClick={(e) => handleSubmit(e)}
         >
           Submit
         </button>
