@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 // import { useDispatch } from "react-redux";
 import { useHistory, useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function Signin() {
   const [userData, setUserData] = useState({ username: "", password: "" });
@@ -19,6 +20,19 @@ function Signin() {
     });
   };
 
+
+  const authenticateUser = () => {
+    return axios.post(`https://travel-calculator-server.herokuapp.com/login/login`, {"username": userData.username, "password": userData.password})
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  const authenticatedUser = authenticateUser()
+
   const handleSubmit = (e) => {
     e.preventDefault();
     //if username or password field is empty, return error message
@@ -26,7 +40,7 @@ function Signin() {
       setErrorMessage((prevState) => ({
         value: "Empty username/password field",
       }));
-    } else if (userData.username == "admin" && userData.password == "123456") {
+    } else if (authenticatedUser) {
       //Signin Success
       localStorage.setItem("isAuthenticated", "true");
       window.location.pathname = "/";
