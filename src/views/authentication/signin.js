@@ -20,17 +20,6 @@ function Signin() {
     });
   };
 
-
-  // const authenticateUser = () => {
-    
-  //   return axios.post(`https://travel-calculator-server.herokuapp.com/login/login`, {"username": userData.username, "password": userData.password})
-  //     .then((result) => {
-  //       console.log("authenticateUser result",result);
-  //     })
-  // }
-  
-  // const authenticatedUser = authenticateUser()
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
