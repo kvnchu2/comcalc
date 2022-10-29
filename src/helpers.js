@@ -32,7 +32,7 @@ const calculateTimeMax = (eventDate) => {
 //obtain addresses for all icbc clients
 const obtainIcbcAddress = async (icbcArrOne) => {
   console.log("firstMap icbcArrOne", icbcArrOne);
-  const eventLocation = await Promise.all(icbcArrOne.map(event => (axios.get(`https://travel-calculator-server.herokuapp.com/client/find/icbc/${event.summary}`)
+  const eventLocation = await Promise.all(icbcArrOne.map(event => (axios.get(`https://travel-calculator-server-production.up.railway.app/client/find/icbc/${event.summary}`)
     .then(({data})=> data))
   ))
   // console.log("eventLocation-from-first-map",eventLocation[0].data.rows[0].address);
@@ -42,7 +42,7 @@ const obtainIcbcAddress = async (icbcArrOne) => {
 //obtain addresses for all wsbc clients
 const obtainWsbcAddress = async (icbcArrOne) => {
   console.log("firstMap icbcArrOne", icbcArrOne);
-  const eventLocation = await Promise.all(icbcArrOne.map(event => (axios.get(`https://travel-calculator-server.herokuapp.com/client/find/wsbc/${event.summary}`)
+  const eventLocation = await Promise.all(icbcArrOne.map(event => (axios.get(`https://travel-calculator-server-production.up.railway.app/client/find/wsbc/${event.summary}`)
     .then(({data})=> data))
   ))
   // console.log("eventLocation-from-first-map",eventLocation[0].data.rows[0].address);
@@ -105,7 +105,7 @@ const createEvents = (clientsObject) => {
 
 //fetches all appointments - if ICBC, it will return data, if WSBC it will return undefined
 const fetchAppointmentsIcbc = async(eventsObject) => {
-  const eventLocation = await Promise.all(eventsObject.map(event => (axios.get(`https://travel-calculator-server.herokuapp.com/client/find/icbc/${event.summary}`)
+  const eventLocation = await Promise.all(eventsObject.map(event => (axios.get(`https://travel-calculator-server-production.up.railway.app/client/find/icbc/${event.summary}`)
     .then((data)=> data.data.rows[0]))
   ))
   const emptyObj = {};
@@ -117,7 +117,7 @@ const fetchAppointmentsIcbc = async(eventsObject) => {
 
 //fetches all appointments - if WSBC, it will return data, if ICBC it will return undefined
 const fetchAppointmentsWsbc = async(eventsObject) => {
-  const eventLocation = await Promise.all(eventsObject.map(event => (axios.get(`https://travel-calculator-server.herokuapp.com/client/find/wsbc/${event.summary}`)
+  const eventLocation = await Promise.all(eventsObject.map(event => (axios.get(`https://travel-calculator-server-production.up.railway.app/client/find/wsbc/${event.summary}`)
     .then((data)=> data.data.rows[0]))
   ))
   const emptyObj = {};

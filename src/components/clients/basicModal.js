@@ -35,7 +35,7 @@ export default function BasicModal(props) {
   const handleClose = () => setOpen(false);
 
   const onSubmitHandler = () => {
-    axios.post("https://travel-calculator-server.herokuapp.com/client/edit/client", {"address": address, "id": props.client.id, "end_date": endDate, "start_date": startDate, "sessions_remaining": sessionsRemaining})
+    axios.post("https://travel-calculator-server-production.up.railway.app/client/edit/client", {"address": address, "id": props.client.id, "end_date": endDate, "start_date": startDate, "sessions_remaining": sessionsRemaining})
       .then((result) => {
         console.log(result);
         setAddress("");
