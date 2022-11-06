@@ -8,6 +8,18 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function Clients() {
 
   const [arukahLink, setArukahLink] = useState("");
@@ -19,18 +31,6 @@ export default function Clients() {
   }
 
   const handleClose = () => setOpen(false);
-
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
   
   const onArukahSubmitHandler = () => {
     axios.post(`https://travel-calculator-server-production.up.railway.app/billing/add/arukah`, {"link": arukahLink})
@@ -120,7 +120,8 @@ export default function Clients() {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Submission Completed
           </Typography>
-        </Box>
+          <button onClick={handleClose}>OK</button>
+        </Box>  
       </Modal>
     </>
   );
