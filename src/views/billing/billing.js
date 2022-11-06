@@ -4,17 +4,39 @@ import Navbar from "../../components/nav/navbar.js";
 import "./billing.css";
 import axios from 'axios';
 // import { Link } from '@material-ui/core';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 export default function Clients() {
 
   const [arukahLink, setArukahLink] = useState("");
   const [lifeskillsLink, setLifeskillsLink] = useState("");
   const [kevinLink, setKevinLink] = useState("");
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  }
+
+  const handleClose = () => setOpen(false);
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
   
   const onArukahSubmitHandler = () => {
     axios.post(`https://travel-calculator-server-production.up.railway.app/billing/add/arukah`, {"link": arukahLink})
       .then((result) => {
         console.log(result);
+        handleOpen();
         setArukahLink("");
       })
       .catch((error) => {
@@ -26,6 +48,7 @@ export default function Clients() {
     axios.post(`https://travel-calculator-server-production.up.railway.app/billing/add/lifeskills/`, {"link": lifeskillsLink})
       .then((result) => {
         console.log(result);
+        handleOpen();
         setLifeskillsLink("");
       })
       .catch((error) => {
@@ -37,6 +60,7 @@ export default function Clients() {
     axios.post(`https://travel-calculator-server-production.up.railway.app/billing/add/kevin/`, {"link": kevinLink})
       .then((result) => {
         console.log(result);
+        handleOpen();
         setKevinLink("");
       })
       .catch((error) => {
@@ -86,6 +110,18 @@ export default function Clients() {
       />
       <button onClick={() => onKevinSubmitHandler()}>Submit</button>
       </div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Submission Completed
+          </Typography>
+        </Box>
+      </Modal>
     </>
   );
 }

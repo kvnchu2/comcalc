@@ -413,8 +413,6 @@ const updateSessionsCompleted = async() => {
 
   //loop through array, and pass in names, start_date, end_date into sessionsCompleted function
 
-  
-
 }
 
 return { updateSessionsCompleted, sessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results}
