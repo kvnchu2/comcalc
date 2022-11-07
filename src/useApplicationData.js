@@ -198,7 +198,6 @@ const handleIcbcClick = function(eventDate){
           .then((coordinates) => {
             calculateICBCRouteTwo(coordinates, icbcArrTwo);
             handleWsbcClick(eventDate);
-            // setResults("show");
           })  
           .catch((error) => {
             console.log(error);
