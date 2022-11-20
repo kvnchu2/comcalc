@@ -16,6 +16,13 @@ const tableCellRowStyle = {
   }
 }
 
+const headRowStyle = {
+  ['@media (max-width:376px)']: { // eslint-disable-line no-useless-computed-key
+    display: 'none'
+  }
+}
+
+
 export default function ClientsTable(props) {
   
   const allClients = props.clients.map((client) => {
@@ -41,16 +48,16 @@ export default function ClientsTable(props) {
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
-          <TableRow sx={tableCellRowStyle}>
-            <TableCell sx={tableCellRowStyle}>Client</TableCell>
-            <TableCell sx={tableCellRowStyle} align="right">Address</TableCell>
-            <TableCell sx={tableCellRowStyle} align="right">Provider</TableCell>
-            <TableCell sx={tableCellRowStyle} align="right">Start Date</TableCell>
-            <TableCell sx={tableCellRowStyle} align="right">End Date</TableCell>
-            <TableCell sx={tableCellRowStyle} align="right">Sessions Remaining</TableCell>
-            <TableCell sx={tableCellRowStyle} align="right">Sessions Completed</TableCell>
-            <TableCell sx={tableCellRowStyle} align="right">Edit</TableCell>
-            <TableCell sx={tableCellRowStyle} align="right">Delete</TableCell>
+          <TableRow sx={headRowStyle}>
+            <TableCell sx={headRowStyle}>Client</TableCell>
+            <TableCell sx={headRowStyle} align="right">Address</TableCell>
+            <TableCell sx={headRowStyle} align="right">Provider</TableCell>
+            <TableCell sx={headRowStyle} align="right">Start Date</TableCell>
+            <TableCell sx={headRowStyle} align="right">End Date</TableCell>
+            <TableCell sx={headRowStyle} align="right">Sessions Remaining</TableCell>
+            <TableCell sx={headRowStyle} align="right">Sessions Completed</TableCell>
+            <TableCell sx={headRowStyle} align="right">Edit</TableCell>
+            <TableCell sx={headRowStyle} align="right">Delete</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
