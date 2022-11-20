@@ -11,22 +11,22 @@ import BasicModal from './basicModal';
 import Delete from './delete';
 
 const mobileRowStyle = {
-  ['@media (max-width:376px)']: { // eslint-disable-line no-useless-computed-key
+  ['@media (max-width:390px)']: { // eslint-disable-line no-useless-computed-key
     display: 'block'
   }, 
-  ['@media (min-width:377px)']: { // eslint-disable-line no-useless-computed-key
+  ['@media (min-width:391px)']: { // eslint-disable-line no-useless-computed-key
     display: 'none'
   }
 }
 
 const headRowStyle = {
-  ['@media (max-width:376px)']: { // eslint-disable-line no-useless-computed-key
+  ['@media (max-width:390px)']: { // eslint-disable-line no-useless-computed-key
     display: 'none'
   }
 }
 
 const desktopRowStyle = {
-  ['@media (max-width:376px)']: { // eslint-disable-line no-useless-computed-key
+  ['@media (max-width:390px)']: { // eslint-disable-line no-useless-computed-key
     display: 'none'
   }
 }
