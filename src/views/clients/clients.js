@@ -50,7 +50,7 @@ export default function Clients() {
       .catch((error) => {
         console.log(error);
       })
-  },[]);
+  });
 
   return (
     <>
@@ -109,16 +109,21 @@ export default function Clients() {
         />
         <button onClick={onSubmitHandler} class="form-elements">Add Client</button>
       </form>
+      <div id="search-bar">
+      <label>
+        Search for Client (initials):
+      </label>
       <input
           name="search"
           type="text"
-          placeholder="search"
+          placeholder="Search"
           value={searchClient}
           onChange={event => {
             setSearchClient(event.target.value);
           }}
           class="form-elements"
       />
+      </div>
       <ClientsTable clients={clients} searchClientArray={searchClientArray} onDeleteHandler={onDeleteHandler}></ClientsTable>
       </div>
     </>

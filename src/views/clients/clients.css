@@ -12,3 +12,11 @@
 .form-elements {
   margin-right: 15px;
 }
+
+#search-bar {
+  padding-top: 30px;
+}
+
+#search-bar label {
+  padding-right: 10px;
+}
