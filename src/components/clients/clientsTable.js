@@ -62,7 +62,37 @@ export default function ClientsTable(props) {
           <TableCell sx={desktopRowStyle} align="right"><Delete onClick={() => props.onDeleteHandler(client)}>Delete</Delete></TableCell>
       </TableRow>
     )
-  })        
+  })
+
+  const searchClient = props.searchClientArray.map((client) => {
+    return (
+      <TableRow
+          key={client.name}
+          sx={{ '&:last-child td, &:last-child th': { border: 0 }, mobileRowStyle}}
+        >
+          <TableCell sx={mobileRowStyle} component="th" scope="row">Client: {client.name}</TableCell>
+          <TableCell sx={mobileRowStyle} align="left">Address: {client.address}</TableCell>
+          <TableCell sx={mobileRowStyle} align="left">Provider: {client.provider}</TableCell>
+          <TableCell sx={mobileRowStyle} align="left">Start Date: {client.start_date}</TableCell>
+          <TableCell sx={mobileRowStyle} align="left">End Date: {client.end_date}</TableCell>
+          <TableCell sx={mobileRowStyle} align="left">Sessions Remaining: {client.sessions_remaining}</TableCell>
+          <TableCell sx={mobileRowStyle} align="left">Sessions Completed: {client.sessions_completed}</TableCell>
+          <TableCell sx={mobileRowStyle} align="left"><BasicModal client={client}></BasicModal></TableCell>
+          <TableCell sx={mobileRowStyle} align="left"><Delete onClick={() => props.onDeleteHandler(client)}>Delete</Delete></TableCell>
+
+
+          <TableCell sx={desktopRowStyle} component="th" scope="row">{client.name}</TableCell>
+          <TableCell sx={desktopRowStyle} align="right">{client.address}</TableCell>
+          <TableCell sx={desktopRowStyle} align="right">{client.provider}</TableCell>
+          <TableCell sx={desktopRowStyle} align="right">{client.start_date}</TableCell>
+          <TableCell sx={desktopRowStyle} align="right">{client.end_date}</TableCell>
+          <TableCell sx={desktopRowStyle} align="right">{client.sessions_remaining}</TableCell>
+          <TableCell sx={desktopRowStyle} align="right">{client.sessions_completed}</TableCell>
+          <TableCell sx={desktopRowStyle} align="right"><BasicModal client={client}></BasicModal></TableCell>
+          <TableCell sx={desktopRowStyle} align="right"><Delete onClick={() => props.onDeleteHandler(client)}>Delete</Delete></TableCell>
+      </TableRow>
+    )
+  })
 
   return (
     <TableContainer component={Paper}>
@@ -81,7 +111,7 @@ export default function ClientsTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {allClients}
+          {props.searchClientArray.length > 0 ? searchClient : allClients}
         </TableBody>
       </Table>
     </TableContainer>

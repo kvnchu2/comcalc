@@ -12,6 +12,7 @@ export default function Clients() {
   const [searchEndDate, setSearchEndDate] = useState("");
   const [searchStartDate, setSearchStartDate] = useState("");
   const [clients, setClients] = useState([]);
+  const [searchClient, setSearchClient] = useState("");
 
   const onSubmitHandler = () => {
     axios.post("https://travel-calculator-server-production.up.railway.app/client/new", {"name": searchName, "address": searchAddress, "provider": searchProvider, "end_date": searchEndDate, "start_date": searchStartDate})
@@ -38,16 +39,18 @@ export default function Clients() {
       })
   }
 
+  const searchClientArray = clients.filter(client => client.name === searchClient);
+
   useEffect(() => {
     axios.get("https://travel-calculator-server-production.up.railway.app/client/all")
       .then((result) => {
         setClients(result.data);
-        // console.log(result);
+        console.log("clients info", result.data);
       })
       .catch((error) => {
         console.log(error);
       })
-  });
+  },[]);
 
   return (
     <>
@@ -106,7 +109,17 @@ export default function Clients() {
         />
         <button onClick={onSubmitHandler} class="form-elements">Add Client</button>
       </form>
-      <ClientsTable clients={clients} onDeleteHandler={onDeleteHandler}></ClientsTable>
+      <input
+          name="search"
+          type="text"
+          placeholder="search"
+          value={searchClient}
+          onChange={event => {
+            setSearchClient(event.target.value);
+          }}
+          class="form-elements"
+      />
+      <ClientsTable clients={clients} searchClientArray={searchClientArray} onDeleteHandler={onDeleteHandler}></ClientsTable>
       </div>
     </>
   );
