@@ -25,7 +25,7 @@ function Signin() {
 
     return axios.post(`https://travel-calculator-server-production.up.railway.app/login/login`, {"username": userData.username, "password": userData.password})
       .then((result) => {
-        console.log("authenticateUser result",result.data.rows.length);
+        console.log("authenticateUser result",result);
         // if username or password field is empty, return error message
         if (userData.username === "" || userData.password === "") {
           setErrorMessage((prevState) => ({
