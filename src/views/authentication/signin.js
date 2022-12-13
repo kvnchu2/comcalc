@@ -23,7 +23,7 @@ function Signin() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    return axios.post(`https://travel-calculator-server-production.up.railway.app/login/login`, {"username": userData.username, "password": userData.password})
+    return axios.post(`https://comcalc-server.herokuapp.com/login/login`, {"username": userData.username, "password": userData.password})
       .then((result) => {
         console.log("authenticateUser result",result);
         // if username or password field is empty, return error message

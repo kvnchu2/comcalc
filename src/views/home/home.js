@@ -71,9 +71,9 @@ export default function Home() {
   useEffect(() => {
 
     Promise.all([
-      axios.get("https://travel-calculator-server-production.up.railway.app/client/find/enddate"), 
-      axios.get("https://travel-calculator-server-production.up.railway.app/client/find/sessionswarning"),
-      axios.get("https://travel-calculator-server-production.up.railway.app/billing/all")
+      axios.get("https://comcalc-server.herokuapp.com/client/find/enddate"), 
+      axios.get("https://comcalc-server.herokuapp.com/client/find/sessionswarning"),
+      axios.get("https://comcalc-server.herokuapp.com/billing/all")
     ]).then((all) => {
       updateSessionsCompleted();
       setClientEndDate(all[0].data.rows);

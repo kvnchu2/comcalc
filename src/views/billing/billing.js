@@ -33,7 +33,7 @@ export default function Clients() {
   const handleClose = () => setOpen(false);
   
   const onArukahSubmitHandler = () => {
-    axios.post(`https://travel-calculator-server-production.up.railway.app/billing/add/arukah`, {"link": arukahLink})
+    axios.post(`https://comcalc-server.herokuapp.com/billing/add/arukah`, {"link": arukahLink})
       .then((result) => {
         console.log(result);
         handleOpen();
@@ -45,7 +45,7 @@ export default function Clients() {
   }
 
   const onLifeskillsSubmitHandler = () => {
-    axios.post(`https://travel-calculator-server-production.up.railway.app/billing/add/lifeskills/`, {"link": lifeskillsLink})
+    axios.post(`https://comcalc-server.herokuapp.com/billing/add/lifeskills/`, {"link": lifeskillsLink})
       .then((result) => {
         console.log(result);
         handleOpen();
@@ -57,7 +57,7 @@ export default function Clients() {
   }
 
   const onKevinSubmitHandler = () => {
-    axios.post(`https://travel-calculator-server-production.up.railway.app/billing/add/kevin/`, {"link": kevinLink})
+    axios.post(`https://comcalc-server.herokuapp.com/billing/add/kevin/`, {"link": kevinLink})
       .then((result) => {
         console.log(result);
         handleOpen();

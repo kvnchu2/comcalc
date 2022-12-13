@@ -15,7 +15,7 @@ export default function Clients() {
   const [searchClient, setSearchClient] = useState("");
 
   const onSubmitHandler = () => {
-    axios.post("https://travel-calculator-server-production.up.railway.app/client/new", {"name": searchName, "address": searchAddress, "provider": searchProvider, "end_date": searchEndDate, "start_date": searchStartDate})
+    axios.post("https://comcalc-server.herokuapp.com/client/new", {"name": searchName, "address": searchAddress, "provider": searchProvider, "end_date": searchEndDate, "start_date": searchStartDate})
       .then((result) => {
         console.log(result);
         setSearchName("");
@@ -30,7 +30,7 @@ export default function Clients() {
   }
 
   const onDeleteHandler = (client) => {
-    axios.post("https://travel-calculator-server-production.up.railway.app/client/delete", {"id": client.id})
+    axios.post("https://comcalc-server.herokuapp.com/client/delete", {"id": client.id})
       .then((result) => {
         console.log(result);
       })
@@ -42,7 +42,7 @@ export default function Clients() {
   const searchClientArray = clients.filter(client => client.name === searchClient);
 
   useEffect(() => {
-    axios.get("https://travel-calculator-server-production.up.railway.app/client/all")
+    axios.get("https://comcalc-server.herokuapp.com/client/all")
       .then((result) => {
         setClients(result.data);
         console.log("clients info", result.data);

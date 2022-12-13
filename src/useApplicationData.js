@@ -372,7 +372,7 @@ const sessionsCompleted = function(name, startDate, endDate) {
             console.log(results);
             console.log("hit")
             console.log("sessions completed", sessionsCompleted);
-            return axios.post(`https://travel-calculator-server-production.up.railway.app/session/completed/${name}/${sessionsCompleted}`);
+            return axios.post(`https://comcalc-server.herokuapp.com/session/completed/${name}/${sessionsCompleted}`);
           });
   })
 };
@@ -380,7 +380,7 @@ const sessionsCompleted = function(name, startDate, endDate) {
 
 const updateSessionsCompleted = async() => {
   //query array of names, start_date, end_date 
-  const clientDates = await axios.get(`https://travel-calculator-server-production.up.railway.app/session/clients`);
+  const clientDates = await axios.get(`https://comcalc-server.herokuapp.com/session/clients`);
 
   console.log("hello");
   console.log(clientDates);
