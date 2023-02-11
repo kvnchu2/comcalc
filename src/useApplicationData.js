@@ -414,5 +414,23 @@ const updateSessionsCompleted = async() => {
 
 }
 
+const getClientsNotScheduled = (date, dayOfWeek)=> {
+  const getNextDayOfWeek = (date, dayOfWeek) => {
+    // Code to check that date and dayOfWeek are valid left as an exercise ;)
+    var resultDate = new Date(date.getTime());
+    resultDate.setDate(date.getDate() + (7 + dayOfWeek - date.getDay()) % 7);
+    return resultDate;
+  }
+  
+  const startDate = getNextDayOfWeek(date, dayOfWeek);
+
+  const endDate = new Date();
+
+  endDate.setDate(startDate.getDate() + 7);
+
+  
+
+}
+
 return { updateSessionsCompleted, sessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results}
 };
