@@ -2,6 +2,8 @@ import axios from 'axios';
 import { useState } from 'react';
 import { calculateTimeMax, firstMap, secondMap, wait, createEvents, obtainIcbcAddress, obtainWsbcAddress, fetchAppointmentsIcbc, fetchAppointmentsWsbc } from './helpers.js';
 
+
+
 export default function useApplicationData() {
 const [events, setEvents] = useState([]);
 const [inputDate, setInputDate] = useState("");
@@ -122,12 +124,12 @@ const handleIcbcClick = function(eventDate){
       clientId: CLIENT_ID,
       discoveryDocs: DISCOVERY_DOCS,
       scope: SCOPES,
+      plugin_name: "travel-calculator"
     })
 
     gapi.client.load('calendar', 'v3', () => console.log('bam!'))
 
-    gapi.auth2.getAuthInstance().signIn()
-    .then(() => {
+    
       
       const maxDate = calculateTimeMax(eventDate);
       console.log("maxDate", maxDate);
@@ -204,7 +206,7 @@ const handleIcbcClick = function(eventDate){
           })
       })
 
-    })
+    
   })
 }
 
@@ -217,12 +219,12 @@ const handleWsbcClick = function(eventDate){
       clientId: CLIENT_ID,
       discoveryDocs: DISCOVERY_DOCS,
       scope: SCOPES,
+      plugin_name: "travel-calculator"
     })
 
     gapi.client.load('calendar', 'v3', () => console.log('bam!'))
 
-    gapi.auth2.getAuthInstance().signIn()
-    .then(() => {
+    
     //   let splitDate = eventDate.split(" ")
     //   const maxDay = Number(eventDate.split(" ")[0]) + 1;
     //   splitDate[0] = maxDay;
@@ -302,7 +304,7 @@ const handleWsbcClick = function(eventDate){
 
 
 
-    })
+    
   })
 }
 
@@ -354,7 +356,8 @@ const sessionsCompleted = function(name, startDate, endDate) {
       clientId: CLIENT_ID,
       discoveryDocs: DISCOVERY_DOCS,
       scope: SCOPES,
-    });
+      plugin_name: "travel-calculator"
+    })
 
     gapi.client.load('calendar', 'v3', () => console.log('bam!'))
 
@@ -385,20 +388,7 @@ const updateSessionsCompleted = async() => {
   console.log("hello");
   console.log(clientDates);
 
-  gapi.load('client:auth2', () => {
-    console.log('loaded client');
-
-    gapi.client.init({
-      apiKey: API_KEY,
-      clientId: CLIENT_ID,
-      discoveryDocs: DISCOVERY_DOCS,
-      scope: SCOPES,
-    });
-
-    gapi.client.load('calendar', 'v3', () => console.log('bam!'))
-    
-    gapi.auth2.getAuthInstance().signIn()
-      .then(()=> {
+  
 
         for (let x = 0; x < clientDates.data.rows.length; x++) {
           if (clientDates.data.rows[x]["start_date"] && clientDates.data.rows[x]["end_date"]) {
@@ -407,8 +397,8 @@ const updateSessionsCompleted = async() => {
           }
         }
 
-      })
-  })
+      
+  
 
   //loop through array, and pass in names, start_date, end_date into sessionsCompleted function
 
@@ -422,15 +412,43 @@ const getClientsNotScheduled = (date, dayOfWeek)=> {
     return resultDate;
   }
   
+  console.log("test")
   const startDate = getNextDayOfWeek(date, dayOfWeek);
 
   const endDate = new Date();
 
   endDate.setDate(startDate.getDate() + 7);
 
-  
+  return gapi.load('client:auth2', () => {
+    console.log('loaded client')
 
+    gapi.client.init({
+      apiKey: API_KEY,
+      clientId: CLIENT_ID,
+      discoveryDocs: DISCOVERY_DOCS,
+      scope: SCOPES,
+      plugin_name: "travel-calculator"
+    })
+
+    gapi.client.load('calendar', 'v3', () => console.log('bam!'))
+
+    
+      
+
+      gapi.client.calendar.events.list({
+        'calendarId': 'primary',
+        'timeMin': startDate.toISOString(),
+        'timeMax': endDate.toISOString(),
+        'showDeleted': false,
+        'singleEvents': true, //shows recurring events
+        'maxResults': 50,
+        'orderBy': 'startTime'
+      }).then((result)=> {
+        console.log("resultssss", result.result.items);
+      })
+    
+  })
 }
 
-return { updateSessionsCompleted, sessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results}
+return { getClientsNotScheduled, updateSessionsCompleted, sessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results}
 };

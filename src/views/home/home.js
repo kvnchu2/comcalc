@@ -9,6 +9,7 @@ import Navbar from "../../components/nav/navbar.js";
 import Button from '@material-ui/core/Button';
 import { makeStyles } from "@material-ui/styles";
 import useApplicationData from '../../useApplicationData.js';
+import { GoogleLogin } from '@react-oauth/google';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +32,7 @@ export default function Home() {
 
   const [billingLinks, setBillingLinks] = useState([]);
 
-  const { updateSessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results } = useApplicationData();
+  const { getClientsNotScheduled, updateSessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results } = useApplicationData();
   const classes = useStyles();
 
   const combinedList = routes.sort(function(a,b) { return a.order - b.order}).map( route => {
@@ -75,6 +76,7 @@ export default function Home() {
       axios.get("https://comcalc-server.herokuapp.com/client/find/sessionswarning"),
       axios.get("https://comcalc-server.herokuapp.com/billing/all")
     ]).then((all) => {
+      // getClientsNotScheduled(new Date(), 0);
       updateSessionsCompleted();
       setClientEndDate(all[0].data.rows);
       setSessionsWarning(all[1].data.rows);
