@@ -116,21 +116,41 @@ var SCOPES = "https://www.googleapis.com/auth/calendar.events"
 
 
 const handleIcbcClick = function(eventDate){
+  gapi.load('client:auth2', () => {
+    console.log('loaded client')
 
-  console.log("eventDate", eventDate);
-  const inputDate = eventDate.split(" ");
-  const hyphenatedDate = inputDate.join("-");
+    gapi.client.init({
+      apiKey: API_KEY,
+      clientId: CLIENT_ID,
+      discoveryDocs: DISCOVERY_DOCS,
+      scope: SCOPES,
+      plugin_name: "travel-calculator"
+    })
 
-  axios.get(`https://travel-calculator-server.onrender.com/client/listevents/${hyphenatedDate}`)
-      .then(response => {
-        const eventsObject = response.data;
-        
+    gapi.client.load('calendar', 'v3', () => console.log('bam!'))
+
+    
+      
+      const maxDate = calculateTimeMax(eventDate);
+      console.log("maxDate", maxDate);
+      
+      // get events
+      gapi.client.calendar.events.list({
+        'calendarId': 'primary',
+        'timeMin': (new Date(`${eventDate} 07:00 UTC`)).toISOString(),
+        'timeMax': (new Date(`${maxDate} 6:59 UTC`)).toISOString(),
+        'showDeleted': false,
+        'singleEvents': true, //shows recurring events
+        'maxResults': 10,
+        'orderBy': 'startTime'
+      }).then(response => {
+        const eventsObject = response.result.items
         const startTime = new Date(eventsObject[0].start.dateTime);
         startTime.setMinutes(new Date(eventsObject[0].start.dateTime).getMinutes() - 30);
         console.log("startTime", startTime);
         eventsObject.splice(0,0, {summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada", start: {dateTime: startTime.toISOString()}})
         eventsObject.push({summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada", start: {dateTime: eventsObject[eventsObject.length - 1].start.dateTime}})
-        return eventsObject;
+        return eventsObject
       })
       .then((eventsObject) => {
         console.log("eventsObject", eventsObject);
@@ -187,25 +207,47 @@ const handleIcbcClick = function(eventDate){
       })
 
     
-
+  })
 }
 
 const handleWsbcClick = function(eventDate){
-  
-  console.log("eventDate", eventDate);
-  const inputDate = eventDate.split(" ");
-  const hyphenatedDate = inputDate.join("-");
+  gapi.load('client:auth2', () => {
+    console.log('loaded client')
 
-  axios.get(`https://travel-calculator-server.onrender.com/client/listevents/${hyphenatedDate}`)
-      .then(response => {
-        const eventsObject = response.data;
-        
+    gapi.client.init({
+      apiKey: API_KEY,
+      clientId: CLIENT_ID,
+      discoveryDocs: DISCOVERY_DOCS,
+      scope: SCOPES,
+      plugin_name: "travel-calculator"
+    })
+
+    gapi.client.load('calendar', 'v3', () => console.log('bam!'))
+
+    
+    //   let splitDate = eventDate.split(" ")
+    //   const maxDay = Number(eventDate.split(" ")[0]) + 1;
+    //   splitDate[0] = maxDay;
+    //  const maxDate = splitDate.join(" ");
+      const maxDate = calculateTimeMax(eventDate);
+      // get events
+      gapi.client.calendar.events.list({
+        'calendarId': 'primary',
+        'timeMin': (new Date(`${eventDate} 07:00 UTC`)).toISOString(),
+        'timeMax': (new Date(`${maxDate} 6:59 UTC`)).toISOString(),
+        'showDeleted': false,
+        'singleEvents': true, //shows recurring events
+        'maxResults': 10,
+        'orderBy': 'startTime'
+      }).then(response => {
+        const eventsObject = response.result.items;
         const startTime = new Date(eventsObject[0].start.dateTime);
         startTime.setMinutes(new Date(eventsObject[0].start.dateTime).getMinutes() - 30);
-        console.log("startTime", startTime);
-        eventsObject.splice(0,0, {summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada", start: {dateTime: startTime.toISOString()}})
-        eventsObject.push({summary: "home", location: "6568 Brooks St Vancouver, BC V5S 3J5, Canada", start: {dateTime: eventsObject[eventsObject.length - 1].start.dateTime}})
-        return eventsObject;
+        eventsObject.splice(0,0, {summary: "home", location: "V5S 3J5", start: {dateTime: startTime.toISOString()}})
+        eventsObject.push({summary: "home", location: "V5S 3J5", start: {dateTime: eventsObject[eventsObject.length - 1].start.dateTime}})
+        console.log("eventsObject", eventsObject)
+        // setEvents(eventsObject);
+        return eventsObject
       })
       .then((eventsObject) => {
         let WsbcClients = fetchAppointmentsWsbc(eventsObject);
@@ -262,20 +304,80 @@ const handleWsbcClick = function(eventDate){
 
 
 
- 
+    
+  })
 }
 
 
 const sessionsCompleted = function(name, startDate, endDate) {
-  axios.get(`https://travel-calculator-server.onrender.com/client/sessionscompleted/${name}/${startDate}/${endDate}`)
-  .then((results) => {
-    const sessionsCompleted = results.data.length;
+  console.log(name, startDate, endDate);
+  const formatDate = (date) => {
+    let convertToArray = date.split("-");
 
-    console.log("hit")
-    console.log("sessions completed", sessionsCompleted);
-    return axios.post(`https://comcalc-server.herokuapp.com/session/completed/${name}/${sessionsCompleted}`);
-  });
-  
+    if (convertToArray[1] === "01") {
+    
+      convertToArray[1] = "January";
+    } else if (convertToArray[1] === "02") {
+      convertToArray[1] = "February";
+    } else if (convertToArray[1] === "03") {
+      convertToArray[1] = "March";
+    } else if (convertToArray[1] === "04") {
+      convertToArray[1] = "April";
+    } else if (convertToArray[1] === "05") {
+      convertToArray[1] = "May";
+    } else if (convertToArray[1] === "06") {
+      convertToArray[1] = "June";
+    } else if (convertToArray[1] === "07") {
+      convertToArray[1] = "July";
+    } else if (convertToArray[1] === "08") {
+      convertToArray[1] = "August";
+    } else if (convertToArray[1] === "09") {
+      convertToArray[1] = "September";
+    } else if (convertToArray[1] === "10") {
+      convertToArray[1] = "October";
+    } else if (convertToArray[1] === "11") {
+      convertToArray[1] = "November";
+    } else if (convertToArray[1] === "12") {
+      convertToArray[1] = "December";
+    }
+
+    const order = [2,1,0];
+    const reorderedArray = order.map(i => convertToArray[i]).join(" ");
+
+    return reorderedArray;
+    
+  };
+
+  gapi.load('client:auth2', () => {
+    console.log('loaded client');
+
+    gapi.client.init({
+      apiKey: API_KEY,
+      clientId: CLIENT_ID,
+      discoveryDocs: DISCOVERY_DOCS,
+      scope: SCOPES,
+      plugin_name: "travel-calculator"
+    })
+
+    gapi.client.load('calendar', 'v3', () => console.log('bam!'))
+
+    gapi.client.calendar.events.list({
+            'calendarId': 'primary',
+            'timeMin': (new Date(`${formatDate(startDate)} 07:00 UTC`)).toISOString(),
+            'timeMax': (new Date(`${formatDate(endDate)} 6:59 UTC`)).toISOString(),
+            'showDeleted': false,
+            'singleEvents': true, //shows recurring events
+            'orderBy': 'startTime',
+            'q': name
+          }).then((results) => {
+            const sessionsCompleted = results.result.items.filter(item => item.summary === name).length;
+            
+            console.log(results);
+            console.log("hit")
+            console.log("sessions completed", sessionsCompleted);
+            return axios.post(`https://comcalc-server.herokuapp.com/session/completed/${name}/${sessionsCompleted}`);
+          });
+  })
 };
 
 
@@ -295,6 +397,9 @@ const updateSessionsCompleted = async() => {
           }
         }
 
+      
+  
+
   //loop through array, and pass in names, start_date, end_date into sessionsCompleted function
 
 }
@@ -308,16 +413,41 @@ const getClientsNotScheduled = (date, dayOfWeek)=> {
   }
   
   console.log("test")
-  const startDate = getNextDayOfWeek(date, dayOfWeek).slice(1,4).join("-");
+  const startDate = getNextDayOfWeek(date, dayOfWeek);
 
   const endDate = new Date();
 
-  endDate.setDate(startDate.getDate() + 7).slice(1,4).join("-");
+  endDate.setDate(startDate.getDate() + 7);
 
-  axios.get(`https://travel-calculator-server.onrender.com/client/clientsnotscheduled/${startDate}/${endDate}`)
-    .then((results) => {
-      console.log("getClientsNotScheduled results", results);
+  return gapi.load('client:auth2', () => {
+    console.log('loaded client')
+
+    gapi.client.init({
+      apiKey: API_KEY,
+      clientId: CLIENT_ID,
+      discoveryDocs: DISCOVERY_DOCS,
+      scope: SCOPES,
+      plugin_name: "travel-calculator"
     })
+
+    gapi.client.load('calendar', 'v3', () => console.log('bam!'))
+
+    
+      
+
+      gapi.client.calendar.events.list({
+        'calendarId': 'primary',
+        'timeMin': startDate.toISOString(),
+        'timeMax': endDate.toISOString(),
+        'showDeleted': false,
+        'singleEvents': true, //shows recurring events
+        'maxResults': 50,
+        'orderBy': 'startTime'
+      }).then((result)=> {
+        console.log("resultssss", result.result.items);
+      })
+    
+  })
 }
 
 return { getClientsNotScheduled, updateSessionsCompleted, sessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results}
