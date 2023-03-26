@@ -31,7 +31,7 @@ export default function Home() {
 
   const [billingLinks, setBillingLinks] = useState([]);
 
-  const { getClientsNotScheduled, updateSessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results } = useApplicationData();
+  const { getClientsNotScheduled, notScheduledList, updateSessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results } = useApplicationData();
   const classes = useStyles();
 
   const combinedList = routes.sort(function(a,b) { return a.order - b.order}).map( route => {
@@ -75,7 +75,7 @@ export default function Home() {
       axios.get("https://comcalc-server.herokuapp.com/client/find/sessionswarning"),
       axios.get("https://comcalc-server.herokuapp.com/billing/all")
     ]).then((all) => {
-      getClientsNotScheduled(new Date(), 0);
+      getClientsNotScheduled();
       updateSessionsCompleted();
       setClientEndDate(all[0].data.rows);
       setSessionsWarning(all[1].data.rows);
@@ -90,6 +90,7 @@ export default function Home() {
         <div id="end-date-table">
           <EndDateTable clientEndDate={clientEndDate}></EndDateTable>
           <SessionsWarningTable sessionsWarning={sessionsWarning}></SessionsWarningTable>
+          <div>{notScheduledList}</div>
         </div>
         <section id="search-panel">
           <DateInput inputDate={inputDate} handleSearchInput={handleSearchInput}></DateInput>

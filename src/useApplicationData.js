@@ -18,6 +18,8 @@ const [wsbcRoutes, setWsbcRoutes] = useState([]);
 const [wsbcTravelTime, setWsbcTravelTime] = useState(0);
 const [wsbcMileage, setWsbcMileage] = useState(0);
 
+const [notScheduledList, setNotScheduledList] = useState([]);
+
 const handleSearchInput = (e) => {
   setInputDate(e.target.value);
 };
@@ -300,15 +302,35 @@ const updateSessionsCompleted = async() => {
 }
 
 const getClientsNotScheduled = (date, dayOfWeek)=> {
-  const getNextDayOfWeek = (date, dayOfWeek) => {
-    // Code to check that date and dayOfWeek are valid left as an exercise ;)
-    var resultDate = new Date(date.getTime());
-    resultDate.setDate(date.getDate() + (7 + dayOfWeek - date.getDay()) % 7);
-    return resultDate;
+
+  const getNextMonday = () => {
+    const today = new Date();
+    const day = today.getDay();
+    const daysUntilMonday = day === 0 ? 1 : 8 - day;
+    const nextMonday = new Date(today.getTime() + daysUntilMonday * 24 * 60 * 60 * 1000);
+    return nextMonday;
+  }
+
+  const compareArrays = (arr1, arr2) => {
+    let uniqueElements = [];
+  
+    for (let i = 0; i < arr1.length; i++) {
+      if (!arr2.includes(arr1[i])) {
+        uniqueElements.push(arr1[i]);
+      }
+    }
+  
+    for (let i = 0; i < arr2.length; i++) {
+      if (!arr1.includes(arr2[i])) {
+        uniqueElements.push(arr2[i]);
+      }
+    }
+    return uniqueElements;
   }
   
+  
   console.log("test")
-  const startDate = getNextDayOfWeek(date, dayOfWeek);
+  const startDate = getNextMonday();
 
   const endDate = new Date();
 
@@ -319,9 +341,23 @@ const getClientsNotScheduled = (date, dayOfWeek)=> {
 
   axios.get(`https://travel-calculator-server.onrender.com/client/clientsnotscheduled/${startDate.toString().split(" ").slice(1,4).join("-")}/${endDate.toString().split(" ").slice(1,4).join("-")}`)
     .then((results) => {
-      console.log("getClientsNotScheduled results", results);
+      
+      const clientsScheduled = results.data.map(x => x.summary);
+      console.log("clientsNotScheduled", clientsScheduled);
+
+      axios.get("https://comcalc-server.herokuapp.com/client/all")
+      .then((result) => {
+        const allClients = result.data.map(x => x.name);
+        console.log(allClients);
+
+        const clientsNotScheduled = compareArrays(allClients, clientsScheduled);
+        console.log("clientscompareArrays", clientsNotScheduled);
+
+        setNotScheduledList(clientsNotScheduled);
+      })
+      
     })
 }
 
-return { getClientsNotScheduled, updateSessionsCompleted, sessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results}
+return { getClientsNotScheduled, notScheduledList, updateSessionsCompleted, sessionsCompleted, wsbcRoutes, wsbcTravelTime, wsbcMileage, routesTwo, travelTime, routes, events, inputDate, handleSearchInput, handleIcbcSubmit, handleWsbcSubmit, mileage, results}
 };
