@@ -308,7 +308,9 @@ const getClientsNotScheduled = (date, dayOfWeek)=> {
   }
   
   console.log("test")
-  const startDate = getNextDayOfWeek(date, dayOfWeek).slice(1,4).join("-");
+  const startDate = getNextDayOfWeek(date, dayOfWeek);
+
+  startDate.slice(1,4).join("-");
 
   const endDate = new Date();
 
