@@ -310,13 +310,14 @@ const getClientsNotScheduled = (date, dayOfWeek)=> {
   console.log("test")
   const startDate = getNextDayOfWeek(date, dayOfWeek);
 
-  startDate.slice(1,4).join("-");
-
   const endDate = new Date();
 
-  endDate.setDate(startDate.getDate() + 7).slice(1,4).join("-");
+  endDate.setDate(startDate.getDate() + 7)
 
-  axios.get(`https://travel-calculator-server.onrender.com/client/clientsnotscheduled/${startDate}/${endDate}`)
+  console.log(startDate);
+  console.log(endDate);
+
+  axios.get(`https://travel-calculator-server.onrender.com/client/clientsnotscheduled/${startDate.toString().split(" ").slice(1,4).join("-")}/${endDate.toString().split(" ").slice(1,4).join("-")}`)
     .then((results) => {
       console.log("getClientsNotScheduled results", results);
     })
