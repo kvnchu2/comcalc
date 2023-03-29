@@ -4,12 +4,12 @@ import './home.css';
 import DateInput from "../../components/home/DateInput.js";
 import Results from "../../components/home/results/index.js";
 import EndDateTable from "../../components/home/results/endDateTable.js";
-import SessionsWarningTable from "../../components/home/results/sessionsWarningTable.js"
+import SessionsWarningTable from "../../components/home/results/sessionsWarningTable.js";
+import NotScheduledTable from "../../components/home/results/notScheduledTable.js";
 import Navbar from "../../components/nav/navbar.js";
 import Button from '@material-ui/core/Button';
 import { makeStyles } from "@material-ui/styles";
 import useApplicationData from '../../useApplicationData.js';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -90,7 +90,7 @@ export default function Home() {
         <div id="end-date-table">
           <EndDateTable clientEndDate={clientEndDate}></EndDateTable>
           <SessionsWarningTable sessionsWarning={sessionsWarning}></SessionsWarningTable>
-          <div>{notScheduledList}</div>
+          <NotScheduledTable notScheduledList={notScheduledList}></NotScheduledTable>
         </div>
         <section id="search-panel">
           <DateInput inputDate={inputDate} handleSearchInput={handleSearchInput}></DateInput>
