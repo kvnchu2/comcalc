@@ -332,9 +332,9 @@ const getClientsNotScheduled = (date, dayOfWeek)=> {
   console.log("test")
   const startDate = getNextMonday();
 
-  const endDate = new Date();
+  let endDate = new Date(startDate);
 
-  endDate.setDate(startDate.getDate() + 7)
+  endDate.setDate(endDate.getDate() + 7)
 
   console.log(startDate);
   console.log(endDate);
