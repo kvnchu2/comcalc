@@ -311,21 +311,8 @@ const getClientsNotScheduled = (date, dayOfWeek)=> {
     return nextMonday;
   }
 
-  const compareArrays = (arr1, arr2) => {
-    let uniqueElements = [];
-  
-    for (let i = 0; i < arr1.length; i++) {
-      if (!arr2.includes(arr1[i])) {
-        uniqueElements.push(arr1[i]);
-      }
-    }
-  
-    for (let i = 0; i < arr2.length; i++) {
-      if (!arr1.includes(arr2[i])) {
-        uniqueElements.push(arr2[i]);
-      }
-    }
-    return uniqueElements;
+  function getUniqueElements(arr1, arr2) {
+    return arr1.filter(element => !arr2.includes(element));
   }
   
   
@@ -350,7 +337,7 @@ const getClientsNotScheduled = (date, dayOfWeek)=> {
         const allClients = result.data.map(x => x.name);
         console.log(allClients);
 
-        const clientsNotScheduled = compareArrays(allClients, clientsScheduled);
+        const clientsNotScheduled = getUniqueElements(allClients, clientsScheduled);
         console.log("clientscompareArrays", clientsNotScheduled);
 
         setNotScheduledList(clientsNotScheduled);
